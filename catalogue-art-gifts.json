@@ -1,0 +1,249 @@
+{
+  "categories": [
+    {
+      "id": "paintings",
+      "name": "Paintings",
+      "subcategories": [
+        {
+          "id": "portraits",
+          "name": "Portraits",
+          "products": [
+            {
+              "id": "portrait_single",
+              "name": "Acrylic Portrait — Single Person",
+              "price": 85,
+              "paymentLink": "https://www.paypal.com/ncp/payment/P6DJBKAF2V6BJ",
+              "description": "Acrylic portrait painting of a single person based on your reference photo.",
+              "images": ["single_portrait.png"]
+            },
+            {
+              "id": "portrait_couple",
+              "name": "Acrylic Portrait — Couple",
+              "price": 140,
+              "paymentLink": "https://www.paypal.com/ncp/payment/GSVZ8M7ZKGMPQ",
+              "description": "Couple portrait in vibrant acrylic style.",
+              "images": ["couple_portrait.png"]
+            },
+            {
+              "id": "portrait_family",
+              "name": "Acrylic Portrait — Family (3–5 People)",
+              "price": 220,
+              "paymentLink": "https://www.paypal.com/ncp/payment/JAFWVU3GYJX8L",
+              "description": "Family portrait with up to 5 people.",
+              "images": ["family_portrait.png"]
+            }
+          ]
+        },
+        {
+          "id": "landscapes",
+          "name": "Landscapes",
+          "products": [
+            {
+              "id": "landscape_small",
+              "name": "Small Landscape Painting",
+              "price": 30,
+              "paymentLink": "https://www.paypal.com/ncp/payment/ZBK3VWBBDT72J",
+              "description": "Small landscape painting — acrylic on canvas.",
+              "images": ["Small Landscape Painting — 30.jpg"]
+            },
+            {
+              "id": "landscape_medium",
+              "name": "Medium Landscape Painting",
+              "price": 45,
+              "paymentLink": "https://www.paypal.com/ncp/payment/R8QYNRR46EV9W",
+              "description": "Medium-size acrylic landscape.",
+              "images": ["medium_landscape.png"]
+            },
+            {
+              "id": "landscape_large",
+              "name": "Large Landscape Painting",
+              "price": 70,
+              "paymentLink": "https://www.paypal.com/ncp/payment/T44PN92PAE9XE",
+              "description": "Large detailed landscape painting.",
+              "images": ["large_landscape.png"]
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "epoxy_clay",
+      "name": "Epoxy & Clay Creations",
+      "subcategories": [
+        {
+          "id": "epoxy_trays",
+          "name": "Epoxy Decorative Trays",
+          "products": [
+            {
+              "id": "epoxy_tray_round",
+              "name": "Epoxy Decorative Tray — Round",
+              "price": 32,
+              "paymentLink": "https://www.paypal.com/ncp/payment/6UW4HKVWV7KDG",
+              "description": "Round epoxy tray with gold leaf, flowers or celestial elements.",
+              "images": [
+                "epoxy_decorative_tray_2.png",
+                "epoxy_decorative_tray_3.png",
+                "epoxy_decorative_tray_4.png"
+              ]
+            },
+            {
+              "id": "epoxy_tray_rect",
+              "name": "Epoxy Decorative Tray — Rectangle",
+              "price": 34,
+              "paymentLink": "https://www.paypal.com/ncp/payment/9QBW7GLAZR776",
+              "description": "Rectangular epoxy tray — ideal for jewelry or candles.",
+              "images": ["epoxy_decorative_tray_1.png"]
+            }
+          ]
+        },
+
+        {
+          "id": "epoxy_coasters",
+          "name": "Epoxy Coasters",
+          "products": [
+            {
+              "id": "epoxy_coaster_set",
+              "name": "Epoxy Coaster Set (4 pcs)",
+              "price": 40,
+              "paymentLink": "https://www.paypal.com/ncp/payment/T8XKMBB2V2X9N",
+              "description": "Set of four handcrafted epoxy coasters.",
+              "images": [
+                "epoxy_coasters_set.png",
+                "epoxy_coasters_set_2.png"
+              ]
+            }
+          ]
+        },
+
+        {
+          "id": "sculptures",
+          "name": "Clay Sculptures",
+          "products": [
+            {
+              "id": "clay_figurine_small",
+              "name": "Clay Figurine — Small",
+              "price": 22,
+              "paymentLink": "https://www.paypal.com/ncp/payment/DF6MNMSCYVNJ4",
+              "description": "Small clay figurine sculpted and painted by hand.",
+              "images": ["clay_figurine_small.png"]
+            },
+            {
+              "id": "clay_figurine_large",
+              "name": "Clay Figurine — Large",
+              "price": 45,
+              "paymentLink": "https://www.paypal.com/ncp/payment/DJQP6956QFPWW",
+              "description": "Large hand-painted clay sculpture.",
+              "images": ["clay_figurine_large.png"]
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "wool_creations",
+      "name": "Knitted & Felted Wool Creations",
+      "subcategories": [
+        {
+          "id": "felted_animals",
+          "name": "Felted Animals",
+          "products": [
+            {
+              "id": "felt_small",
+              "name": "Mini Felted Animal — Small (~5 cm)",
+              "price": 35,
+              "paymentLink": "https://www.paypal.com/ncp/payment/9GYLUVBC2USAU",
+              "description": "Small hand-felted wool figurine.",
+              "images": ["Mini Felted Animal (Small).png"]
+            },
+            {
+              "id": "felt_medium",
+              "name": "Felted Animal — Medium (~10–12 cm)",
+              "price": 50,
+              "paymentLink": "https://www.paypal.com/ncp/payment/RT3Y5Z86NTA2J",
+              "description": "Medium-sized felted animal figurine.",
+              "images": ["Felted Animal (Medium).png"]
+            },
+            {
+              "id": "felt_family",
+              "name": "Felted Animal Family Set (4 pcs)",
+              "price": 120,
+              "paymentLink": "https://www.paypal.com/ncp/payment/TW7Q43A8X5ZKG",
+              "description": "Custom animal family felted set.",
+              "images": ["Felted Animal Family Set 4.png"]
+            }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "phone_cases",
+      "name": "Phone Cases",
+      "products": [
+        {
+          "id": "phone_custom",
+          "name": "Custom Decorative Phone Case",
+          "price": 45,
+          "paymentLink": "https://www.paypal.com/ncp/payment/N2ZQWCSANQACC",
+          "description": "Custom-made phone case with epoxy elements, painted motifs, dried flowers or glitter.",
+          "images": [
+            "phonecase_1.png",
+            "phonecase_2.png",
+            "phonecase_3.png",
+            "phonecase_4.png"
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "hair_accessories",
+      "name": "Hair Accessories",
+      "products": [
+        {
+          "id": "hair_set_custom",
+          "name": "Handmade Hair Accessory Set",
+          "price": 40,
+          "paymentLink": "https://www.paypal.com/ncp/payment/WQ5VM6AZ9FY3J",
+          "description": "Custom handmade set — choose your preferred style and colors.",
+          "images": [
+            "Custom Hair Set.png",
+            "Custom Hair Set.jpeg"
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": "pet_wear",
+      "name": "Pet Wear",
+      "products": [
+        {
+          "id": "pet_beanie",
+          "name": "Pet Wear — Beanie / Shirt / Scarf",
+          "price": 18,
+          "paymentLink": "https://www.paypal.com/ncp/payment/7CFTKTXGLVZZY",
+          "description": "Handmade pet wear — customizable colors and styles.",
+          "images": []
+        }
+      ]
+    },
+
+    {
+      "id": "bundles",
+      "name": "Bundles",
+      "products": [
+        {
+          "id": "home_harmony",
+          "name": "Home Harmony Box",
+          "price": 100,
+          "paymentLink": "https://www.paypal.com/ncp/payment/9T3C2WRAXJJYN",
+          "description": "Epoxy decor + wax candle + seasonal soap.",
+          "images": ["epoxy_decorative_tray_1.png"]
+        }
+      ]
+    }
+  ]
+}
