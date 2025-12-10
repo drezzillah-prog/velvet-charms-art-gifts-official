@@ -4,7 +4,7 @@
 */
 
 (() => {
-  const CATALOG_FILES = ['/catalogue-body-glow.json','/catalogue-art-gifts.json'];
+  const CATALOG_FILES = ['/catalogue-art-gifts.json'];
 
   /* ---------- Utilities ---------- */
   function qs(sel,parent=document){return parent.querySelector(sel);}
