@@ -239,7 +239,11 @@
 
     fetchCatalogue().then(data => {
       if (catRoot) {
-        try { buildCatalogue(data); } catch (e) { console.error(e); catRoot.innerHTML = '<p class="error">Failed to render catalogue.</p>'; }
+        try { 
+  buildCatalogue(data); 
+  if (window.featuresInit) window.featuresInit();
+}
+ catch (e) { console.error(e); catRoot.innerHTML = '<p class="error">Failed to render catalogue.</p>'; }
       }
       if (prodRoot) {
         const url = new URL(window.location.href);
