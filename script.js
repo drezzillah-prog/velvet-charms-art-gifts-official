@@ -62,13 +62,12 @@
           img.src = './' + name;
           return;
         }
-      } catch (e) { /* ignore */ }
+      } catch (e) { }
       img.style.display = 'none';
     };
     return img;
   }
 
-  // create select from array
   function createSelectArray(name, arr) {
     const sel = document.createElement('select');
     sel.name = name;
@@ -81,7 +80,6 @@
     return sel;
   }
 
-  // catalogue rendering
   function buildCatalogue(data) {
     const root = document.getElementById('catalogue-root');
     if (!root) return;
@@ -138,9 +136,11 @@
 
       root.appendChild(catCard);
     });
+
+    // ⭐⭐⭐ ADDED: notify features.js that the catalogue is finished ⭐⭐⭐
+    document.dispatchEvent(new Event("catalogueRendered"));
   }
 
-  // find product by ID
   function findProductById(data, id) {
     if (!data || !id) return null;
     for (const cat of (data.categories || [])) {
@@ -156,7 +156,6 @@
     return null;
   }
 
-  // render product page
   function renderProductPage(data, productId) {
     const container = document.getElementById('product-root');
     if (!container) return;
@@ -191,30 +190,24 @@
     const desc = document.createElement('p'); desc.className = 'desc'; desc.textContent = product.description || '';
     right.appendChild(desc);
 
-    // scents
     if (product.options && product.options.scent && Array.isArray(product.options.scent)) {
-      const label = document.createElement('label'); label.textContent = 'Choose scent:';
-      right.appendChild(label);
+      const label = document.createElement('label'); label.textContent = 'Choose scent:'; right.appendChild(label);
       right.appendChild(createSelectArray('scent', product.options.scent));
     }
 
-    // intensity
     if (product.options && product.options.intensity) {
-      const label2 = document.createElement('label'); label2.textContent = 'Scent intensity:';
-      right.appendChild(label2);
+      const label2 = document.createElement('label'); label2.textContent = 'Scent intensity:'; right.appendChild(label2);
       right.appendChild(createSelectArray('intensity', product.options.intensity));
     }
 
-    // keep customization box EXACTLY
-    const customLabel = document.createElement('label'); customLabel.textContent = 'Customization / Notes';
-    right.appendChild(customLabel);
+    const customLabel = document.createElement('label'); customLabel.textContent = 'Customization / Notes'; right.appendChild(customLabel);
+
     const custom = document.createElement('textarea'); custom.className = 'custom-box'; custom.name = 'customization'; custom.placeholder = 'Add notes for customization (colors, initials, reference link)';
     right.appendChild(custom);
 
     const uploadHint = document.createElement('p'); uploadHint.style.fontSize='13px'; uploadHint.style.color='var(--muted)'; uploadHint.textContent = 'You can attach 1 file (image/pdf) — if you need more, message on Instagram or use Contact form.';
     right.appendChild(uploadHint);
 
-    // buy button (if paymentLink exists)
     if (product.paymentLink) {
       const buy = document.createElement('p');
       const a = document.createElement('a');
@@ -232,25 +225,19 @@
     container.appendChild(detail);
   }
 
-  // bootstrap
   document.addEventListener('DOMContentLoaded', function () {
     const catRoot = document.getElementById('catalogue-root');
     const prodRoot = document.getElementById('product-root');
 
     fetchCatalogue().then(data => {
       if (catRoot) {
-        try { 
-  buildCatalogue(data); 
-  if (window.featuresInit) window.featuresInit();
-}
- catch (e) { console.error(e); catRoot.innerHTML = '<p class="error">Failed to render catalogue.</p>'; }
+        try { buildCatalogue(data); } catch (e) { console.error(e); catRoot.innerHTML = '<p class="error">Failed to render catalogue.</p>'; }
       }
       if (prodRoot) {
         const url = new URL(window.location.href);
         const productId = url.searchParams.get('id');
         try { renderProductPage(data, productId); } catch (e) { console.error(e); prodRoot.innerHTML = '<p class="error">Failed to render product.</p>'; }
       }
-      // expose for debugging
       window._velvet_catalogue = data;
     }).catch(err => {
       console.error('Failed to load catalogue file:', err.toString());
