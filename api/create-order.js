@@ -1,21 +1,17 @@
-// api/create-order.js
+// api/capture-order.js
 const BUFFER = global.Buffer;
 
 module.exports = async (req, res) => {
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
-  const { cart } = req.body || {};
-  if (!cart || !Array.isArray(cart.items) || cart.items.length === 0) {
-    return res.status(400).json({ error: "Cart is empty or invalid" });
-  }
+  const { orderID } = req.body || {};
+  if (!orderID) return res.status(400).json({ error: "Missing orderID" });
 
   const CLIENT_ID = process.env.PAYPAL_CLIENT_ID;
   const SECRET = process.env.PAYPAL_CLIENT_SECRET;
   const ENV = process.env.PAYPAL_ENV || "sandbox";
-
   const BASE = ENV === "live" ? "https://api-m.paypal.com" : "https://api-m.sandbox.paypal.com";
 
   try {
-    // 1. Get OAuth token
     const auth = BUFFER.from(`${CLIENT_ID}:${SECRET}`).toString("base64");
     const tokenRes = await fetch(`${BASE}/v1/oauth2/token`, {
       method: "POST",
@@ -29,56 +25,22 @@ module.exports = async (req, res) => {
     if (!tokenData.access_token) return res.status(500).json({ error: "Unable to authenticate with PayPal", details: tokenData });
     const accessToken = tokenData.access_token;
 
-    // map items
-    const items = cart.items.map(item => ({
-      name: item.name || `Product ${item.id}`,
-      unit_amount: { currency_code: "USD", value: Number(item.price).toFixed(2) },
-      quantity: (item.qty || 1).toString()
-    }));
-
-    const total = items.reduce((s, it) => s + (Number(it.unit_amount.value) * Number(it.quantity)), 0);
-    const shippingAmount = Number(cart.shipping || 0);
-
-    const orderBody = {
-      intent: "CAPTURE",
-      purchase_units: [
-        {
-          amount: {
-            currency_code: "USD",
-            value: (total + shippingAmount).toFixed(2),
-            breakdown: {
-              item_total: { currency_code: "USD", value: total.toFixed(2) },
-              shipping: { currency_code: "USD", value: shippingAmount.toFixed(2) }
-            }
-          },
-          items
-        }
-      ],
-      application_context: {
-        brand_name: "Velvet Charms",
-        landing_page: "LOGIN",
-        user_action: "PAY_NOW",
-        return_url: "https://example.com/return",
-        cancel_url: "https://example.com/cancel"
-      }
-    };
-
-    const orderRes = await fetch(`${BASE}/v2/checkout/orders`, {
+    const captureRes = await fetch(`${BASE}/v2/checkout/orders/${orderID}/capture`, {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${accessToken}`,
         "Content-Type": "application/json"
-      },
-      body: JSON.stringify(orderBody)
+      }
     });
 
-    const orderData = await orderRes.json();
-    if (!orderData.id) return res.status(500).json({ error: "Failed to create order", details: orderData });
+    const captureData = await captureRes.json();
+    if (!captureData || captureData.error) {
+      return res.status(400).json({ status: "ERROR", message: captureData?.error_description || "Could not capture order", details: captureData });
+    }
 
-    const approveUrl = orderData.links?.find(l => l.rel === "approve")?.href;
-    return res.status(200).json({ orderID: orderData.id, approveUrl });
+    return res.status(200).json({ status: captureData.status || "COMPLETED", id: captureData.id, details: captureData });
 
   } catch (error) {
-    return res.status(500).json({ error: "Create order error", details: error.toString() });
+    return res.status(500).json({ error: "Capture error", details: error.toString() });
   }
 };
