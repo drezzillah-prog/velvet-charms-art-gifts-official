@@ -54,3 +54,17 @@
     renderCatalogue(data);
   } catch (e) {}
 })();
+// --- FINAL FIX: ensure each product card gets data-product-id ---
+document.addEventListener("DOMContentLoaded", () => {
+  const cards = document.querySelectorAll(".product-card");
+
+  cards.forEach(card => {
+    if (!card.dataset.productId) {
+      const link = card.querySelector("a[href*='product.html?id=']");
+      if (link) {
+        const id = link.href.split("id=")[1];
+        if (id) card.dataset.productId = id;
+      }
+    }
+  });
+});
