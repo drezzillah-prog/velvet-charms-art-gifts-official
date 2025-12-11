@@ -1,7 +1,6 @@
 /* features.js — Cart + Wishlist for Velvet Charms
    Safe augment: does not replace your existing scripts.
    Put this file in repo root and include <script src="features.js"></script>
-   Works for both sites (Body Glow & Art & Gifts).
 */
 
 (() => {
@@ -56,7 +55,6 @@
   function injectHeaderUI(){
     const header = qs('nav') || qs('header') || document.body;
     if(!header) return;
-    // avoid injecting twice
     if(header.querySelector('.vc-header-actions')) return;
     const wrapper = $('div',{class:'vc-header-actions'}, header);
     wrapper.style.display = 'flex';
@@ -75,7 +73,6 @@
     const cart = loadCart();
     const qty = Object.values(cart).reduce((s,i)=>s + (i.qty||0),0);
     const wish = loadWish().length;
-    // set counts per button correctly
     qsa('.vc-header-actions .vc-count').forEach(span => {
       const parent = span.parentElement;
       if (parent && parent.classList.contains('vc-cart-btn')) span.textContent = qty;
@@ -99,6 +96,7 @@
         <div class="vc-cart-items"></div>
         <div class="vc-cart-summary">
           <div class="vc-cart-subtotal">Subtotal: <strong class="vc-subtotal"></strong></div>
+          <div class="vc-cart-total" style="margin-top:6px">Total: <strong class="vc-total"></strong></div>
           <div style="display:flex; gap:8px; margin-top:8px;">
             <button class="vc-checkout-all">Checkout All (opens PayPal)</button>
             <button class="vc-clear-cart">Clear</button>
@@ -130,6 +128,7 @@
     if(ids.length === 0){
       container.innerHTML = `<p class="vc-empty">Cart is empty — add something lovely 💚</p>`;
       qs('.vc-subtotal',drawerEl).textContent = money(0);
+      qs('.vc-total',drawerEl).textContent = money(0);
       updateHeaderCounts();
       return;
     }
@@ -172,6 +171,8 @@
       });
     });
     qs('.vc-subtotal',drawerEl).textContent = money(total);
+    // For now subtotal == total (no shipping handling) — but show both
+    qs('.vc-total',drawerEl).textContent = money(total);
     updateHeaderCounts();
   }
 
@@ -187,22 +188,29 @@
       return { id, name: it.name || id, price: Number(it.price || 0).toFixed(2), qty: it.qty || 1 };
     });
 
+    // Compute totals locally and log
+    const totalLocal = items.reduce((s,it)=> s + (Number(it.price)*Number(it.qty)), 0);
+    console.log('[vc-features] checkoutAll payload', { items, totalLocal });
+
     // Try server-side order creation
     try {
       const r = await fetch('/api/create-order', {
         method: 'POST',
         headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({ cart: { items } })
+        body: JSON.stringify({ cart: { items }, localTotal: totalLocal })
       });
       const j = await r.json();
+      console.log('[vc-features] create-order response', r.status, j);
       if (r.ok && j.approveUrl) {
         window.open(j.approveUrl, '_blank');
         return;
       } else {
+        alert('Server did not return a PayPal approval link. Check console for create-order response (Network).');
         console.warn('create-order response missing approveUrl', j);
       }
     } catch (e) {
       console.warn('create-order failed', e);
+      alert('Failed to call server to create order (check console).');
     }
 
     // Fallback: open each product.paymentLink
@@ -265,7 +273,6 @@
   }
 
   function insertButtonsOnCatalogue(){
-    // find anchors linking to product.html (common pattern used by your script.js)
     const anchors = Array.from(document.querySelectorAll('a[href*="product.html"]'));
     if(!anchors.length) return;
     anchors.forEach(a=>{
@@ -352,14 +359,12 @@
     await ensureCataloguesLoaded();
     injectHeaderUI();
     createCartDrawer();
-    // try to inject buttons now (if catalogue already rendered)
     insertButtonsOnCatalogue();
     const pid = getProductIdFromUrl();
     if(pid){
       const prod = catalogue[pid] || { id: pid, name: pid, price: 0, images: [], paymentLink: ''};
       insertButtonsOnProductPage(pid, prod);
     }
-    // also handle data-product-id attributes
     qsa('[data-product-id]').forEach(el=>{
       const id = el.getAttribute('data-product-id');
       if(!id) return;
@@ -375,32 +380,27 @@
 
     createWishlistPage();
     updateHeaderCounts();
-
-    // Secondary safety: if your `script.js` builds catalogue later, set up observer & retry injection:
     setupInjectionObserver();
   }
 
-  // +++ MutationObserver: watches for added product links/sections and injects buttons when they appear +++
+  // MutationObserver: watches for added product links/sections and injects buttons when they appear
   let observer = null;
   function setupInjectionObserver(){
     try {
       if (observer) return;
       const target = document.body;
       observer = new MutationObserver((mutations) => {
-        // cheap check: if document contains anchor to product.html -> try to insert
         if (document.querySelector('a[href*="product.html"]') || document.querySelector('.product-card') ) {
           insertButtonsOnCatalogue();
         }
       });
       observer.observe(target, { childList: true, subtree: true });
-      // also run a couple of scheduled retries in case MutationObserver misses timing
       setTimeout(insertButtonsOnCatalogue, 400);
       setTimeout(insertButtonsOnCatalogue, 1000);
       setTimeout(insertButtonsOnCatalogue, 2500);
     } catch(e){ /* ignore */ }
   }
 
-  /* ---------- Run ---------- */
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
   else boot();
 
