@@ -1,4 +1,4 @@
-module.exports = async (req, res) => {
+export default async function handler(req, res) {
   try {
     if (req.method !== "POST") {
       return res.status(405).json({ error: "Method not allowed" });
@@ -9,23 +9,29 @@ module.exports = async (req, res) => {
       return res.status(400).json({ error: "Cart is empty or invalid" });
     }
 
-    // ---- ENV VARIABLES (correct names!) ----
+    // ---- ENV VARIABLES ----
     const CLIENT_ID = process.env.PAYPAL_CLIENT_ID;
-    const SECRET = process.env.PAYPAL_SECRET;      // FIXED NAME
+    const SECRET = process.env.PAYPAL_SECRET;
     const MODE = process.env.PAYPAL_MODE || "live";
+
+    if (!CLIENT_ID || !SECRET) {
+      return res.status(500).json({
+        error: "Missing PayPal credentials",
+      });
+    }
 
     const BASE =
       MODE === "live"
         ? "https://api-m.paypal.com"
         : "https://api-m.sandbox.paypal.com";
 
-    // ---- AUTH TOKEN ----
+    // ---- AUTH ----
     const auth = Buffer.from(`${CLIENT_ID}:${SECRET}`).toString("base64");
 
     const tokenRes = await fetch(`${BASE}/v1/oauth2/token`, {
       method: "POST",
       headers: {
-        "Authorization": `Basic ${auth}`,
+        Authorization: `Basic ${auth}`,
         "Content-Type": "application/x-www-form-urlencoded",
       },
       body: "grant_type=client_credentials",
@@ -33,10 +39,9 @@ module.exports = async (req, res) => {
 
     const tokenData = await tokenRes.json();
 
-    if (!tokenData || !tokenData.access_token) {
-      console.error("TOKEN ERROR:", tokenData);
+    if (!tokenData?.access_token) {
       return res.status(500).json({
-        error: "Unable to authenticate with PayPal",
+        error: "PayPal auth failed",
         details: tokenData,
       });
     }
@@ -58,7 +63,6 @@ module.exports = async (req, res) => {
       0
     );
 
-    // ---- ORDER BODY ----
     const orderBody = {
       intent: "CAPTURE",
       purchase_units: [
@@ -67,7 +71,10 @@ module.exports = async (req, res) => {
             currency_code: "USD",
             value: total.toFixed(2),
             breakdown: {
-              item_total: { currency_code: "USD", value: total.toFixed(2) },
+              item_total: {
+                currency_code: "USD",
+                value: total.toFixed(2),
+              },
             },
           },
           items,
@@ -85,7 +92,7 @@ module.exports = async (req, res) => {
     const orderRes = await fetch(`${BASE}/v2/checkout/orders`, {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${accessToken}`,
+        Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(orderBody),
@@ -96,30 +103,32 @@ module.exports = async (req, res) => {
 
     try {
       orderData = JSON.parse(raw);
-    } catch (e) {
-      console.error("PAYPAL RAW RESPONSE:", raw);
+    } catch {
       return res.status(500).json({
-        error: "Invalid response from PayPal",
+        error: "Invalid PayPal response",
         details: raw,
       });
     }
 
     if (!orderData.id) {
-      console.error("ORDER CREATE ERROR:", orderData);
-      return res.status(500).json({ error: "Failed to create order", details: orderData });
+      return res.status(500).json({
+        error: "Order creation failed",
+        details: orderData,
+      });
     }
 
-    const approveUrl = orderData.links.find((l) => l.rel === "approve")?.href;
+    const approveUrl =
+      orderData.links?.find((l) => l.rel === "approve")?.href || null;
 
     return res.status(200).json({
       orderID: orderData.id,
       approveUrl,
     });
   } catch (err) {
-    console.error("CREATE-ORDER EXCEPTION:", err);
+    console.error("CREATE ORDER ERROR:", err);
     return res.status(500).json({
-      error: "Create order error",
+      error: "Server error",
       details: String(err),
     });
   }
-};
+}
