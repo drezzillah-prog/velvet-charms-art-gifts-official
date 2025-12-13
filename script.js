@@ -37,7 +37,7 @@
   }
 
   async function fetchCatalogue() {
-    const candidates = ['catalogue-body-glow.json','catalogue-art-gifts.json','catalogue.json'];
+    const candidates = ['catalogue-art-gifts.json'];
     for (const c of candidates) {
       const data = await tryFetch(c);
       if (data) {
