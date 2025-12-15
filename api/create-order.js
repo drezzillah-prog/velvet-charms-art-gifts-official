@@ -40,42 +40,21 @@ export default async function handler(req, res) {
 
     const accessToken = tokenData.access_token;
 
-    // ✅ Build items EXACTLY how PayPal wants them
-    const items = cart.items.map(item => {
-      const qty = Number(item.qty || 1);
-      const price = Number(item.price);
-
-      return {
-        name: item.name || `Product ${item.id}`,
-        category: "PHYSICAL_GOODS",
-        unit_amount: {
-          currency_code: "USD",
-          value: price.toFixed(2),
-        },
-        quantity: qty, // 🔥 MUST be a NUMBER
-      };
-    });
-
-    // ✅ Calculate total safely
-    const total = items.reduce((sum, item) => {
-      return sum + Number(item.unit_amount.value) * item.quantity;
-    }, 0);
+    // 💣 NUCLEAR TOTAL ONLY
+    const total = cart.items.reduce(
+      (sum, item) => sum + Number(item.price) * Number(item.qty || 1),
+      0
+    );
 
     const orderBody = {
       intent: "CAPTURE",
       purchase_units: [
         {
+          description: "Velvet Charms — Cart Purchase",
           amount: {
             currency_code: "USD",
             value: total.toFixed(2),
-            breakdown: {
-              item_total: {
-                currency_code: "USD",
-                value: total.toFixed(2),
-              },
-            },
           },
-          items,
         },
       ],
     };
