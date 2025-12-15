@@ -40,19 +40,26 @@ export default async function handler(req, res) {
 
     const accessToken = tokenData.access_token;
 
-    const items = cart.items.map((item) => ({
-      name: item.name || `Product ${item.id}`,
-      unit_amount: {
-        currency_code: "USD",
-        value: Number(item.price).toFixed(2),
-      },
-      quantity: String(item.qty || 1),
-    }));
+    // ✅ Build items EXACTLY how PayPal wants them
+    const items = cart.items.map(item => {
+      const qty = Number(item.qty || 1);
+      const price = Number(item.price);
 
-    const total = items.reduce(
-      (sum, i) => sum + Number(i.unit_amount.value) * Number(i.quantity),
-      0
-    );
+      return {
+        name: item.name || `Product ${item.id}`,
+        category: "PHYSICAL_GOODS",
+        unit_amount: {
+          currency_code: "USD",
+          value: price.toFixed(2),
+        },
+        quantity: qty, // 🔥 MUST be a NUMBER
+      };
+    });
+
+    // ✅ Calculate total safely
+    const total = items.reduce((sum, item) => {
+      return sum + Number(item.unit_amount.value) * item.quantity;
+    }, 0);
 
     const orderBody = {
       intent: "CAPTURE",
