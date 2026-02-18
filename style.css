@@ -1,41 +1,41 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500&display=swap');
 
 :root{
-  --max-w: 1100px;
-  --text-dark: #4a3f45;
-  --accent-gold: #c7a44c;
+  --max-w:1100px;
+  --text-dark:#4b3f4e;
+  --accent:#9c6fa4;
 }
 
 /* RESET */
-*{ box-sizing:border-box; }
+*{box-sizing:border-box;}
 
 body{
   margin:0;
   font-family:'Inter',sans-serif;
   color:var(--text-dark);
-  background:linear-gradient(135deg,#f9e4ea,#f2cfd8,#f7dbe2);
+  background:linear-gradient(135deg,#e8d9e6,#d8bfd8,#c8a2c8);
   min-height:100vh;
   position:relative;
   overflow-x:hidden;
 }
 
-/* SHIMMER */
+/* SHIMMER EFFECT */
 body::before{
   content:"";
   position:fixed;
   inset:0;
   background:
-    radial-gradient(circle at 20% 20%, rgba(255,255,255,0.35), transparent 40%),
-    radial-gradient(circle at 80% 30%, rgba(255,255,255,0.25), transparent 40%),
-    radial-gradient(circle at 50% 80%, rgba(255,255,255,0.2), transparent 50%);
+    radial-gradient(circle at 25% 25%, rgba(255,255,255,0.35), transparent 45%),
+    radial-gradient(circle at 75% 40%, rgba(255,255,255,0.25), transparent 45%),
+    radial-gradient(circle at 50% 85%, rgba(255,255,255,0.15), transparent 60%);
   mix-blend-mode:soft-light;
-  animation:shimmerMove 12s infinite alternate ease-in-out;
+  animation:mauveShimmer 14s infinite alternate ease-in-out;
   pointer-events:none;
 }
 
-@keyframes shimmerMove{
-  0%{transform:translateY(0px) scale(1);}
-  100%{transform:translateY(-20px) scale(1.05);}
+@keyframes mauveShimmer{
+  0%{transform:translateX(0px) scale(1);}
+  100%{transform:translateX(20px) scale(1.05);}
 }
 
 /* HEADER */
@@ -66,13 +66,13 @@ body::before{
 }
 
 .nav a:hover{
-  color:var(--accent-gold);
+  color:var(--accent);
 }
 
 /* HERO */
 .hero{
   height:85vh;
-  background:url("body glow 1.png") center/cover no-repeat;
+  background:url("art and gifts 2.png") center/cover no-repeat;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -94,7 +94,7 @@ body::before{
 .hero h2{
   font-family:'Playfair Display',serif;
   font-size:3rem;
-  margin:0 0 20px;
+  margin-bottom:20px;
 }
 
 .hero p{
@@ -104,7 +104,7 @@ body::before{
 
 /* BUTTON */
 .btn{
-  background:linear-gradient(180deg,var(--accent-gold),#a8842e);
+  background:linear-gradient(180deg,var(--accent),#7d4d88);
   color:white;
   padding:12px 22px;
   border-radius:30px;
@@ -125,11 +125,13 @@ body::before{
   padding:0 16px;
 }
 
-.content{
-  background:rgba(255,255,255,0.6);
+.content,
+.custom-process{
+  background:rgba(255,255,255,0.7);
   padding:30px;
   border-radius:20px;
   backdrop-filter:blur(10px);
+  margin-bottom:40px;
 }
 
 /* CATALOGUE HERO */
@@ -147,7 +149,7 @@ body::before{
 }
 
 .product-card{
-  background:rgba(255,255,255,0.75);
+  background:rgba(255,255,255,0.8);
   backdrop-filter:blur(10px);
   padding:20px;
   border-radius:20px;
@@ -167,7 +169,7 @@ body::before{
 .price{
   margin:10px 0;
   font-weight:600;
-  color:#a8842e;
+  color:#7d4d88;
 }
 
 /* FOOTER */
