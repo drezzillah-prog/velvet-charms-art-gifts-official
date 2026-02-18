@@ -1,47 +1,57 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500&display=swap');
 
 :root{
-  --max-w:1100px;
-  --text-dark:#4b3f4e;
-  --accent:#9c6fa4;
+  --max-w: 1100px;
+  --text-dark: #3e3632;
+  --accent-gold: #b6933a;
 }
 
 /* RESET */
-*{box-sizing:border-box;}
+*{ box-sizing:border-box; }
 
 body{
   margin:0;
   font-family:'Inter',sans-serif;
   color:var(--text-dark);
-  background:linear-gradient(135deg,#e8d9e6,#d8bfd8,#c8a2c8);
   min-height:100vh;
-  position:relative;
   overflow-x:hidden;
+  position:relative;
+
+  /* Warm artistic gallery background */
+  background:
+    radial-gradient(circle at 20% 25%, rgba(255,255,255,0.7) 0%, transparent 45%),
+    radial-gradient(circle at 75% 30%, rgba(255,255,255,0.5) 0%, transparent 50%),
+    radial-gradient(circle at 50% 85%, rgba(0,0,0,0.03) 0%, transparent 60%),
+    linear-gradient(
+      140deg,
+      #f6f1ea 0%,
+      #efe6db 40%,
+      #e8ddd0 70%,
+      #f4eee6 100%
+    );
 }
 
-/* SHIMMER EFFECT */
+/* Subtle floating light movement */
 body::before{
   content:"";
   position:fixed;
-  inset:0;
+  inset:-40%;
   background:
-    radial-gradient(circle at 25% 25%, rgba(255,255,255,0.35), transparent 45%),
-    radial-gradient(circle at 75% 40%, rgba(255,255,255,0.25), transparent 45%),
-    radial-gradient(circle at 50% 85%, rgba(255,255,255,0.15), transparent 60%);
-  mix-blend-mode:soft-light;
-  animation:mauveShimmer 14s infinite alternate ease-in-out;
+    radial-gradient(circle, rgba(255,255,255,0.5) 0%, transparent 60%);
+  animation:softDrift 18s ease-in-out infinite alternate;
   pointer-events:none;
+  opacity:0.6;
 }
 
-@keyframes mauveShimmer{
-  0%{transform:translateX(0px) scale(1);}
-  100%{transform:translateX(20px) scale(1.05);}
+@keyframes softDrift{
+  0%{transform:translate(-10%, -10%);}
+  100%{transform:translate(10%, 10%);}
 }
 
 /* HEADER */
 .site-header{
-  background:rgba(255,255,255,0.6);
-  backdrop-filter:blur(10px);
+  background:rgba(255,255,255,0.5);
+  backdrop-filter:blur(6px);
 }
 
 .header-inner{
@@ -66,7 +76,7 @@ body::before{
 }
 
 .nav a:hover{
-  color:var(--accent);
+  color:var(--accent-gold);
 }
 
 /* HERO */
@@ -82,7 +92,7 @@ body::before{
 .hero-overlay{
   position:absolute;
   inset:0;
-  background:rgba(255,255,255,0.35);
+  background:rgba(255,255,255,0.25);
 }
 
 .hero-content{
@@ -94,7 +104,7 @@ body::before{
 .hero h2{
   font-family:'Playfair Display',serif;
   font-size:3rem;
-  margin-bottom:20px;
+  margin:0 0 20px;
 }
 
 .hero p{
@@ -104,7 +114,7 @@ body::before{
 
 /* BUTTON */
 .btn{
-  background:linear-gradient(180deg,var(--accent),#7d4d88);
+  background:linear-gradient(180deg,var(--accent-gold),#8f6e21);
   color:white;
   padding:12px 22px;
   border-radius:30px;
@@ -125,19 +135,11 @@ body::before{
   padding:0 16px;
 }
 
-.content,
-.custom-process{
-  background:rgba(255,255,255,0.7);
+.content{
+  background:rgba(255,255,255,0.6);
+  backdrop-filter:blur(6px);
   padding:30px;
   border-radius:20px;
-  backdrop-filter:blur(10px);
-  margin-bottom:40px;
-}
-
-/* CATALOGUE HERO */
-.catalogue-hero{
-  text-align:center;
-  padding:60px 20px;
 }
 
 /* PRODUCTS */
@@ -149,12 +151,13 @@ body::before{
 }
 
 .product-card{
-  background:rgba(255,255,255,0.8);
-  backdrop-filter:blur(10px);
+  background:rgba(255,255,255,0.75);
+  backdrop-filter:blur(4px);
   padding:20px;
   border-radius:20px;
   text-align:center;
   transition:0.3s ease;
+  box-shadow:0 8px 20px rgba(0,0,0,0.05);
 }
 
 .product-card:hover{
@@ -169,7 +172,7 @@ body::before{
 .price{
   margin:10px 0;
   font-weight:600;
-  color:#7d4d88;
+  color:#8f6e21;
 }
 
 /* FOOTER */
