@@ -20,6 +20,10 @@ body{ background: lime !important; }
   margin:0;
   padding:0;
 }
+body{
+  background: purple !important;
+}
+
 
 body{
   font-family:'Inter', sans-serif;
