@@ -1,91 +1,124 @@
-/* script.js — Velvet Charms Art & Gifts FINAL */
+/* Velvet Charms Catalogue Renderer */
 
-(function () {
-
-const CATALOGUE_FILE = "catalogue-art-gifts.json";
+const FILE = "catalogue-art-gifts.json";
 
 async function loadCatalogue(){
-  const res = await fetch(CATALOGUE_FILE,{cache:"no-store"});
-  if(!res.ok) throw new Error("Failed to load catalogue");
+  const res = await fetch(FILE,{cache:"no-store"});
   return res.json();
+}
+
+function createProductCard(product){
+
+  const card = document.createElement("div");
+  card.className = "product-card";
+
+  const mainImg = document.createElement("img");
+  mainImg.className = "product-main-image";
+  mainImg.src = product.images[0];
+
+  card.appendChild(mainImg);
+
+  /* thumbnails */
+
+  if(product.images.length > 1){
+
+    const thumbs = document.createElement("div");
+    thumbs.className = "product-thumbs";
+
+    product.images.forEach(img=>{
+      const t = document.createElement("img");
+      t.src = img;
+      t.className = "product-thumb";
+
+      t.onclick = ()=>{
+        mainImg.src = img;
+      };
+
+      thumbs.appendChild(t);
+    });
+
+    card.appendChild(thumbs);
+  }
+
+  /* text */
+
+  const name = document.createElement("div");
+  name.className="product-name";
+  name.textContent = product.name;
+  card.appendChild(name);
+
+  const desc = document.createElement("div");
+  desc.className="product-desc";
+  desc.textContent = product.description;
+  card.appendChild(desc);
+
+  const price = document.createElement("div");
+  price.className="product-price";
+  price.textContent = product.price + " €";
+  card.appendChild(price);
+
+  const btn = document.createElement("button");
+  btn.className="buy-btn";
+  btn.textContent="Buy";
+  btn.onclick = ()=> window.open(product.paymentLink,"_blank");
+  card.appendChild(btn);
+
+  return card;
 }
 
 function renderCatalogue(data){
 
-  const root=document.getElementById("catalogue-root");
-  if(!root) return;
+  const root = document.getElementById("catalogue-root");
 
-  let html="";
+  data.categories.forEach(cat=>{
 
-  data.categories.forEach(category=>{
+    const title = document.createElement("h2");
+    title.className="category-title";
+    title.textContent = cat.name;
+    root.appendChild(title);
 
-    html+=`<section class="catalogue-category">
-            <h2>${category.name}</h2>`;
+    if(cat.notice){
+      const notice = document.createElement("p");
+      notice.textContent = cat.notice;
+      root.appendChild(notice);
+    }
 
-    if(category.subcategories){
+    if(cat.subcategories){
 
-      category.subcategories.forEach(sub=>{
+      cat.subcategories.forEach(sub=>{
 
-        html+=`
-        <h3>${sub.name}</h3>
-        <div class="catalogue-grid">`;
+        const subTitle = document.createElement("h3");
+        subTitle.className="subcategory-title";
+        subTitle.textContent = sub.name;
+        root.appendChild(subTitle);
 
-        sub.products.forEach(product=>{
+        const grid = document.createElement("div");
+        grid.className="products-grid";
 
-          let mainId="img_"+Math.random().toString(36).substring(2);
-
-          let gallery=`
-          <div class="image-frame">
-            <img src="${product.images[0]}" class="main-img" id="${mainId}">
-          </div>`;
-
-          if(product.images.length>1){
-
-            gallery+=`<div class="thumbs">`;
-
-            product.images.forEach(img=>{
-              gallery+=`
-              <img src="${img}"
-              onclick="document.getElementById('${mainId}').src='${img}'">`;
-            });
-
-            gallery+=`</div>`;
-          }
-
-          html+=`
-          <div class="product-card">
-
-            ${gallery}
-
-            <h4>${product.name}</h4>
-            <p>${product.description||""}</p>
-
-            <div class="price">${product.price} €</div>
-
-            <a class="buy-btn" href="${product.paymentLink}" target="_blank">
-            Buy
-            </a>
-
-          </div>`;
+        sub.products.forEach(p=>{
+          grid.appendChild(createProductCard(p));
         });
 
-        html+=`</div>`;
+        root.appendChild(grid);
       });
     }
 
-    html+=`</section>`;
-  });
+    if(cat.products){
 
-  root.innerHTML=html;
+      const grid = document.createElement("div");
+      grid.className="products-grid";
+
+      cat.products.forEach(p=>{
+        grid.appendChild(createProductCard(p));
+      });
+
+      root.appendChild(grid);
+    }
+
+  });
 }
 
-document.addEventListener("DOMContentLoaded",async()=>{
-  try{
-    const data=await loadCatalogue();
-    renderCatalogue(data);
-  }catch(e){
-    console.error(e);
-  }
+document.addEventListener("DOMContentLoaded", async()=>{
+  const data = await loadCatalogue();
+  renderCatalogue(data);
 });
-
-})();
