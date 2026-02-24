@@ -1,4 +1,6 @@
-/* script.js — Velvet Charms Art & Gifts */
+/* script.js — Velvet Charms Art & Gifts
+   Handles nested catalogue structure + mini galleries
+*/
 
 (function () {
 
@@ -11,6 +13,7 @@
   }
 
   function renderCatalogue(data) {
+
     const root = document.getElementById("catalogue-root");
     if (!root) return;
 
@@ -27,6 +30,7 @@
         html += `<p class="category-notice">${category.notice}</p>`;
       }
 
+      /* SUBCATEGORIES */
       if (category.subcategories) {
 
         category.subcategories.forEach(sub => {
@@ -38,14 +42,35 @@
 
           sub.products.forEach(product => {
 
-            const img = product.images && product.images.length
-              ? product.images[0]
-              : "";
+            let gallery = "";
+
+            if (product.images && product.images.length) {
+
+              gallery += `
+                <img 
+                  src="${product.images[0]}" 
+                  class="main-img"
+                  alt="${product.name}">
+              `;
+
+              if (product.images.length > 1) {
+
+                gallery += `<div class="thumbs">`;
+
+                product.images.slice(1,5).forEach(img => {
+                  gallery += `
+                    <img src="${img}" alt="">
+                  `;
+                });
+
+                gallery += `</div>`;
+              }
+            }
 
             html += `
               <div class="product-card">
 
-                <img src="${img}" alt="${product.name}">
+                ${gallery}
 
                 <h4>${product.name}</h4>
 
@@ -53,7 +78,10 @@
 
                 <div class="price">${product.price} €</div>
 
-                <a class="buy-btn" href="${product.paymentLink}" target="_blank">
+                <a 
+                  class="buy-btn" 
+                  href="${product.paymentLink}" 
+                  target="_blank">
                   Buy
                 </a>
 
@@ -63,24 +91,42 @@
 
           html += `</div>`;
         });
-
       }
 
-      /* categories that have products directly */
+      /* DIRECT PRODUCTS (no subcategories) */
       if (category.products) {
 
         html += `<div class="catalogue-grid">`;
 
         category.products.forEach(product => {
 
-          const img = product.images && product.images.length
-            ? product.images[0]
-            : "";
+          let gallery = "";
+
+          if (product.images && product.images.length) {
+
+            gallery += `
+              <img 
+                src="${product.images[0]}" 
+                class="main-img"
+                alt="${product.name}">
+            `;
+
+            if (product.images.length > 1) {
+
+              gallery += `<div class="thumbs">`;
+
+              product.images.slice(1,5).forEach(img => {
+                gallery += `<img src="${img}" alt="">`;
+              });
+
+              gallery += `</div>`;
+            }
+          }
 
           html += `
             <div class="product-card">
 
-              <img src="${img}" alt="${product.name}">
+              ${gallery}
 
               <h4>${product.name}</h4>
 
@@ -88,7 +134,10 @@
 
               <div class="price">${product.price} €</div>
 
-              <a class="buy-btn" href="${product.paymentLink}" target="_blank">
+              <a 
+                class="buy-btn" 
+                href="${product.paymentLink}" 
+                target="_blank">
                 Buy
               </a>
 
@@ -106,12 +155,14 @@
   }
 
   document.addEventListener("DOMContentLoaded", async () => {
+
     try {
       const data = await loadCatalogue();
       renderCatalogue(data);
     } catch (err) {
       console.error(err);
     }
+
   });
 
 })();
