@@ -1,6 +1,4 @@
-/* script.js — Velvet Charms Art & Gifts
-   Handles nested catalogue structure + mini galleries
-*/
+/* script.js — Velvet Charms Art & Gifts */
 
 (function () {
 
@@ -23,14 +21,9 @@
 
       html += `
         <section class="catalogue-category">
-          <h2>${category.name}</h2>
+        <h2>${category.name}</h2>
       `;
 
-      if (category.notice) {
-        html += `<p class="category-notice">${category.notice}</p>`;
-      }
-
-      /* SUBCATEGORIES */
       if (category.subcategories) {
 
         category.subcategories.forEach(sub => {
@@ -42,46 +35,46 @@
 
           sub.products.forEach(product => {
 
-            let gallery = "";
+            let galleryHTML = "";
+            let mainId = "img_" + Math.random().toString(36).substring(2);
 
-            if (product.images && product.images.length) {
+            if (product.images && product.images.length > 0) {
 
-              gallery += `
+              galleryHTML += `
                 <img 
                   src="${product.images[0]}" 
                   class="main-img"
-                  alt="${product.name}">
+                  id="${mainId}">
               `;
 
               if (product.images.length > 1) {
 
-                gallery += `<div class="thumbs">`;
+                galleryHTML += `<div class="thumbs">`;
 
-                product.images.slice(1,5).forEach(img => {
-                  gallery += `
-                    <img src="${img}" alt="">
+                product.images.forEach(img => {
+
+                  galleryHTML += `
+                    <img 
+                      src="${img}"
+                      onclick="document.getElementById('${mainId}').src='${img}'">
                   `;
                 });
 
-                gallery += `</div>`;
+                galleryHTML += `</div>`;
               }
             }
 
             html += `
               <div class="product-card">
 
-                ${gallery}
+                ${galleryHTML}
 
                 <h4>${product.name}</h4>
-
                 <p>${product.description || ""}</p>
 
                 <div class="price">${product.price} €</div>
 
-                <a 
-                  class="buy-btn" 
-                  href="${product.paymentLink}" 
-                  target="_blank">
+                <a class="buy-btn" href="${product.paymentLink}" target="_blank">
                   Buy
                 </a>
 
@@ -91,61 +84,6 @@
 
           html += `</div>`;
         });
-      }
-
-      /* DIRECT PRODUCTS (no subcategories) */
-      if (category.products) {
-
-        html += `<div class="catalogue-grid">`;
-
-        category.products.forEach(product => {
-
-          let gallery = "";
-
-          if (product.images && product.images.length) {
-
-            gallery += `
-              <img 
-                src="${product.images[0]}" 
-                class="main-img"
-                alt="${product.name}">
-            `;
-
-            if (product.images.length > 1) {
-
-              gallery += `<div class="thumbs">`;
-
-              product.images.slice(1,5).forEach(img => {
-                gallery += `<img src="${img}" alt="">`;
-              });
-
-              gallery += `</div>`;
-            }
-          }
-
-          html += `
-            <div class="product-card">
-
-              ${gallery}
-
-              <h4>${product.name}</h4>
-
-              <p>${product.description || ""}</p>
-
-              <div class="price">${product.price} €</div>
-
-              <a 
-                class="buy-btn" 
-                href="${product.paymentLink}" 
-                target="_blank">
-                Buy
-              </a>
-
-            </div>
-          `;
-        });
-
-        html += `</div>`;
       }
 
       html += `</section>`;
