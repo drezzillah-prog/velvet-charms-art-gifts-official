@@ -1,48 +1,37 @@
-async function loadCatalogue(){
+/* script.js — Velvet Charms Art & Gifts */
 
-  const root = document.getElementById("catalogue-root");
-  if(!root) return;
+(function () {
 
-  const res = await fetch("catalogue.json");
-  const data = await res.json();
+  const CATALOGUE_FILE = "catalogue-art-gifts.json";
 
-  root.innerHTML = "";
+  async function loadCatalogue() {
+    const res = await fetch(CATALOGUE_FILE, { cache: "no-store" });
+    if (!res.ok) throw new Error("Failed to load " + CATALOGUE_FILE);
+    return res.json();
+  }
 
-  data.forEach(product => {
+  function renderCatalogue(data) {
+    const root = document.getElementById("catalogue-root");
+    if (!root) return;
 
-    const card = document.createElement("div");
-    card.className = "product-card";
+    root.classList.remove("loading");
 
-    const mainImage = product.images && product.images.length
-      ? product.images[0]
-      : "";
-
-    card.innerHTML = `
-      <img class="product-main-image" src="${mainImage}">
-      
-      <div class="product-thumbs">
-        ${(product.images || []).map(img => `
-          <img src="${img}">
-        `).join("")}
+    root.innerHTML = data.map(item => `
+      <div class="product-card">
+        <img src="${item.image}" alt="${item.name}">
+        <h3>${item.name}</h3>
+        <p>${item.description || ""}</p>
       </div>
+    `).join("");
+  }
 
-      <div class="product-title">${product.name}</div>
-      <div class="product-desc">${product.description || ""}</div>
-      <div class="product-price">${product.price || ""}</div>
-
-      <button class="buy-btn">Buy</button>
-    `;
-
-    const main = card.querySelector(".product-main-image");
-    const thumbs = card.querySelectorAll(".product-thumbs img");
-
-    thumbs.forEach(t=>{
-      t.onclick = () => main.src = t.src;
-    });
-
-    root.appendChild(card);
-
+  document.addEventListener("DOMContentLoaded", async () => {
+    try {
+      const data = await loadCatalogue();
+      renderCatalogue(data);
+    } catch (err) {
+      console.error(err);
+    }
   });
-}
 
-loadCatalogue();
+})();
