@@ -1,106 +1,91 @@
-/* script.js — Velvet Charms Art & Gifts */
+/* script.js — Velvet Charms Art & Gifts FINAL */
 
 (function () {
 
-  const CATALOGUE_FILE = "catalogue-art-gifts.json";
+const CATALOGUE_FILE = "catalogue-art-gifts.json";
 
-  async function loadCatalogue() {
-    const res = await fetch(CATALOGUE_FILE, { cache: "no-store" });
-    if (!res.ok) throw new Error("Failed to load catalogue");
-    return res.json();
-  }
+async function loadCatalogue(){
+  const res = await fetch(CATALOGUE_FILE,{cache:"no-store"});
+  if(!res.ok) throw new Error("Failed to load catalogue");
+  return res.json();
+}
 
-  function renderCatalogue(data) {
+function renderCatalogue(data){
 
-    const root = document.getElementById("catalogue-root");
-    if (!root) return;
+  const root=document.getElementById("catalogue-root");
+  if(!root) return;
 
-    let html = "";
+  let html="";
 
-    data.categories.forEach(category => {
+  data.categories.forEach(category=>{
 
-      html += `
-        <section class="catalogue-category">
-        <h2>${category.name}</h2>
-      `;
+    html+=`<section class="catalogue-category">
+            <h2>${category.name}</h2>`;
 
-      if (category.subcategories) {
+    if(category.subcategories){
 
-        category.subcategories.forEach(sub => {
+      category.subcategories.forEach(sub=>{
 
-          html += `
-            <h3 class="catalogue-sub">${sub.name}</h3>
-            <div class="catalogue-grid">
-          `;
+        html+=`
+        <h3>${sub.name}</h3>
+        <div class="catalogue-grid">`;
 
-          sub.products.forEach(product => {
+        sub.products.forEach(product=>{
 
-            let galleryHTML = "";
-            let mainId = "img_" + Math.random().toString(36).substring(2);
+          let mainId="img_"+Math.random().toString(36).substring(2);
 
-            if (product.images && product.images.length > 0) {
+          let gallery=`
+          <div class="image-frame">
+            <img src="${product.images[0]}" class="main-img" id="${mainId}">
+          </div>`;
 
-              galleryHTML += `
-                <img 
-                  src="${product.images[0]}" 
-                  class="main-img"
-                  id="${mainId}">
-              `;
+          if(product.images.length>1){
 
-              if (product.images.length > 1) {
+            gallery+=`<div class="thumbs">`;
 
-                galleryHTML += `<div class="thumbs">`;
+            product.images.forEach(img=>{
+              gallery+=`
+              <img src="${img}"
+              onclick="document.getElementById('${mainId}').src='${img}'">`;
+            });
 
-                product.images.forEach(img => {
+            gallery+=`</div>`;
+          }
 
-                  galleryHTML += `
-                    <img 
-                      src="${img}"
-                      onclick="document.getElementById('${mainId}').src='${img}'">
-                  `;
-                });
+          html+=`
+          <div class="product-card">
 
-                galleryHTML += `</div>`;
-              }
-            }
+            ${gallery}
 
-            html += `
-              <div class="product-card">
+            <h4>${product.name}</h4>
+            <p>${product.description||""}</p>
 
-                ${galleryHTML}
+            <div class="price">${product.price} €</div>
 
-                <h4>${product.name}</h4>
-                <p>${product.description || ""}</p>
+            <a class="buy-btn" href="${product.paymentLink}" target="_blank">
+            Buy
+            </a>
 
-                <div class="price">${product.price} €</div>
-
-                <a class="buy-btn" href="${product.paymentLink}" target="_blank">
-                  Buy
-                </a>
-
-              </div>
-            `;
-          });
-
-          html += `</div>`;
+          </div>`;
         });
-      }
 
-      html += `</section>`;
-    });
-
-    root.innerHTML = html;
-  }
-
-  document.addEventListener("DOMContentLoaded", async () => {
-
-    try {
-      const data = await loadCatalogue();
-      renderCatalogue(data);
-    } catch (err) {
-      console.error(err);
+        html+=`</div>`;
+      });
     }
 
+    html+=`</section>`;
   });
+
+  root.innerHTML=html;
+}
+
+document.addEventListener("DOMContentLoaded",async()=>{
+  try{
+    const data=await loadCatalogue();
+    renderCatalogue(data);
+  }catch(e){
+    console.error(e);
+  }
+});
 
 })();
