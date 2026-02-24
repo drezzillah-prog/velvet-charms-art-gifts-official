@@ -1,4 +1,4 @@
-/* Velvet Charms — Art & Gifts */
+/* Velvet Charms — Art & Gifts FINAL STABLE VERSION */
 
 *{
   box-sizing:border-box;
@@ -6,14 +6,13 @@
 
 body{
   margin:0;
-  font-family: 'Inter', sans-serif;
+  font-family:'Inter',sans-serif;
   color:#f7eaf3;
 
-  /* MAUVE + IMAGE BACKGROUND */
   background:
     linear-gradient(rgba(60,20,50,0.65), rgba(60,20,50,0.65)),
     url("art and gifts 2.png"),
-    linear-gradient(140deg, #2a0f1f 0%, #5c2a4a 60%, #3a162d 100%);
+    linear-gradient(140deg,#2a0f1f 0%,#5c2a4a 60%,#3a162d 100%);
 
   background-size:cover;
   background-position:center;
@@ -25,7 +24,6 @@ body{
 .site-header{
   background:rgba(20,10,18,0.8);
   backdrop-filter:blur(8px);
-  border-bottom:1px solid rgba(255,255,255,0.08);
 }
 
 .header-inner{
@@ -37,37 +35,10 @@ body{
   align-items:center;
 }
 
-.brand{
-  margin:0;
-  font-size:22px;
-  letter-spacing:2px;
-}
-
 .nav a{
-  color:#f7eaf3;
+  color:#fff;
   text-decoration:none;
   margin-left:18px;
-  opacity:.85;
-}
-
-.nav a:hover{
-  opacity:1;
-}
-
-/* ---------- HERO ---------- */
-
-.catalogue-hero{
-  text-align:center;
-  padding:60px 20px 30px;
-}
-
-.catalogue-hero h2{
-  margin:0;
-  font-size:34px;
-}
-
-.catalogue-hero p{
-  opacity:.9;
 }
 
 /* ---------- LAYOUT ---------- */
@@ -77,23 +48,6 @@ body{
   margin:auto;
   padding:30px 20px 60px;
 }
-
-/* ---------- CATEGORIES ---------- */
-
-.catalogue-category{
-  margin-bottom:60px;
-}
-
-.catalogue-category h2{
-  margin-bottom:10px;
-}
-
-.catalogue-sub{
-  margin-top:30px;
-  opacity:.9;
-}
-
-/* ---------- GRID ---------- */
 
 .catalogue-grid{
   display:grid;
@@ -111,14 +65,23 @@ body{
   border:1px solid rgba(255,255,255,0.08);
 }
 
+/* ---------- IMAGE FRAME (THIS FIXES EVERYTHING) ---------- */
+
+.image-frame{
+  width:100%;
+  height:240px;
+  border-radius:12px;
+  overflow:hidden;
+  background:#111;
+}
+
 /* ---------- MAIN IMAGE ---------- */
 
 .main-img{
   width:100%;
-  height:240px;
+  height:100%;
   object-fit:cover;
-  border-radius:12px;
-  background:#111;
+  display:block;
 }
 
 /* ---------- THUMBNAILS ---------- */
@@ -135,7 +98,7 @@ body{
   object-fit:cover;
   border-radius:8px;
   cursor:pointer;
-  opacity:.8;
+  opacity:.85;
   transition:.2s;
 }
 
@@ -152,7 +115,7 @@ body{
 
 .product-card p{
   font-size:14px;
-  opacity:.85;
+  opacity:.9;
 }
 
 .price{
