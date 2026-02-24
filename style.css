@@ -1,26 +1,31 @@
-/* ===== BASE ===== */
+/* Velvet Charms — Art & Gifts */
+
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
-  font-family:'Inter', sans-serif;
+  font-family: 'Inter', sans-serif;
   color:#f7eaf3;
 
+  /* MAUVE + IMAGE BACKGROUND */
   background:
-    radial-gradient(circle at 20% 30%, rgba(199,143,179,0.25), transparent 50%),
-    radial-gradient(circle at 80% 70%, rgba(142,92,122,0.25), transparent 55%),
+    linear-gradient(rgba(60,20,50,0.65), rgba(60,20,50,0.65)),
+    url("art and gifts 2.png"),
     linear-gradient(140deg, #2a0f1f 0%, #5c2a4a 60%, #3a162d 100%);
+
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
 }
 
-a{
-  text-decoration:none;
-  color:inherit;
-}
-
-/* ===== HEADER ===== */
+/* ---------- HEADER ---------- */
 
 .site-header{
-  background:rgba(0,0,0,0.35);
-  backdrop-filter:blur(12px);
+  background:rgba(20,10,18,0.8);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid rgba(255,255,255,0.08);
 }
 
 .header-inner{
@@ -33,83 +38,94 @@ a{
 }
 
 .brand{
-  font-size:26px;
+  margin:0;
+  font-size:22px;
+  letter-spacing:2px;
 }
 
 .nav a{
+  color:#f7eaf3;
+  text-decoration:none;
   margin-left:18px;
-  opacity:.9;
+  opacity:.85;
 }
 
 .nav a:hover{
   opacity:1;
 }
 
-/* ===== HERO ===== */
+/* ---------- HERO ---------- */
 
 .catalogue-hero{
   text-align:center;
-  padding:80px 20px 40px;
+  padding:60px 20px 30px;
 }
 
 .catalogue-hero h2{
+  margin:0;
   font-size:34px;
-  margin-bottom:12px;
 }
 
-/* ===== CATALOGUE STRUCTURE ===== */
+.catalogue-hero p{
+  opacity:.9;
+}
+
+/* ---------- LAYOUT ---------- */
 
 .main{
   max-width:1200px;
   margin:auto;
-  padding:20px;
+  padding:30px 20px 60px;
 }
+
+/* ---------- CATEGORIES ---------- */
 
 .catalogue-category{
   margin-bottom:60px;
 }
 
-.catalogue-sub{
-  margin-top:30px;
-  margin-bottom:12px;
+.catalogue-category h2{
+  margin-bottom:10px;
 }
 
-/* ===== GRID ===== */
+.catalogue-sub{
+  margin-top:30px;
+  opacity:.9;
+}
+
+/* ---------- GRID ---------- */
 
 .catalogue-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:28px;
+  gap:26px;
 }
 
-/* ===== PRODUCT CARD ===== */
+/* ---------- PRODUCT CARD ---------- */
 
 .product-card{
-  background:rgba(255,255,255,0.05);
+  background:rgba(30,10,25,0.65);
   border-radius:18px;
-  padding:18px;
-  backdrop-filter:blur(10px);
-  transition:.25s;
+  padding:16px;
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,0.08);
 }
 
-.product-card:hover{
-  transform:translateY(-4px);
-}
-
-/* ===== IMAGES ===== */
+/* ---------- MAIN IMAGE ---------- */
 
 .main-img{
   width:100%;
-  height:260px;
+  height:240px;
   object-fit:cover;
   border-radius:12px;
+  background:#111;
 }
 
-/* thumbnails */
+/* ---------- THUMBNAILS ---------- */
 
 .thumbs{
   display:flex;
-  gap:6px;
+  gap:8px;
   margin-top:8px;
 }
 
@@ -117,21 +133,21 @@ a{
   width:52px;
   height:52px;
   object-fit:cover;
-  border-radius:6px;
-  opacity:.85;
+  border-radius:8px;
   cursor:pointer;
+  opacity:.8;
   transition:.2s;
 }
 
 .thumbs img:hover{
   opacity:1;
+  transform:scale(1.05);
 }
 
-/* ===== TEXT ===== */
+/* ---------- TEXT ---------- */
 
 .product-card h4{
-  margin-top:14px;
-  margin-bottom:6px;
+  margin:14px 0 6px;
 }
 
 .product-card p{
@@ -141,25 +157,39 @@ a{
 
 .price{
   margin-top:8px;
-  margin-bottom:12px;
-  font-weight:bold;
-}
-
-/* ===== BUTTON ===== */
-
-.buy-btn{
-  display:inline-block;
-  padding:10px 16px;
-  border-radius:10px;
-  background:linear-gradient(135deg,#d39bbf,#b77aa3);
-  color:white;
   font-weight:600;
 }
 
-/* ===== FOOTER ===== */
+/* ---------- BUY BUTTON ---------- */
+
+.buy-btn{
+  display:inline-block;
+  margin-top:12px;
+  padding:10px 18px;
+  border-radius:10px;
+  text-decoration:none;
+  background:#d48fb8;
+  color:white;
+  transition:.2s;
+}
+
+.buy-btn:hover{
+  background:#e5a3c9;
+}
+
+/* ---------- CUSTOM PROCESS ---------- */
+
+.custom-process{
+  margin-top:60px;
+  background:rgba(30,10,25,0.55);
+  padding:26px;
+  border-radius:18px;
+}
+
+/* ---------- FOOTER ---------- */
 
 .site-footer{
   text-align:center;
   padding:40px 20px;
-  opacity:.7;
+  opacity:.8;
 }
