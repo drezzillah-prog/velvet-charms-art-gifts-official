@@ -16,19 +16,14 @@ body{
   font-family:'Inter',sans-serif;
   color:#f7eaf3;
 
-  /* MAUVE + IMAGE (FIXED PATH) */
   background:
+    url("art and gifts 2.png") center/cover no-repeat fixed,
     linear-gradient(
       140deg,
       #2a0f1f 0%,
       #5a2746 50%,
       #3a162d 100%
-    ),
-    url("art and gifts 2.png");
-
-  background-size:cover;
-  background-position:center;
-  background-attachment:fixed;
+    );
 }
 
 /* HEADER */
