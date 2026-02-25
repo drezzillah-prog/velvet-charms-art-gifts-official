@@ -68,25 +68,31 @@
             }
 
             html += `
-              <div class="product-card">
+  <div class="product-card">
 
-                ${gallery}
+    ${gallery}
 
-                <h4>${product.name}</h4>
+    <h4>${product.name}</h4>
 
-                <p>${product.description || ""}</p>
+    <p>${product.description || ""}</p>
 
-                <div class="price">${product.price} €</div>
+    <div class="price">${product.price} €</div>
 
-                <a 
-                  class="buy-btn" 
-                  href="${product.paymentLink}" 
-                  target="_blank">
-                  Buy
-                </a>
+    <a 
+      class="buy-btn" 
+      href="${product.paymentLink}" 
+      target="_blank">
+      Buy
+    </a>
 
-              </div>
-            `;
+    <a 
+      class="btn small"
+      href="contact.html?product=${encodeURIComponent(product.name)}">
+      Request customization
+    </a>
+
+  </div>
+`;
           });
 
           html += `</div>`;
