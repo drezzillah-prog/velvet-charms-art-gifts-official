@@ -134,12 +134,18 @@
 
               <div class="price">${product.price} €</div>
 
-              <a 
-                class="buy-btn" 
-                href="${product.paymentLink}" 
-                target="_blank">
-                Buy
-              </a>
+           <a 
+  class="buy-btn" 
+  href="${product.paymentLink}" 
+  target="_blank">
+  Buy
+</a>
+
+<a 
+  class="btn small"
+  href="contact.html?product=${encodeURIComponent(product.name)}">
+  Request customization
+</a>
 
             </div>
           `;
@@ -161,6 +167,21 @@
       renderCatalogue(data);
     } catch (err) {
       console.error(err);
+       document.addEventListener("click", function(e){
+
+  if(e.target.matches(".thumbs img")){
+
+    const clicked = e.target;
+    const card = clicked.closest(".product-card");
+    const main = card.querySelector(".main-img");
+
+    if(main){
+      main.src = clicked.src;
+    }
+
+  }
+
+});
     }
 
   });
