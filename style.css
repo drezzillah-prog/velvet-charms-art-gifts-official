@@ -14,10 +14,19 @@
 body{
   margin:0;
   font-family:'Inter',sans-serif;
-  color:var(--text);
+  color:#f7eaf3;
+
+/* IMAGE FIRST (visible), GRADIENT OVERLAY SECOND */
   background:
-    linear-gradient(140deg,#2a0f1f 0%,#5c2a4a 60%,#3a162d 100%),
-    url("artsgifts2.png") center/cover no-repeat fixed;
+    linear-gradient(
+      rgba(42,15,31,0.65),
+      rgba(92,42,74,0.75)
+    ),
+    url("artsgifts2.png");
+
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
 }
 
 /* HEADER */
