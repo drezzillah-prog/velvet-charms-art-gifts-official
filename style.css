@@ -61,6 +61,14 @@ body{
 }
 
 /* HERO */
+.hero{
+  height:85vh;
+  background:url("art and gifts 1.png") center/cover no-repeat;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
 .catalogue-hero{
   text-align:center;
   padding:70px 20px 30px;
@@ -75,19 +83,22 @@ body{
 }
 
 /* PRODUCT CARD */
-.product-card img{
-  width:100%;
-  height:220px;
-  object-fit:cover;
-  border-radius:12px;
+.product-card{
+  background:rgba(255,255,255,.06);
+  border-radius:18px;
+  padding:18px;
+  backdrop-filter:blur(10px);
+  text-align:center;
 }
 
-/* MAIN IMAGE — LOCKED SIZE */
+/* MAIN PRODUCT IMAGE — LOCKED SIZE (FIXES BIG IMAGES) */
+.product-card img,
 .main-img{
   width:100%;
-  height:220px;
+  aspect-ratio:1 / 1;
   object-fit:cover;
   border-radius:12px;
+  display:block;
 }
 
 /* THUMBNAILS */
@@ -99,11 +110,16 @@ body{
 }
 
 .thumbs img{
-  width:52px;
-  height:52px;
+  width:60px;
+  height:60px;
   object-fit:cover;
-  border-radius:6px;
+  border-radius:8px;
   cursor:pointer;
+  transition:0.2s ease;
+}
+
+.thumbs img:hover{
+  transform:scale(1.08);
 }
 
 /* TEXT */
@@ -137,11 +153,4 @@ body{
   text-align:center;
   padding:40px;
   opacity:.7;
-}
-.hero{
-  height:85vh;
-  background:url("art and gifts 1.png") center/cover no-repeat;
-  display:flex;
-  align-items:center;
-  justify-content:center;
 }
