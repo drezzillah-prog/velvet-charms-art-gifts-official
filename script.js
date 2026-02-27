@@ -12,6 +12,33 @@
     return res.json();
   }
 
+  function buildGallery(product){
+    let gallery = "";
+
+    if (product.images && product.images.length) {
+
+      gallery += `
+        <img 
+          src="${product.images[0]}" 
+          class="main-img"
+          alt="${product.name}">
+      `;
+
+      if (product.images.length > 1) {
+
+        gallery += `<div class="thumbs">`;
+
+        product.images.slice(1,5).forEach(img => {
+          gallery += `<img src="${img}" alt="">`;
+        });
+
+        gallery += `</div>`;
+      }
+    }
+
+    return gallery;
+  }
+
   function renderCatalogue(data) {
 
     const root = document.getElementById("catalogue-root");
@@ -42,97 +69,49 @@
 
           sub.products.forEach(product => {
 
-            let gallery = "";
-
-            if (product.images && product.images.length) {
-
-              gallery += `
-                <img 
-                  src="${product.images[0]}" 
-                  class="main-img"
-                  alt="${product.name}">
-              `;
-
-              if (product.images.length > 1) {
-
-                gallery += `<div class="thumbs">`;
-
-                product.images.slice(1,5).forEach(img => {
-                  gallery += `
-                    <img src="${img}" alt="">
-                  `;
-                });
-
-                gallery += `</div>`;
-              }
-            }
-
             html += `
-  <div class="product-card">
+              <div class="product-card">
 
-    ${gallery}
+                ${buildGallery(product)}
 
-    <h4>${product.name}</h4>
+                <h4>${product.name}</h4>
 
-    <p>${product.description || ""}</p>
+                <p>${product.description || ""}</p>
 
-    <div class="price">${product.price} €</div>
+                <div class="price">${product.price} €</div>
 
-    <a 
-      class="buy-btn" 
-      href="${product.paymentLink}" 
-      target="_blank">
-      Buy
-    </a>
+                <a 
+                  class="buy-btn" 
+                  href="${product.paymentLink}" 
+                  target="_blank">
+                  Buy
+                </a>
 
-    <a 
-      class="btn small"
-      href="contact.html?product=${encodeURIComponent(product.name)}">
-      Request customization
-    </a>
+                <a 
+                  class="btn small"
+                  href="contact.html?product=${encodeURIComponent(product.name)}">
+                  Request customization
+                </a>
 
-  </div>
-`;
+              </div>
+            `;
           });
 
           html += `</div>`;
         });
       }
 
-      /* DIRECT PRODUCTS (no subcategories) */
+      /* DIRECT PRODUCTS */
       if (category.products) {
 
         html += `<div class="catalogue-grid">`;
 
         category.products.forEach(product => {
 
-          let gallery = "";
-
-          if (product.images && product.images.length) {
-
-            gallery += `
-              <img 
-                src="${product.images[0]}" 
-                class="main-img"
-                alt="${product.name}">
-            `;
-
-            if (product.images.length > 1) {
-
-              gallery += `<div class="thumbs">`;
-
-              product.images.slice(1,5).forEach(img => {
-                gallery += `<img src="${img}" alt="">`;
-              });
-
-              gallery += `</div>`;
-            }
-          }
-
           html += `
             <div class="product-card">
 
-              ${gallery}
+              ${buildGallery(product)}
 
               <h4>${product.name}</h4>
 
@@ -140,18 +119,18 @@
 
               <div class="price">${product.price} €</div>
 
-           <a 
-  class="buy-btn" 
-  href="${product.paymentLink}" 
-  target="_blank">
-  Buy
-</a>
+              <a 
+                class="buy-btn" 
+                href="${product.paymentLink}" 
+                target="_blank">
+                Buy
+              </a>
 
-<a 
-  class="btn small"
-  href="contact.html?product=${encodeURIComponent(product.name)}">
-  Request customization
-</a>
+              <a 
+                class="btn small"
+                href="contact.html?product=${encodeURIComponent(product.name)}">
+                Request customization
+              </a>
 
             </div>
           `;
@@ -173,21 +152,23 @@
       renderCatalogue(data);
     } catch (err) {
       console.error(err);
-       document.addEventListener("click", function(e){
-
-  if(e.target.matches(".thumbs img")){
-
-    const clicked = e.target;
-    const card = clicked.closest(".product-card");
-    const main = card.querySelector(".main-img");
-
-    if(main){
-      main.src = clicked.src;
     }
 
-  }
+  });
 
-});
+  /* THUMBNAIL CLICK — GLOBAL (correct place) */
+  document.addEventListener("click", function(e){
+
+    if(e.target.matches(".thumbs img")){
+
+      const clicked = e.target;
+      const card = clicked.closest(".product-card");
+      const main = card.querySelector(".main-img");
+
+      if(main){
+        main.src = clicked.src;
+      }
+
     }
 
   });
