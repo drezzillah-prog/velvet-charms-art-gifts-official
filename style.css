@@ -6,7 +6,8 @@
   --accent:#c78fb3;
 }
 
-/* BASE */
+/* ================= BASE ================= */
+
 *{
   box-sizing:border-box;
 }
@@ -14,7 +15,7 @@
 body{
   margin:0;
   font-family:'Inter',sans-serif;
-  color:#f7eaf3;
+  color:var(--text);
 
   background:
     url("art and gifts 2.png") center/cover no-repeat fixed,
@@ -26,7 +27,8 @@ body{
     );
 }
 
-/* HEADER */
+/* ================= HEADER ================= */
+
 .site-header{
   background:rgba(0,0,0,.35);
   backdrop-filter:blur(12px);
@@ -53,14 +55,16 @@ body{
   margin-left:18px;
 }
 
-/* MAIN */
+/* ================= MAIN ================= */
+
 .main{
   max-width:1200px;
   margin:auto;
   padding:20px;
 }
 
-/* HERO */
+/* ================= HERO ================= */
+
 .hero{
   height:85vh;
   background:url("art and gifts 1.png") center/cover no-repeat;
@@ -74,7 +78,8 @@ body{
   padding:70px 20px 30px;
 }
 
-/* GRID */
+/* ================= GRID ================= */
+
 .catalogue-grid,
 .products-grid{
   display:grid;
@@ -82,7 +87,8 @@ body{
   gap:28px;
 }
 
-/* PRODUCT CARD */
+/* ================= PRODUCT CARD ================= */
+
 .product-card{
   background:rgba(255,255,255,.06);
   border-radius:18px;
@@ -91,8 +97,7 @@ body{
   text-align:center;
 }
 
-/* MAIN PRODUCT IMAGE — LOCKED SIZE (FIXES BIG IMAGES) */
-.product-card img,
+/* MAIN PRODUCT IMAGE — FIXED PROPERLY */
 .main-img{
   width:100%;
   aspect-ratio:1 / 1;
@@ -101,7 +106,8 @@ body{
   display:block;
 }
 
-/* THUMBNAILS */
+/* ================= THUMBNAILS ================= */
+
 .thumbs{
   display:flex;
   gap:6px;
@@ -116,13 +122,15 @@ body{
   border-radius:8px;
   cursor:pointer;
   transition:0.2s ease;
+  flex-shrink:0;
 }
 
 .thumbs img:hover{
   transform:scale(1.08);
 }
 
-/* TEXT */
+/* ================= TEXT ================= */
+
 .product-card h4{
   margin-top:12px;
 }
@@ -137,7 +145,8 @@ body{
   font-weight:bold;
 }
 
-/* BUTTON */
+/* ================= BUTTONS ================= */
+
 .buy-btn{
   display:inline-block;
   margin-top:10px;
@@ -148,7 +157,8 @@ body{
   text-decoration:none;
 }
 
-/* FOOTER */
+/* ================= FOOTER ================= */
+
 .site-footer{
   text-align:center;
   padding:40px;
