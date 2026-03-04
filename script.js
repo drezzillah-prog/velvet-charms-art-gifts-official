@@ -1,5 +1,5 @@
 /* script.js — Velvet Charms Art & Gifts
-   Handles nested catalogue structure + mini galleries
+   Handles nested catalogue structure + full galleries
 */
 
 (function () {
@@ -17,6 +17,7 @@
 
     if (product.images && product.images.length) {
 
+      // MAIN IMAGE
       gallery += `
         <img 
           src="${product.images[0]}" 
@@ -24,11 +25,12 @@
           alt="${product.name}">
       `;
 
+      // ALL THUMBNAILS (no limit anymore)
       if (product.images.length > 1) {
 
         gallery += `<div class="thumbs">`;
 
-        product.images.slice(1,5).forEach(img => {
+        product.images.slice(1).forEach(img => {
           gallery += `<img src="${img}" alt="">`;
         });
 
@@ -156,7 +158,7 @@
 
   });
 
-  /* THUMBNAIL CLICK — GLOBAL (correct place) */
+  /* THUMBNAIL CLICK — GLOBAL */
   document.addEventListener("click", function(e){
 
     if(e.target.matches(".thumbs img")){
