@@ -78,12 +78,13 @@ body{
   padding:70px 20px 30px;
 }
 
-/* ================= GRID ================= */
+/* ================= GRID (FIXED CARD WIDTH) ================= */
 
 .catalogue-grid,
 .products-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  grid-template-columns:repeat(auto-fill,minmax(260px,300px));
+  justify-content:center;
   gap:28px;
 }
 
@@ -97,7 +98,7 @@ body{
   text-align:center;
 }
 
-/* MAIN PRODUCT IMAGE — FIXED PROPERLY */
+/* MAIN IMAGE — LOCKED SQUARE */
 .main-img{
   width:100%;
   aspect-ratio:1 / 1;
