@@ -78,7 +78,7 @@ body{
   padding:70px 20px 30px;
 }
 
-/* ================= GRID (FIXED CARD WIDTH) ================= */
+/* ================= GRID ================= */
 
 .catalogue-grid,
 .products-grid{
@@ -98,7 +98,8 @@ body{
   text-align:center;
 }
 
-/* MAIN IMAGE — LOCKED SQUARE */
+/* MAIN IMAGE */
+
 .main-img{
   width:100%;
   aspect-ratio:1 / 1;
@@ -107,23 +108,38 @@ body{
   display:block;
 }
 
-/* ================= THUMBNAILS ================= */
+/* ================= THUMBNAILS — HORIZONTAL SCROLL ================= */
 
 .thumbs{
   display:flex;
-  gap:6px;
-  justify-content:center;
-  margin-top:10px;
+  gap:8px;
+  margin-top:14px;
+  overflow-x:auto;
+  padding-bottom:6px;
+  scroll-behavior:smooth;
 }
 
+/* Custom scrollbar (subtle & elegant) */
+
+.thumbs::-webkit-scrollbar{
+  height:6px;
+}
+
+.thumbs::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,0.4);
+  border-radius:10px;
+}
+
+/* Thumbnail images */
+
 .thumbs img{
-  width:60px;
-  height:60px;
+  width:70px;
+  height:70px;
   object-fit:cover;
-  border-radius:8px;
+  border-radius:10px;
   cursor:pointer;
-  transition:0.2s ease;
   flex-shrink:0;
+  transition:0.2s ease;
 }
 
 .thumbs img:hover{
@@ -133,7 +149,7 @@ body{
 /* ================= TEXT ================= */
 
 .product-card h4{
-  margin-top:12px;
+  margin-top:14px;
 }
 
 .product-card p{
@@ -150,12 +166,18 @@ body{
 
 .buy-btn{
   display:inline-block;
-  margin-top:10px;
+  margin-top:12px;
   padding:10px 16px;
   border-radius:10px;
   background:linear-gradient(135deg,#d39bbf,#b77aa3);
   color:white;
   text-decoration:none;
+}
+
+.btn.small{
+  display:inline-block;
+  margin-left:10px;
+  font-size:14px;
 }
 
 /* ================= FOOTER ================= */
