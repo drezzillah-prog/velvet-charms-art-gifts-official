@@ -1,84 +1,173 @@
-export default async function handler(req, res) {
-  try {
-    if (req.method !== "POST") {
-      return res.status(405).json({ error: "Method not allowed" });
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
+const CURRENCY = "EUR";
+
+function paypalBaseUrl() {
+  const mode = String(process.env.PAYPAL_ENV || process.env.PAYPAL_MODE || "live").toLowerCase();
+  return mode === "sandbox"
+    ? "https://api-m.sandbox.paypal.com"
+    : "https://api-m.paypal.com";
+}
+
+function paypalSecret() {
+  return process.env.PAYPAL_CLIENT_SECRET || process.env.PAYPAL_SECRET;
+}
+
+function catalogueProducts() {
+  const path = join(process.cwd(), "catalogue-art-gifts.json");
+  const catalogue = JSON.parse(readFileSync(path, "utf8"));
+  const products = [];
+
+  for (const category of catalogue.categories || []) {
+    products.push(...(category.products || []));
+    for (const subcategory of category.subcategories || []) {
+      products.push(...(subcategory.products || []));
+    }
+  }
+
+  return new Map(products.map(product => [product.id, product]));
+}
+
+function validatedItems(requestBody) {
+  const rawItems = requestBody?.cart?.items;
+  if (!Array.isArray(rawItems) || rawItems.length === 0 || rawItems.length > 100) {
+    throw new Error("INVALID_CART");
+  }
+
+  const catalogue = catalogueProducts();
+
+  return rawItems.map(rawItem => {
+    const product = catalogue.get(rawItem?.id);
+    const quantity = Number.parseInt(rawItem?.qty, 10);
+
+    if (!product || !Number.isInteger(quantity) || quantity < 1 || quantity > 99) {
+      throw new Error("INVALID_CART");
     }
 
-    const { cart } = req.body || {};
-    if (!cart || !Array.isArray(cart.items) || cart.items.length === 0) {
-      return res.status(400).json({ error: "Cart is empty or invalid" });
+    const price = Number(product.price);
+    if (!Number.isFinite(price) || price < 0) {
+      throw new Error("INVALID_PRICE");
     }
 
-    const CLIENT_ID = process.env.PAYPAL_CLIENT_ID;
-    const SECRET = process.env.PAYPAL_SECRET;
-    const MODE = process.env.PAYPAL_MODE || "live";
-
-    if (!CLIENT_ID || !SECRET) {
-      return res.status(500).json({ error: "Missing PayPal credentials" });
-    }
-
-    const BASE =
-      MODE === "live"
-        ? "https://api-m.paypal.com"
-        : "https://api-m.sandbox.paypal.com";
-
-    const auth = Buffer.from(`${CLIENT_ID}:${SECRET}`).toString("base64");
-
-    const tokenRes = await fetch(`${BASE}/v1/oauth2/token`, {
-      method: "POST",
-      headers: {
-        Authorization: `Basic ${auth}`,
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: "grant_type=client_credentials",
-    });
-
-    const tokenData = await tokenRes.json();
-    if (!tokenData?.access_token) {
-      return res.status(500).json({ error: "PayPal auth failed", details: tokenData });
-    }
-
-    const accessToken = tokenData.access_token;
-
-    // 💣 NUCLEAR TOTAL ONLY
-    const total = cart.items.reduce(
-      (sum, item) => sum + Number(item.price) * Number(item.qty || 1),
-      0
-    );
-
-    const orderBody = {
-      intent: "CAPTURE",
-      purchase_units: [
-        {
-          description: "Velvet Charms — Cart Purchase",
-          amount: {
-            currency_code: "USD",
-            value: total.toFixed(2),
-          },
-        },
-      ],
+    return {
+      id: String(product.id),
+      name: String(product.name).slice(0, 127),
+      quantity,
+      price
     };
+  });
+}
 
-    const orderRes = await fetch(`${BASE}/v2/checkout/orders`, {
+async function accessToken(baseUrl) {
+  const clientId = process.env.PAYPAL_CLIENT_ID;
+  const secret = paypalSecret();
+
+  if (!clientId || !secret) throw new Error("PAYPAL_NOT_CONFIGURED");
+
+  const authorization = Buffer.from(`${clientId}:${secret}`).toString("base64");
+  const response = await fetch(`${baseUrl}/v1/oauth2/token`, {
+    method: "POST",
+    headers: {
+      Authorization: `Basic ${authorization}`,
+      "Content-Type": "application/x-www-form-urlencoded"
+    },
+    body: "grant_type=client_credentials"
+  });
+
+  const data = await response.json();
+  if (!response.ok || !data.access_token) {
+    console.error("PayPal authentication failed:", response.status, data);
+    throw new Error("PAYPAL_AUTH_FAILED");
+  }
+
+  return data.access_token;
+}
+
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    res.setHeader("Allow", "POST");
+    return res.status(405).json({ error: "Method not allowed" });
+  }
+
+  try {
+    const items = validatedItems(req.body);
+    const itemTotal = items.reduce((total, item) => total + item.price * item.quantity, 0);
+    const requestedDate = /^\d{4}-\d{2}-\d{2}$/.test(String(req.body?.cart?.requiredByDate || ""))
+      ? String(req.body.cart.requiredByDate)
+      : "";
+
+    const baseUrl = paypalBaseUrl();
+    const token = await accessToken(baseUrl);
+    const siteUrl = `https://${req.headers.host}`;
+
+    const response = await fetch(`${baseUrl}/v2/checkout/orders`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
+        Prefer: "return=representation"
       },
-      body: JSON.stringify(orderBody),
+      body: JSON.stringify({
+        intent: "CAPTURE",
+        purchase_units: [{
+          amount: {
+            currency_code: CURRENCY,
+            value: itemTotal.toFixed(2),
+            breakdown: {
+              item_total: {
+                currency_code: CURRENCY,
+                value: itemTotal.toFixed(2)
+              }
+            }
+          },
+          items: items.map((item, index) => ({
+            name: item.name,
+            sku: item.id,
+            quantity: String(item.quantity),
+            unit_amount: {
+              currency_code: CURRENCY,
+              value: item.price.toFixed(2)
+            },
+            ...(index === 0 && requestedDate
+              ? { description: `Preferred date: ${requestedDate} (not confirmed)` }
+              : {})
+          }))
+        }],
+        payment_source: {
+          paypal: {
+            experience_context: {
+              user_action: "PAY_NOW",
+              return_url: `${siteUrl}/catalogue.html?payment=success`,
+              cancel_url: `${siteUrl}/catalogue.html?payment=cancelled`
+            }
+          }
+        }
+      })
     });
 
-    const orderData = await orderRes.json();
-
-    if (!orderData.id) {
-      return res.status(500).json({ error: "Order creation failed", details: orderData });
+    const order = await response.json();
+    if (!response.ok) {
+      console.error("PayPal create-order failed:", response.status, order);
+      return res.status(502).json({ error: "PayPal could not create the order." });
     }
 
-    const approveUrl = orderData.links?.find(l => l.rel === "approve")?.href;
+    const approveUrl = order.links?.find(link => link.rel === "payer-action" || link.rel === "approve")?.href;
+    if (!approveUrl) {
+      return res.status(502).json({ error: "PayPal approval link is unavailable." });
+    }
 
-    return res.status(200).json({ orderID: orderData.id, approveUrl });
-  } catch (err) {
-    console.error("CREATE ORDER ERROR:", err);
-    return res.status(500).json({ error: "Server error", details: String(err) });
+    return res.status(200).json({ orderID: order.id, approveUrl });
+  } catch (error) {
+    console.error("Create order error:", error);
+
+    if (["INVALID_CART", "INVALID_PRICE"].includes(error.message)) {
+      return res.status(400).json({ error: "The cart is empty or invalid." });
+    }
+    if (error.message === "PAYPAL_NOT_CONFIGURED") {
+      return res.status(503).json({ error: "PayPal is not configured yet." });
+    }
+
+    return res.status(500).json({ error: "Checkout could not be started." });
   }
 }
