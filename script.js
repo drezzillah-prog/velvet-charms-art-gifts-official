@@ -75,11 +75,12 @@
             data-add-to-cart="${escapeHtml(product.id)}">
             Add to cart
           </button>
-          <a
-            class="btn small"
-            href="contact.html?product=${encodeURIComponent(product.name)}">
+          <button
+            class="btn small customization-btn"
+            type="button"
+            data-customize-product="${escapeHtml(product.id)}">
             Request customization
-          </a>
+          </button>
         </div>
       </div>
     `;
