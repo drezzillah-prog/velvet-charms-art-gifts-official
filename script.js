@@ -1,225 +1,194 @@
 (function () {
+  "use strict";
 
-const CATALOGUE_FILE = "catalogue-art-gifts.json";
+  const CATALOGUE_FILE = "catalogue-art-gifts.json";
 
-async function loadCatalogue() {
-  const res = await fetch(CATALOGUE_FILE, { cache: "no-store" });
-  if (!res.ok) throw new Error("Failed to load catalogue");
-  return res.json();
-}
-
-function buildGallery(product){
-
-  let gallery = "";
-
-  if (product.images && product.images.length) {
-
-    gallery += `
-      <img 
-        src="${product.images[0]}" 
-        class="main-img"
-        alt="${product.name}">
-    `;
-
-    if (product.images.length > 1) {
-
-      gallery += `<div class="thumbs">`;
-
-      product.images.slice(1).forEach(img => {
-        gallery += `<img src="${img}" alt="">`;
-      });
-
-      gallery += `</div>`;
-    }
+  async function loadCatalogue() {
+    const res = await fetch(CATALOGUE_FILE, { cache: "no-store" });
+    if (!res.ok) throw new Error("Failed to load catalogue");
+    return res.json();
   }
 
-  return gallery;
-}
+  function escapeHtml(value) {
+    return String(value || "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
 
-function renderCatalogue(data){
+  function buildGallery(product) {
+    let gallery = "";
 
-  const root = document.getElementById("catalogue-root");
+    if (product.images && product.images.length) {
+      gallery += `
+        <img
+          src="${escapeHtml(product.images[0])}"
+          class="main-img"
+          alt="${escapeHtml(product.name)}">
+      `;
 
-  if (!root) return;
-
-  let html = "";
-
-  data.categories.forEach(category => {
-
-    html += `
-      <section class="catalogue-category">
-      <h2>${category.name}</h2>
-    `;
-
-    if (category.notice) {
-      html += `<p class="category-notice">${category.notice}</p>`;
-    }
-
-    if (category.subcategories) {
-
-      category.subcategories.forEach(sub => {
-
-        html += `
-          <h3 class="catalogue-sub">${sub.name}</h3>
-          <div class="catalogue-grid">
-        `;
-
-        sub.products.forEach(product => {
-
-          html += `
-          <div class="product-card">
-
-            ${buildGallery(product)}
-
-            <h4>${product.name}</h4>
-
-            <p>${product.description || ""}</p>
-
-            <div class="price">${product.price} €</div>
-
-            <a 
-              class="buy-btn" 
-              href="${product.paymentLink}" 
-              target="_blank">
-              Buy
-            </a>
-
-            <a 
-              class="btn small"
-              href="contact.html?product=${encodeURIComponent(product.name)}">
-              Request customization
-            </a>
-
-          </div>
-          `;
-
+      if (product.images.length > 1) {
+        gallery += '<div class="thumbs">';
+        product.images.slice(1).forEach(img => {
+          gallery += `<img src="${escapeHtml(img)}" alt="${escapeHtml(product.name)} example">`;
         });
-
-        html += `</div>`;
-
-      });
-
+        gallery += "</div>";
+      }
     }
 
-    if (category.products) {
+    return gallery;
+  }
 
-      html += `<div class="catalogue-grid">`;
+  function buildCatalogueNav(categories) {
+    const nav = document.getElementById("catalogue-nav");
+    if (!nav) return;
 
-      category.products.forEach(product => {
+    nav.innerHTML = `
+      <div class="catalogue-nav-inner">
+        ${categories.map(category => `
+          <a href="#${escapeHtml(category.id)}">${escapeHtml(category.name)}</a>
+        `).join("")}
+      </div>
+    `;
+  }
 
-        html += `
-        <div class="product-card">
-
-          ${buildGallery(product)}
-
-          <h4>${product.name}</h4>
-
-          <p>${product.description || ""}</p>
-
-          <div class="price">${product.price} €</div>
-
-          <a 
-            class="buy-btn" 
-            href="${product.paymentLink}" 
-            target="_blank">
+  function productCard(product) {
+    return `
+      <div class="product-card" data-product-id="${escapeHtml(product.id)}">
+        ${buildGallery(product)}
+        <h4>${escapeHtml(product.name)}</h4>
+        <p>${escapeHtml(product.description || "")}</p>
+        <div class="price">${Number(product.price).toFixed(2).replace(/\.00$/, "")} €</div>
+        <div class="product-actions">
+          <a
+            class="buy-btn"
+            href="${escapeHtml(product.paymentLink || "#") }"
+            target="_blank"
+            rel="noopener noreferrer">
             Buy
           </a>
-
-          <a 
+          <button
+            class="buy-btn add-cart-btn"
+            type="button"
+            data-add-to-cart="${escapeHtml(product.id)}">
+            Add to cart
+          </button>
+          <a
             class="btn small"
             href="contact.html?product=${encodeURIComponent(product.name)}">
             Request customization
           </a>
-
         </div>
-        `;
-
-      });
-
-      html += `</div>`;
-
-    }
-
-    html += `</section>`;
-
-  });
-
-  root.innerHTML = html;
-
-}
-
-document.addEventListener("DOMContentLoaded", async () => {
-
-  try {
-
-    const data = await loadCatalogue();
-
-    renderCatalogue(data);
-
-  } catch (err) {
-
-    console.error(err);
-
+      </div>
+    `;
   }
 
-});
+  function renderCatalogue(data) {
+    const root = document.getElementById("catalogue-root");
+    if (!root) return;
 
+    window.VELVET_CATALOGUE = data;
+    buildCatalogueNav(data.categories || []);
 
-document.addEventListener("click", function(e){
+    let html = "";
 
-  if(e.target.matches(".thumbs img")){
+    (data.categories || []).forEach(category => {
+      html += `
+        <section class="catalogue-category" id="${escapeHtml(category.id)}">
+          <h2>${escapeHtml(category.name)}</h2>
+      `;
 
-    const clicked = e.target;
+      if (category.notice) {
+        html += `<p class="category-notice">${escapeHtml(category.notice)}</p>`;
+      }
 
-    const card = clicked.closest(".product-card");
+      if (Array.isArray(category.subcategories)) {
+        category.subcategories.forEach(sub => {
+          html += `
+            <h3 class="catalogue-sub">${escapeHtml(sub.name)}</h3>
+            <div class="catalogue-grid">
+          `;
 
-    if(!card) return;
+          (sub.products || []).forEach(product => {
+            html += productCard(product);
+          });
 
-    const main = card.querySelector(".main-img");
+          html += "</div>";
+        });
+      }
 
-    if(main){
-      main.src = clicked.src;
-    }
+      if (Array.isArray(category.products)) {
+        html += '<div class="catalogue-grid">';
+        category.products.forEach(product => {
+          html += productCard(product);
+        });
+        html += "</div>";
+      }
 
-  }
-
-  if(e.target.classList && e.target.classList.contains("main-img")){
-    openLightbox(e.target.src);
-  }
-
-});
-
-
-function openLightbox(src){
-
-  let lb = document.querySelector(".lightbox");
-
-  if(!lb){
-
-    lb = document.createElement("div");
-
-    lb.className = "lightbox hidden";
-
-    lb.innerHTML = `<img src="">`;
-
-    document.body.appendChild(lb);
-
-    lb.addEventListener("click", () => {
-
-      lb.classList.add("hidden");
-
+      html += "</section>";
     });
 
+    root.innerHTML = html;
+    root.classList.remove("loading");
+    document.dispatchEvent(new CustomEvent("velvet:catalogue-rendered"));
   }
 
-  const img = lb.querySelector("img");
+  document.addEventListener("DOMContentLoaded", async () => {
+    try {
+      const data = await loadCatalogue();
+      renderCatalogue(data);
+    } catch (err) {
+      console.error(err);
+      const root = document.getElementById("catalogue-root");
+      if (root) {
+        root.classList.remove("loading");
+        root.innerHTML = '<p class="catalogue-error">The catalogue could not be loaded. Please refresh the page.</p>';
+      }
+    }
+  });
 
-  if(img){
-    img.src = src;
+  document.addEventListener("click", function (event) {
+    if (event.target.matches(".thumbs img")) {
+      const clicked = event.target;
+      const card = clicked.closest(".product-card");
+      if (!card) return;
+
+      const main = card.querySelector(".main-img");
+      if (main) {
+        main.src = clicked.src;
+        main.alt = clicked.alt || main.alt;
+      }
+    }
+
+    if (event.target.classList && event.target.classList.contains("main-img")) {
+      openLightbox(event.target.src, event.target.alt);
+    }
+  });
+
+  function openLightbox(src, alt) {
+    let lightbox = document.querySelector(".lightbox");
+
+    if (!lightbox) {
+      lightbox = document.createElement("div");
+      lightbox.className = "lightbox hidden";
+      lightbox.innerHTML = '<img src="" alt=""><button class="lightbox-close" type="button" aria-label="Close image">×</button>';
+      document.body.appendChild(lightbox);
+
+      lightbox.addEventListener("click", event => {
+        if (event.target === lightbox || event.target.matches(".lightbox-close")) {
+          lightbox.classList.add("hidden");
+        }
+      });
+    }
+
+    const image = lightbox.querySelector("img");
+    if (image) {
+      image.src = src;
+      image.alt = alt || "Product image";
+    }
+
+    lightbox.classList.remove("hidden");
   }
-
-  lb.classList.remove("hidden");
-
-}
-
 })();
