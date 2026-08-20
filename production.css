@@ -32,6 +32,23 @@
 html[lang="ro"] .made-for-you .lang-en{display:none;}
 html[lang="ro"] .made-for-you .lang-ro{display:block;}
 html[lang="en"] .made-for-you .lang-en{display:block;}
+
+.payment-status-banner{
+  max-width:900px;
+  margin:0 auto 18px;
+  padding:13px 18px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.16);
+  background:rgba(36,12,29,.86);
+  color:#f7eaf3;
+  text-align:center;
+  line-height:1.5;
+  box-shadow:0 10px 28px rgba(0,0,0,.18);
+}
+.payment-status-banner.is-success{border-color:rgba(207,238,219,.42);}
+.payment-status-banner.is-cancelled{border-color:rgba(231,184,213,.48);}
+
 @media (max-width:760px){
   .made-for-you{margin-bottom:34px;padding:24px 20px;border-radius:18px;}
+  .payment-status-banner{margin:0 14px 16px;}
 }
