@@ -5,6 +5,9 @@
   "engines": {
     "node": "24.x"
   },
+  "scripts": {
+    "test:catalogue": "node tests/catalogue-integrity.mjs"
+  },
   "dependencies": {
     "@vercel/blob": "^2.0.0",
     "formidable": "^3.0.0"
