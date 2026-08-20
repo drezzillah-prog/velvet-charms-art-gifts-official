@@ -62,13 +62,6 @@
         <p>${escapeHtml(product.description || "")}</p>
         <div class="price">${Number(product.price).toFixed(2).replace(/\.00$/, "")} €</div>
         <div class="product-actions">
-          <a
-            class="buy-btn"
-            href="${escapeHtml(product.paymentLink || "#") }"
-            target="_blank"
-            rel="noopener noreferrer">
-            Buy
-          </a>
           <button
             class="buy-btn add-cart-btn"
             type="button"
