@@ -60,7 +60,7 @@
         ${buildGallery(product)}
         <h4>${escapeHtml(product.name)}</h4>
         <p>${escapeHtml(product.description || "")}</p>
-        <div class="price">${Number(product.price).toFixed(2).replace(/\.00$/, "")} €</div>
+        <div class="price" data-eur-price="${Number(product.price)}"${Number.isFinite(Number(product.price_ro)) ? ` data-ro-price="${Number(product.price_ro)}"` : ""}>${window.VELVET_CURRENCY ? window.VELVET_CURRENCY.displayMoney(product.price, product.price_ro) : new Intl.NumberFormat(undefined, { style: "currency", currency: "EUR" }).format(Number(product.price))}</div>
         <div class="product-actions">
           <button
             class="buy-btn add-cart-btn"
