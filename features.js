@@ -23,6 +23,7 @@
           id: item.id,
           name: String(item.name || ""),
           price: Number(item.price) || 0,
+          priceRo: Number(item.priceRo) || 0,
           qty: Math.max(1, Math.min(99, Number.parseInt(item.qty, 10) || 1)),
           options: item.options && typeof item.options === "object" ? item.options : {},
           attachments: Array.isArray(item.attachments) ? item.attachments.slice(0, 5) : []
@@ -46,7 +47,7 @@
 
   function findProduct(id) { return allProducts().find(product => product.id === id); }
   function sameOptions(a, b) { return JSON.stringify(a || {}) === JSON.stringify(b || {}); }
-  function euro(value) { return new Intl.NumberFormat(undefined, { style: "currency", currency: CURRENCY }).format(Number(value) || 0); }
+  function money(value, romanianPrice = null) { return window.VELVET_CURRENCY ? window.VELVET_CURRENCY.displayMoney(value, romanianPrice) : new Intl.NumberFormat(undefined, { style: "currency", currency: CURRENCY }).format(Number(value) || 0); }
   function escapeHtml(value) { return String(value || "").replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;"); }
   function optionLabel(key) { return key === "special_instructions" ? "Special instructions" : key.replaceAll("_", " "); }
   function optionSummary(options) { return Object.entries(options || {}).filter(([,v]) => String(v || "").trim()).map(([k,v]) => `${optionLabel(k)}: ${v}`); }
@@ -56,7 +57,7 @@
     const cart = loadCart();
     const existing = cart.items.find(item => item.id === product.id && sameOptions(item.options, options) && !attachments.length && !item.attachments?.length);
     if (existing) existing.qty = Math.min(99, existing.qty + qty);
-    else cart.items.push({ id: product.id, name: product.name, price: Number(product.price), qty: Math.max(1, qty), options, attachments: attachments.slice(0, 5) });
+    else cart.items.push({ id: product.id, name: product.name, price: Number(product.price), priceRo: Number(product.price_ro) || 0, qty: Math.max(1, qty), options, attachments: attachments.slice(0, 5) });
     saveCart(cart);
     openCart();
   }
@@ -127,16 +128,17 @@
     const cart = loadCart();
     cart.items.forEach(item => {
       const product = findProduct(item.id);
-      if (product) { item.price = Number(product.price); item.name = product.name; }
+      if (product) { item.price = Number(product.price); item.priceRo = Number(product.price_ro) || 0; item.name = product.name; }
     });
     localStorage.setItem(CART_KEY, JSON.stringify(cart));
     const count = cart.items.reduce((sum, item) => sum + item.qty, 0);
     const subtotalValue = cart.items.reduce((sum, item) => sum + item.price * item.qty, 0);
+    const subtotalRo = cart.items.reduce((sum, item) => sum + item.priceRo * item.qty, 0);
     document.querySelectorAll("[data-cart-count]").forEach(node => node.textContent = count);
     const subtotal = document.querySelector("[data-cart-subtotal]");
     const total = document.querySelector("[data-cart-total]");
-    if (subtotal) subtotal.textContent = euro(subtotalValue);
-    if (total) total.textContent = euro(subtotalValue);
+    if (subtotal) subtotal.textContent = money(subtotalValue, subtotalRo);
+    if (total) total.textContent = money(subtotalValue, subtotalRo);
     const dateInput = document.querySelector("[data-required-by-date]");
     if (dateInput) { dateInput.value = cart.requiredByDate || ""; dateInput.min = new Date().toISOString().slice(0,10); }
     const checkout = document.querySelector("[data-checkout-all]");
@@ -145,12 +147,12 @@
     root.innerHTML = cart.items.map((item,index) => `
       <div class="cart-item">
         <div class="cart-item-details">
-          <p class="cart-item-name">${escapeHtml(item.name)}</p><p class="cart-item-price">${euro(item.price)} each</p>
+          <p class="cart-item-name">${escapeHtml(item.name)}</p><p class="cart-item-price">${money(item.price, item.priceRo)} each</p>
           ${optionSummary(item.options).length ? `<ul class="cart-item-options">${optionSummary(item.options).map(line => `<li>${escapeHtml(line)}</li>`).join("")}</ul>` : ""}
           ${item.attachments?.length ? `<div class="cart-photo-strip">${item.attachments.map((p,i) => `<span class="private-photo-chip">📷 Reference photo ${i+1} attached</span>`).join("")}</div>` : ""}
           <div class="cart-quantity"><button type="button" data-cart-decrease="${index}">−</button><strong>${item.qty}</strong><button type="button" data-cart-increase="${index}">+</button></div>
         </div>
-        <div class="cart-item-side"><strong>${euro(item.price * item.qty)}</strong><button class="cart-edit" type="button" data-cart-edit="${index}">Edit customization</button><button class="cart-remove" type="button" data-cart-remove="${index}">Remove</button></div>
+        <div class="cart-item-side"><strong>${money(item.price * item.qty, item.priceRo * item.qty)}</strong><button class="cart-edit" type="button" data-cart-edit="${index}">Edit customization</button><button class="cart-remove" type="button" data-cart-remove="${index}">Remove</button></div>
       </div>
     `).join("");
   }
@@ -214,7 +216,7 @@
     const data = new FormData(form); const details = [];
     for (const [key,value] of data.entries()) if (key !== "reference_photos" && String(value).trim()) details.push(`<li><strong>${escapeHtml(optionLabel(key))}:</strong> ${escapeHtml(value)}</li>`);
     const photoCount = retainedAttachments.length + customPhotoFiles.length;
-    review.innerHTML = `<h3>${escapeHtml(product.name)}</h3><p><strong>${euro(product.price)}</strong></p>${details.length ? `<ul>${details.join("")}</ul>` : "<p>As displayed, with no extra options.</p>"}<p>📷 ${photoCount} private reference photo(s)</p><p class="review-note">Please confirm every detail before adding this item to your cart.</p>`;
+    review.innerHTML = `<h3>${escapeHtml(product.name)}</h3><p><strong>${money(product.price, product.price_ro)}</strong></p>${details.length ? `<ul>${details.join("")}</ul>` : "<p>As displayed, with no extra options.</p>"}<p>📷 ${photoCount} private reference photo(s)</p><p class="review-note">Please confirm every detail before adding this item to your cart.</p>`;
   }
 
   function optimizedImage(file) {
@@ -295,5 +297,6 @@
     if (event.target.matches('input[name="reference_photos"]')) { const available = Math.max(0,5-retainedAttachments.length); customPhotoFiles = Array.from(event.target.files || []).slice(0,available); renderSelectedPhotos(); }
   });
   document.addEventListener("velvet:catalogue-rendered", renderCart);
+  document.addEventListener("velvet:currency-change", renderCart);
   document.addEventListener("DOMContentLoaded", () => { createCartUI(); captureReturnedPayment(); });
 })();
