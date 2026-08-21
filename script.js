@@ -34,13 +34,39 @@
       if (product.images.length > 1) {
         gallery += '<div class="thumbs">';
         product.images.slice(1).forEach(img => {
-          gallery += `<img src="${escapeHtml(img)}" alt="${escapeHtml(product.name)} example" loading="lazy" decoding="async">`;
+          gallery += `<img data-src="${escapeHtml(img)}" alt="${escapeHtml(product.name)} example" loading="lazy" decoding="async">`;
         });
         gallery += "</div>";
       }
     }
 
     return gallery;
+  }
+
+  function activateDeferredImages(root) {
+    const images = Array.from((root || document).querySelectorAll("img[data-src]"));
+    if (!images.length) return;
+
+    const loadImage = img => {
+      if (!img.dataset.src) return;
+      img.src = img.dataset.src;
+      img.removeAttribute("data-src");
+    };
+
+    if (!("IntersectionObserver" in window)) {
+      images.forEach(loadImage);
+      return;
+    }
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        loadImage(entry.target);
+        observer.unobserve(entry.target);
+      });
+    }, { rootMargin: "450px 0px" });
+
+    images.forEach(img => observer.observe(img));
   }
 
   function buildCatalogueNav(categories) {
@@ -118,6 +144,7 @@
 
     root.innerHTML = html;
     root.classList.remove("loading");
+    activateDeferredImages(root);
     document.dispatchEvent(new CustomEvent("velvet:catalogue-rendered"));
   }
 
@@ -138,10 +165,11 @@
   document.addEventListener("click", function (event) {
     if (event.target.matches(".thumbs img")) {
       const clicked = event.target;
+      if (!clicked.src && clicked.dataset.src) clicked.src = clicked.dataset.src;
       const card = clicked.closest(".product-card");
       if (!card) return;
       const main = card.querySelector(".main-img");
-      if (main) { main.src = clicked.src; main.alt = clicked.alt || main.alt; }
+      if (main && clicked.src) { main.src = clicked.src; main.alt = clicked.alt || main.alt; }
     }
 
     if (event.target.classList && event.target.classList.contains("main-img")) {
