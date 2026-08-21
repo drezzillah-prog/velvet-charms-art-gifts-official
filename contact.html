@@ -10,17 +10,19 @@
 <body>
   <header class="site-header">
     <div class="header-inner">
-      <h1 class="brand">Contact</h1>
+      <h1 class="brand">Velvet Charms</h1>
       <nav class="nav">
         <a href="index.html">Home</a>
         <a href="catalogue.html">Catalogue</a>
+        <a href="custom-orders.html">Custom Creations</a>
         <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
+        <a href="faq.html">FAQ</a>
+        <a href="contact.html" class="active">Contact</a>
+        <a href="universe.html">Velvet Universe</a>
         <a class="sister-link" href="https://velvet-charms-body-glow-official.vercel.app">Visit Body Glow</a>
       </nav>
     </div>
   </header>
-
   <main class="main">
     <h2>Contact</h2>
     <form id="contact-form">
@@ -32,38 +34,23 @@
       <p id="contact-status" style="margin-top:10px;color:var(--muted)"></p>
     </form>
   </main>
-
-  <footer class="site-footer">
-    <p>© Velvet Charms — handmade with care</p>
-  </footer>
-
+  <footer class="site-footer"><p>© Velvet Charms — handmade with care</p></footer>
   <script>
     document.getElementById('contact-form').addEventListener('submit', async function(e){
       e.preventDefault();
       const status = document.getElementById('contact-status');
       status.textContent = 'Sending…';
       const form = e.target;
-
       try {
         const r = await fetch('/api/contact.js', {
           method: 'POST',
           headers: {'Content-Type':'application/json'},
-          body: JSON.stringify({
-            name: form.name.value,
-            email: form.email.value || '',
-            message: form.message.value
-          })
+          body: JSON.stringify({name: form.name.value,email: form.email.value || '',message: form.message.value})
         });
         const j = await r.json();
-        if (r.ok) {
-          status.textContent = 'Message sent. Thank you!';
-          form.reset();
-        } else {
-          status.textContent = 'Failed to send: ' + (j.error || 'unknown');
-        }
-      } catch (err) {
-        status.textContent = 'Error: ' + err.toString();
-      }
+        if (r.ok) { status.textContent = 'Message sent. Thank you!'; form.reset(); }
+        else { status.textContent = 'Failed to send: ' + (j.error || 'unknown'); }
+      } catch (err) { status.textContent = 'Error: ' + err.toString(); }
     });
   </script>
   <script src="script.js"></script>
