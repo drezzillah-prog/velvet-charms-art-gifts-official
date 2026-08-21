@@ -54,12 +54,26 @@
     `;
   }
 
-  function productCard(product) {
+  function approximateMakingTime(categoryName, subcategoryName) {
+    if (categoryName === "Paintings & Portraits") return subcategoryName === "Portraits" || subcategoryName === "Festive Portraits" ? "10–20 business days" : "7–14 business days";
+    if (categoryName === "Hair Accessories") return "3–7 business days";
+    if (categoryName === "Epoxy & Clay Creations") {
+      if (subcategoryName === "Epoxy Lamp" || subcategoryName === "Phone Cases") return "10–20 business days";
+      return "5–10 business days";
+    }
+    if (categoryName === "Leather Bags") return "15–30 business days";
+    if (categoryName === "Wall Clock") return "10–20 business days";
+    if (categoryName === "Bundles") return "7–14 business days";
+    return "Confirmed with your production slot";
+  }
+
+  function productCard(product, categoryName, subcategoryName = "") {
     return `
       <div class="product-card" data-product-id="${escapeHtml(product.id)}">
         ${buildGallery(product)}
         <h4>${escapeHtml(product.name)}</h4>
         <p>${escapeHtml(product.description || "")}</p>
+        <p class="product-making-time"><strong>Approximate making time:</strong> ${escapeHtml(approximateMakingTime(categoryName, subcategoryName))}</p>
         <div class="price" data-eur-price="${Number(product.price)}"${Number.isFinite(Number(product.price_ro)) ? ` data-ro-price="${Number(product.price_ro)}"` : ""}>${window.VELVET_CURRENCY ? window.VELVET_CURRENCY.displayMoney(product.price, product.price_ro) : new Intl.NumberFormat(undefined, { style: "currency", currency: "EUR" }).format(Number(product.price))}</div>
         <div class="product-actions">
           <button
@@ -106,7 +120,7 @@
           `;
 
           (sub.products || []).forEach(product => {
-            html += productCard(product);
+            html += productCard(product, category.name, sub.name);
           });
 
           html += "</div>";
@@ -116,7 +130,7 @@
       if (Array.isArray(category.products)) {
         html += '<div class="catalogue-grid">';
         category.products.forEach(product => {
-          html += productCard(product);
+          html += productCard(product, category.name, sub.name);
         });
         html += "</div>";
       }
