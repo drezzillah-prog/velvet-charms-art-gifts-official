@@ -18,7 +18,7 @@ function catalogueProducts() {
   return new Map(products.map(product => [product.id, product]));
 }
 
-function validatedItems(requestBody) {
+function validatedItems(requestBody, market) {
   const rawItems = requestBody?.cart?.items;
   if (!Array.isArray(rawItems) || rawItems.length === 0 || rawItems.length > 100) throw new Error("INVALID_CART");
   const catalogue = catalogueProducts();
@@ -26,7 +26,7 @@ function validatedItems(requestBody) {
     const product = catalogue.get(rawItem?.id);
     const quantity = Number.parseInt(rawItem?.qty, 10);
     if (!product || !Number.isInteger(quantity) || quantity < 1 || quantity > 99) throw new Error("INVALID_CART");
-    const price = Number(product.price);
+    const price = market === "RO" ? Number(product.price_ro_eur) : Number(product.price);
     if (!Number.isFinite(price) || price < 0) throw new Error("INVALID_PRICE");
 
     const options = {};
@@ -71,7 +71,8 @@ async function accessToken(baseUrl) {
 export default async function handler(req, res) {
   if (req.method !== "POST") { res.setHeader("Allow", "POST"); return res.status(405).json({ error: "Method not allowed" }); }
   try {
-    const items = validatedItems(req.body);
+    const market = String(req.headers["x-vercel-ip-country"] || "").toUpperCase() === "RO" ? "RO" : "INTL";
+    const items = validatedItems(req.body, market);
     const itemTotal = items.reduce((total, item) => total + item.price * item.quantity, 0);
     const requestedDate = /^\d{4}-\d{2}-\d{2}$/.test(String(req.body?.cart?.requiredByDate || "")) ? String(req.body.cart.requiredByDate) : "";
     const baseUrl = paypalBaseUrl();
@@ -83,6 +84,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         intent: "CAPTURE",
         purchase_units: [{
+          custom_id: market,
           amount: { currency_code: CURRENCY, value: itemTotal.toFixed(2), breakdown: { item_total: { currency_code: CURRENCY, value: itemTotal.toFixed(2) } } },
           items: items.map((item, index) => {
             const description = paypalDescription(item, requestedDate, index);
@@ -96,7 +98,7 @@ export default async function handler(req, res) {
     if (!response.ok) return res.status(502).json({ error: "PayPal could not create the order." });
     const approveUrl = order.links?.find(link => link.rel === "payer-action" || link.rel === "approve")?.href;
     if (!approveUrl) return res.status(502).json({ error: "PayPal approval link is unavailable." });
-    return res.status(200).json({ orderID: order.id, approveUrl });
+    return res.status(200).json({ orderID: order.id, approveUrl, market });
   } catch (error) {
     console.error("Create order error:", error);
     if (["INVALID_CART", "INVALID_PRICE", "INVALID_CUSTOMIZATION"].includes(error.message)) return res.status(400).json({ error: "The cart or customization details are invalid." });
