@@ -30,6 +30,14 @@
     document.dispatchEvent(new CustomEvent("velvet:currency-change"));
   }
 
+  function browserCountryFallback() {
+    try {
+      const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+      if (timezone === "Europe/Bucharest") return "RO";
+    } catch (error) {}
+    return "";
+  }
+
   async function initialize() {
     try {
       const response = await fetch("/api/currency", { headers: { Accept: "application/json" } });
@@ -37,10 +45,16 @@
 
       const data = await response.json();
       state.rates = data.rates || { EUR: 1 };
-      state.country = data.country || "";
-      state.currency = data.currency && state.rates[data.currency] ? data.currency : "EUR";
+      state.country = data.country || browserCountryFallback();
+      if (state.country === "RO" && state.rates.RON) {
+        state.currency = "RON";
+      } else {
+        state.currency = data.currency && state.rates[data.currency] ? data.currency : "EUR";
+      }
     } catch (error) {
       console.warn("Automatic local currency unavailable:", error);
+      state.country = browserCountryFallback();
+      state.currency = state.country === "RO" ? "RON" : "EUR";
     }
 
     refresh();
