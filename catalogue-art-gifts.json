@@ -20,7 +20,57 @@
                 "painting_LANDSCAPE_SMALL1.jpg"
               ],
               "price_ro": 159,
-              "price_ro_eur": 31.8
+              "price_ro_eur": 31.8,
+              "options": {
+                "artwork_style": [
+                  "Realistic",
+                  "Painterly",
+                  "Whimsical",
+                  "Minimal",
+                  "Mixed media",
+                  "Artist's recommendation"
+                ],
+                "color_palette": [
+                  "Natural",
+                  "Soft pastel",
+                  "Warm earthy",
+                  "Jewel tones",
+                  "Dark and moody",
+                  "Bright and joyful",
+                  "Match my reference photo"
+                ],
+                "background_treatment": [
+                  "Detailed background",
+                  "Soft atmospheric background",
+                  "Simple color background",
+                  "Artist's recommendation"
+                ],
+                "gift_wrap": [
+                  "Signature Velvet wrapping",
+                  "Minimal recyclable wrapping",
+                  "No gift wrapping"
+                ],
+                "gift_card": [
+                  "Include a blank card",
+                  "I will write the message in special instructions",
+                  "No card"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart",
+                  "No charm"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport",
+                  "No Passport"
+                ]
+              }
             },
             {
               "id": "landscape_medium",
@@ -34,7 +84,57 @@
                 "painting_LANDSCAPE_MEDIUM3.jpg"
               ],
               "price_ro": 299,
-              "price_ro_eur": 59.8
+              "price_ro_eur": 59.8,
+              "options": {
+                "artwork_style": [
+                  "Realistic",
+                  "Painterly",
+                  "Whimsical",
+                  "Minimal",
+                  "Mixed media",
+                  "Artist's recommendation"
+                ],
+                "color_palette": [
+                  "Natural",
+                  "Soft pastel",
+                  "Warm earthy",
+                  "Jewel tones",
+                  "Dark and moody",
+                  "Bright and joyful",
+                  "Match my reference photo"
+                ],
+                "background_treatment": [
+                  "Detailed background",
+                  "Soft atmospheric background",
+                  "Simple color background",
+                  "Artist's recommendation"
+                ],
+                "gift_wrap": [
+                  "Signature Velvet wrapping",
+                  "Minimal recyclable wrapping",
+                  "No gift wrapping"
+                ],
+                "gift_card": [
+                  "Include a blank card",
+                  "I will write the message in special instructions",
+                  "No card"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart",
+                  "No charm"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport",
+                  "No Passport"
+                ]
+              }
             },
             {
               "id": "landscape_large",
@@ -48,7 +148,57 @@
                 "Large Landscape Painting2.jpg"
               ],
               "price_ro": 499,
-              "price_ro_eur": 99.8
+              "price_ro_eur": 99.8,
+              "options": {
+                "artwork_style": [
+                  "Realistic",
+                  "Painterly",
+                  "Whimsical",
+                  "Minimal",
+                  "Mixed media",
+                  "Artist's recommendation"
+                ],
+                "color_palette": [
+                  "Natural",
+                  "Soft pastel",
+                  "Warm earthy",
+                  "Jewel tones",
+                  "Dark and moody",
+                  "Bright and joyful",
+                  "Match my reference photo"
+                ],
+                "background_treatment": [
+                  "Detailed background",
+                  "Soft atmospheric background",
+                  "Simple color background",
+                  "Artist's recommendation"
+                ],
+                "gift_wrap": [
+                  "Signature Velvet wrapping",
+                  "Minimal recyclable wrapping",
+                  "No gift wrapping"
+                ],
+                "gift_card": [
+                  "Include a blank card",
+                  "I will write the message in special instructions",
+                  "No card"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart",
+                  "No charm"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport",
+                  "No Passport"
+                ]
+              }
             }
           ]
         },
@@ -68,7 +218,57 @@
                 "painting_portrait_4.jpg"
               ],
               "price_ro": 399,
-              "price_ro_eur": 79.8
+              "price_ro_eur": 79.8,
+              "options": {
+                "artwork_style": [
+                  "Realistic",
+                  "Painterly",
+                  "Whimsical",
+                  "Minimal",
+                  "Mixed media",
+                  "Artist's recommendation"
+                ],
+                "color_palette": [
+                  "Natural",
+                  "Soft pastel",
+                  "Warm earthy",
+                  "Jewel tones",
+                  "Dark and moody",
+                  "Bright and joyful",
+                  "Match my reference photo"
+                ],
+                "background_treatment": [
+                  "Detailed background",
+                  "Soft atmospheric background",
+                  "Simple color background",
+                  "Artist's recommendation"
+                ],
+                "gift_wrap": [
+                  "Signature Velvet wrapping",
+                  "Minimal recyclable wrapping",
+                  "No gift wrapping"
+                ],
+                "gift_card": [
+                  "Include a blank card",
+                  "I will write the message in special instructions",
+                  "No card"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart",
+                  "No charm"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport",
+                  "No Passport"
+                ]
+              }
             },
             {
               "id": "portrait_3d",
@@ -82,7 +282,57 @@
                 "clay_3d_painting_3.png"
               ],
               "price_ro": 649,
-              "price_ro_eur": 129.8
+              "price_ro_eur": 129.8,
+              "options": {
+                "artwork_style": [
+                  "Realistic",
+                  "Painterly",
+                  "Whimsical",
+                  "Minimal",
+                  "Mixed media",
+                  "Artist's recommendation"
+                ],
+                "color_palette": [
+                  "Natural",
+                  "Soft pastel",
+                  "Warm earthy",
+                  "Jewel tones",
+                  "Dark and moody",
+                  "Bright and joyful",
+                  "Match my reference photo"
+                ],
+                "background_treatment": [
+                  "Detailed background",
+                  "Soft atmospheric background",
+                  "Simple color background",
+                  "Artist's recommendation"
+                ],
+                "gift_wrap": [
+                  "Signature Velvet wrapping",
+                  "Minimal recyclable wrapping",
+                  "No gift wrapping"
+                ],
+                "gift_card": [
+                  "Include a blank card",
+                  "I will write the message in special instructions",
+                  "No card"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart",
+                  "No charm"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport",
+                  "No Passport"
+                ]
+              }
             },
             {
               "id": "portrait_family",
@@ -94,7 +344,57 @@
                 "Couple or Family Portrait.png"
               ],
               "price_ro": 749,
-              "price_ro_eur": 149.8
+              "price_ro_eur": 149.8,
+              "options": {
+                "artwork_style": [
+                  "Realistic",
+                  "Painterly",
+                  "Whimsical",
+                  "Minimal",
+                  "Mixed media",
+                  "Artist's recommendation"
+                ],
+                "color_palette": [
+                  "Natural",
+                  "Soft pastel",
+                  "Warm earthy",
+                  "Jewel tones",
+                  "Dark and moody",
+                  "Bright and joyful",
+                  "Match my reference photo"
+                ],
+                "background_treatment": [
+                  "Detailed background",
+                  "Soft atmospheric background",
+                  "Simple color background",
+                  "Artist's recommendation"
+                ],
+                "gift_wrap": [
+                  "Signature Velvet wrapping",
+                  "Minimal recyclable wrapping",
+                  "No gift wrapping"
+                ],
+                "gift_card": [
+                  "Include a blank card",
+                  "I will write the message in special instructions",
+                  "No card"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart",
+                  "No charm"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport",
+                  "No Passport"
+                ]
+              }
             },
             {
               "id": "portrait_mini",
@@ -106,7 +406,57 @@
                 "Mini Portrait Ornament.jpg"
               ],
               "price_ro": 179,
-              "price_ro_eur": 35.8
+              "price_ro_eur": 35.8,
+              "options": {
+                "artwork_style": [
+                  "Realistic",
+                  "Painterly",
+                  "Whimsical",
+                  "Minimal",
+                  "Mixed media",
+                  "Artist's recommendation"
+                ],
+                "color_palette": [
+                  "Natural",
+                  "Soft pastel",
+                  "Warm earthy",
+                  "Jewel tones",
+                  "Dark and moody",
+                  "Bright and joyful",
+                  "Match my reference photo"
+                ],
+                "background_treatment": [
+                  "Detailed background",
+                  "Soft atmospheric background",
+                  "Simple color background",
+                  "Artist's recommendation"
+                ],
+                "gift_wrap": [
+                  "Signature Velvet wrapping",
+                  "Minimal recyclable wrapping",
+                  "No gift wrapping"
+                ],
+                "gift_card": [
+                  "Include a blank card",
+                  "I will write the message in special instructions",
+                  "No card"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart",
+                  "No charm"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport",
+                  "No Passport"
+                ]
+              }
             }
           ]
         },
@@ -125,7 +475,57 @@
                 "painting_christmas_3.jpg"
               ],
               "price_ro": 449,
-              "price_ro_eur": 89.8
+              "price_ro_eur": 89.8,
+              "options": {
+                "artwork_style": [
+                  "Realistic",
+                  "Painterly",
+                  "Whimsical",
+                  "Minimal",
+                  "Mixed media",
+                  "Artist's recommendation"
+                ],
+                "color_palette": [
+                  "Natural",
+                  "Soft pastel",
+                  "Warm earthy",
+                  "Jewel tones",
+                  "Dark and moody",
+                  "Bright and joyful",
+                  "Match my reference photo"
+                ],
+                "background_treatment": [
+                  "Detailed background",
+                  "Soft atmospheric background",
+                  "Simple color background",
+                  "Artist's recommendation"
+                ],
+                "gift_wrap": [
+                  "Signature Velvet wrapping",
+                  "Minimal recyclable wrapping",
+                  "No gift wrapping"
+                ],
+                "gift_card": [
+                  "Include a blank card",
+                  "I will write the message in special instructions",
+                  "No card"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart",
+                  "No charm"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport",
+                  "No Passport"
+                ]
+              }
             },
             {
               "id": "holiday_3d",
@@ -137,7 +537,57 @@
                 "3D Festive Portrait Relief.png"
               ],
               "price_ro": 679,
-              "price_ro_eur": 135.8
+              "price_ro_eur": 135.8,
+              "options": {
+                "artwork_style": [
+                  "Realistic",
+                  "Painterly",
+                  "Whimsical",
+                  "Minimal",
+                  "Mixed media",
+                  "Artist's recommendation"
+                ],
+                "color_palette": [
+                  "Natural",
+                  "Soft pastel",
+                  "Warm earthy",
+                  "Jewel tones",
+                  "Dark and moody",
+                  "Bright and joyful",
+                  "Match my reference photo"
+                ],
+                "background_treatment": [
+                  "Detailed background",
+                  "Soft atmospheric background",
+                  "Simple color background",
+                  "Artist's recommendation"
+                ],
+                "gift_wrap": [
+                  "Signature Velvet wrapping",
+                  "Minimal recyclable wrapping",
+                  "No gift wrapping"
+                ],
+                "gift_card": [
+                  "Include a blank card",
+                  "I will write the message in special instructions",
+                  "No card"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart",
+                  "No charm"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport",
+                  "No Passport"
+                ]
+              }
             }
           ]
         }
@@ -167,7 +617,55 @@
                 "freepik__glass-hair-pins-with-long-pins-to-hold-the-hair-ch__90293.png"
               ],
               "price_ro": 59,
-              "price_ro_eur": 11.8
+              "price_ro_eur": 11.8,
+              "options": {
+                "color_palette": [
+                  "Soft pastel",
+                  "Warm earthy",
+                  "Jewel tones",
+                  "Neutral",
+                  "Bright and joyful",
+                  "Match my outfit or reference"
+                ],
+                "metal_tone": [
+                  "Gold tone",
+                  "Silver tone",
+                  "Rose-gold tone",
+                  "Artist's recommendation"
+                ],
+                "finish": [
+                  "Glossy",
+                  "Satin",
+                  "Pearlescent",
+                  "Botanical",
+                  "Artist's recommendation"
+                ],
+                "gift_wrap": [
+                  "Signature Velvet wrapping",
+                  "Minimal recyclable wrapping",
+                  "No gift wrapping"
+                ],
+                "gift_card": [
+                  "Include a blank card",
+                  "I will write the message in special instructions",
+                  "No card"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart",
+                  "No charm"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport",
+                  "No Passport"
+                ]
+              }
             }
           ]
         },
@@ -187,7 +685,55 @@
                 "freepik__glass-hair-pins-with-long-pins-to-hold-the-hair-ch__81988.png"
               ],
               "price_ro": 75,
-              "price_ro_eur": 15
+              "price_ro_eur": 15,
+              "options": {
+                "color_palette": [
+                  "Soft pastel",
+                  "Warm earthy",
+                  "Jewel tones",
+                  "Neutral",
+                  "Bright and joyful",
+                  "Match my outfit or reference"
+                ],
+                "metal_tone": [
+                  "Gold tone",
+                  "Silver tone",
+                  "Rose-gold tone",
+                  "Artist's recommendation"
+                ],
+                "finish": [
+                  "Glossy",
+                  "Satin",
+                  "Pearlescent",
+                  "Botanical",
+                  "Artist's recommendation"
+                ],
+                "gift_wrap": [
+                  "Signature Velvet wrapping",
+                  "Minimal recyclable wrapping",
+                  "No gift wrapping"
+                ],
+                "gift_card": [
+                  "Include a blank card",
+                  "I will write the message in special instructions",
+                  "No card"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart",
+                  "No charm"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport",
+                  "No Passport"
+                ]
+              }
             }
           ]
         },
@@ -209,7 +755,55 @@
                 "hair_comb_2 (3).png"
               ],
               "price_ro": 85,
-              "price_ro_eur": 17
+              "price_ro_eur": 17,
+              "options": {
+                "color_palette": [
+                  "Soft pastel",
+                  "Warm earthy",
+                  "Jewel tones",
+                  "Neutral",
+                  "Bright and joyful",
+                  "Match my outfit or reference"
+                ],
+                "metal_tone": [
+                  "Gold tone",
+                  "Silver tone",
+                  "Rose-gold tone",
+                  "Artist's recommendation"
+                ],
+                "finish": [
+                  "Glossy",
+                  "Satin",
+                  "Pearlescent",
+                  "Botanical",
+                  "Artist's recommendation"
+                ],
+                "gift_wrap": [
+                  "Signature Velvet wrapping",
+                  "Minimal recyclable wrapping",
+                  "No gift wrapping"
+                ],
+                "gift_card": [
+                  "Include a blank card",
+                  "I will write the message in special instructions",
+                  "No card"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart",
+                  "No charm"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport",
+                  "No Passport"
+                ]
+              }
             }
           ]
         },
@@ -228,7 +822,55 @@
                 "Custom Hair Set.jpeg"
               ],
               "price_ro": 159,
-              "price_ro_eur": 31.8
+              "price_ro_eur": 31.8,
+              "options": {
+                "color_palette": [
+                  "Soft pastel",
+                  "Warm earthy",
+                  "Jewel tones",
+                  "Neutral",
+                  "Bright and joyful",
+                  "Match my outfit or reference"
+                ],
+                "metal_tone": [
+                  "Gold tone",
+                  "Silver tone",
+                  "Rose-gold tone",
+                  "Artist's recommendation"
+                ],
+                "finish": [
+                  "Glossy",
+                  "Satin",
+                  "Pearlescent",
+                  "Botanical",
+                  "Artist's recommendation"
+                ],
+                "gift_wrap": [
+                  "Signature Velvet wrapping",
+                  "Minimal recyclable wrapping",
+                  "No gift wrapping"
+                ],
+                "gift_card": [
+                  "Include a blank card",
+                  "I will write the message in special instructions",
+                  "No card"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart",
+                  "No charm"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport",
+                  "No Passport"
+                ]
+              }
             }
           ]
         }
@@ -255,7 +897,57 @@
                 "epoxy_decorative_coaster_8.png"
               ],
               "price_ro": 119,
-              "price_ro_eur": 23.8
+              "price_ro_eur": 23.8,
+              "options": {
+                "color_palette": [
+                  "Clear and natural",
+                  "Soft pastel",
+                  "Warm earthy",
+                  "Jewel tones",
+                  "Dark and moody",
+                  "Match my décor or reference"
+                ],
+                "finish": [
+                  "Glossy",
+                  "Satin",
+                  "Matte details",
+                  "Metallic accents",
+                  "Artist's recommendation"
+                ],
+                "inclusions": [
+                  "No inclusions",
+                  "Dried botanicals",
+                  "Gold or silver leaf",
+                  "Subtle shimmer",
+                  "Small keepsake supplied by customer",
+                  "Artist's recommendation"
+                ],
+                "gift_wrap": [
+                  "Signature Velvet wrapping",
+                  "Minimal recyclable wrapping",
+                  "No gift wrapping"
+                ],
+                "gift_card": [
+                  "Include a blank card",
+                  "I will write the message in special instructions",
+                  "No card"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart",
+                  "No charm"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport",
+                  "No Passport"
+                ]
+              }
             },
             {
               "id": "tray",
@@ -270,7 +962,57 @@
                 "epoxy_decorative_tray_4.png"
               ],
               "price_ro": 189,
-              "price_ro_eur": 37.8
+              "price_ro_eur": 37.8,
+              "options": {
+                "color_palette": [
+                  "Clear and natural",
+                  "Soft pastel",
+                  "Warm earthy",
+                  "Jewel tones",
+                  "Dark and moody",
+                  "Match my décor or reference"
+                ],
+                "finish": [
+                  "Glossy",
+                  "Satin",
+                  "Matte details",
+                  "Metallic accents",
+                  "Artist's recommendation"
+                ],
+                "inclusions": [
+                  "No inclusions",
+                  "Dried botanicals",
+                  "Gold or silver leaf",
+                  "Subtle shimmer",
+                  "Small keepsake supplied by customer",
+                  "Artist's recommendation"
+                ],
+                "gift_wrap": [
+                  "Signature Velvet wrapping",
+                  "Minimal recyclable wrapping",
+                  "No gift wrapping"
+                ],
+                "gift_card": [
+                  "Include a blank card",
+                  "I will write the message in special instructions",
+                  "No card"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart",
+                  "No charm"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport",
+                  "No Passport"
+                ]
+              }
             },
             {
               "id": "figurine_small",
@@ -284,7 +1026,57 @@
                 "clay_christmas_17.png"
               ],
               "price_ro": 99,
-              "price_ro_eur": 19.8
+              "price_ro_eur": 19.8,
+              "options": {
+                "color_palette": [
+                  "Clear and natural",
+                  "Soft pastel",
+                  "Warm earthy",
+                  "Jewel tones",
+                  "Dark and moody",
+                  "Match my décor or reference"
+                ],
+                "finish": [
+                  "Glossy",
+                  "Satin",
+                  "Matte details",
+                  "Metallic accents",
+                  "Artist's recommendation"
+                ],
+                "inclusions": [
+                  "No inclusions",
+                  "Dried botanicals",
+                  "Gold or silver leaf",
+                  "Subtle shimmer",
+                  "Small keepsake supplied by customer",
+                  "Artist's recommendation"
+                ],
+                "gift_wrap": [
+                  "Signature Velvet wrapping",
+                  "Minimal recyclable wrapping",
+                  "No gift wrapping"
+                ],
+                "gift_card": [
+                  "Include a blank card",
+                  "I will write the message in special instructions",
+                  "No card"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart",
+                  "No charm"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport",
+                  "No Passport"
+                ]
+              }
             },
             {
               "id": "figurine_medium",
@@ -298,7 +1090,57 @@
                 "clay_christmas_21.png"
               ],
               "price_ro": 169,
-              "price_ro_eur": 33.8
+              "price_ro_eur": 33.8,
+              "options": {
+                "color_palette": [
+                  "Clear and natural",
+                  "Soft pastel",
+                  "Warm earthy",
+                  "Jewel tones",
+                  "Dark and moody",
+                  "Match my décor or reference"
+                ],
+                "finish": [
+                  "Glossy",
+                  "Satin",
+                  "Matte details",
+                  "Metallic accents",
+                  "Artist's recommendation"
+                ],
+                "inclusions": [
+                  "No inclusions",
+                  "Dried botanicals",
+                  "Gold or silver leaf",
+                  "Subtle shimmer",
+                  "Small keepsake supplied by customer",
+                  "Artist's recommendation"
+                ],
+                "gift_wrap": [
+                  "Signature Velvet wrapping",
+                  "Minimal recyclable wrapping",
+                  "No gift wrapping"
+                ],
+                "gift_card": [
+                  "Include a blank card",
+                  "I will write the message in special instructions",
+                  "No card"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart",
+                  "No charm"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport",
+                  "No Passport"
+                ]
+              }
             },
             {
               "id": "figurine_large",
@@ -312,7 +1154,57 @@
                 "clay_christmas_27.png"
               ],
               "price_ro": 279,
-              "price_ro_eur": 55.8
+              "price_ro_eur": 55.8,
+              "options": {
+                "color_palette": [
+                  "Clear and natural",
+                  "Soft pastel",
+                  "Warm earthy",
+                  "Jewel tones",
+                  "Dark and moody",
+                  "Match my décor or reference"
+                ],
+                "finish": [
+                  "Glossy",
+                  "Satin",
+                  "Matte details",
+                  "Metallic accents",
+                  "Artist's recommendation"
+                ],
+                "inclusions": [
+                  "No inclusions",
+                  "Dried botanicals",
+                  "Gold or silver leaf",
+                  "Subtle shimmer",
+                  "Small keepsake supplied by customer",
+                  "Artist's recommendation"
+                ],
+                "gift_wrap": [
+                  "Signature Velvet wrapping",
+                  "Minimal recyclable wrapping",
+                  "No gift wrapping"
+                ],
+                "gift_card": [
+                  "Include a blank card",
+                  "I will write the message in special instructions",
+                  "No card"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart",
+                  "No charm"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport",
+                  "No Passport"
+                ]
+              }
             }
           ]
         },
@@ -338,7 +1230,57 @@
                 "Epoxy Lamp (9).png"
               ],
               "price_ro": 429,
-              "price_ro_eur": 85.8
+              "price_ro_eur": 85.8,
+              "options": {
+                "color_palette": [
+                  "Clear and natural",
+                  "Soft pastel",
+                  "Warm earthy",
+                  "Jewel tones",
+                  "Dark and moody",
+                  "Match my décor or reference"
+                ],
+                "finish": [
+                  "Glossy",
+                  "Satin",
+                  "Matte details",
+                  "Metallic accents",
+                  "Artist's recommendation"
+                ],
+                "inclusions": [
+                  "No inclusions",
+                  "Dried botanicals",
+                  "Gold or silver leaf",
+                  "Subtle shimmer",
+                  "Small keepsake supplied by customer",
+                  "Artist's recommendation"
+                ],
+                "gift_wrap": [
+                  "Signature Velvet wrapping",
+                  "Minimal recyclable wrapping",
+                  "No gift wrapping"
+                ],
+                "gift_card": [
+                  "Include a blank card",
+                  "I will write the message in special instructions",
+                  "No card"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart",
+                  "No charm"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport",
+                  "No Passport"
+                ]
+              }
             }
           ]
         },
@@ -359,7 +1301,57 @@
                 "candle_holder_28.png"
               ],
               "price_ro": 159,
-              "price_ro_eur": 31.8
+              "price_ro_eur": 31.8,
+              "options": {
+                "color_palette": [
+                  "Clear and natural",
+                  "Soft pastel",
+                  "Warm earthy",
+                  "Jewel tones",
+                  "Dark and moody",
+                  "Match my décor or reference"
+                ],
+                "finish": [
+                  "Glossy",
+                  "Satin",
+                  "Matte details",
+                  "Metallic accents",
+                  "Artist's recommendation"
+                ],
+                "inclusions": [
+                  "No inclusions",
+                  "Dried botanicals",
+                  "Gold or silver leaf",
+                  "Subtle shimmer",
+                  "Small keepsake supplied by customer",
+                  "Artist's recommendation"
+                ],
+                "gift_wrap": [
+                  "Signature Velvet wrapping",
+                  "Minimal recyclable wrapping",
+                  "No gift wrapping"
+                ],
+                "gift_card": [
+                  "Include a blank card",
+                  "I will write the message in special instructions",
+                  "No card"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart",
+                  "No charm"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport",
+                  "No Passport"
+                ]
+              }
             }
           ]
         },
@@ -383,7 +1375,57 @@
                 "clay_christmas_necklace_4.png"
               ],
               "price_ro": 59,
-              "price_ro_eur": 11.8
+              "price_ro_eur": 11.8,
+              "options": {
+                "color_palette": [
+                  "Clear and natural",
+                  "Soft pastel",
+                  "Warm earthy",
+                  "Jewel tones",
+                  "Dark and moody",
+                  "Match my décor or reference"
+                ],
+                "finish": [
+                  "Glossy",
+                  "Satin",
+                  "Matte details",
+                  "Metallic accents",
+                  "Artist's recommendation"
+                ],
+                "inclusions": [
+                  "No inclusions",
+                  "Dried botanicals",
+                  "Gold or silver leaf",
+                  "Subtle shimmer",
+                  "Small keepsake supplied by customer",
+                  "Artist's recommendation"
+                ],
+                "gift_wrap": [
+                  "Signature Velvet wrapping",
+                  "Minimal recyclable wrapping",
+                  "No gift wrapping"
+                ],
+                "gift_card": [
+                  "Include a blank card",
+                  "I will write the message in special instructions",
+                  "No card"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart",
+                  "No charm"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport",
+                  "No Passport"
+                ]
+              }
             }
           ]
         },
@@ -404,7 +1446,57 @@
                 "epoxy_pendant_3.png"
               ],
               "price_ro": 99,
-              "price_ro_eur": 19.8
+              "price_ro_eur": 19.8,
+              "options": {
+                "color_palette": [
+                  "Clear and natural",
+                  "Soft pastel",
+                  "Warm earthy",
+                  "Jewel tones",
+                  "Dark and moody",
+                  "Match my décor or reference"
+                ],
+                "finish": [
+                  "Glossy",
+                  "Satin",
+                  "Matte details",
+                  "Metallic accents",
+                  "Artist's recommendation"
+                ],
+                "inclusions": [
+                  "No inclusions",
+                  "Dried botanicals",
+                  "Gold or silver leaf",
+                  "Subtle shimmer",
+                  "Small keepsake supplied by customer",
+                  "Artist's recommendation"
+                ],
+                "gift_wrap": [
+                  "Signature Velvet wrapping",
+                  "Minimal recyclable wrapping",
+                  "No gift wrapping"
+                ],
+                "gift_card": [
+                  "Include a blank card",
+                  "I will write the message in special instructions",
+                  "No card"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart",
+                  "No charm"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport",
+                  "No Passport"
+                ]
+              }
             },
             {
               "id": "epoxy_earrings",
@@ -421,7 +1513,57 @@
                 "epoxy_earings_6.png"
               ],
               "price_ro": 89,
-              "price_ro_eur": 17.8
+              "price_ro_eur": 17.8,
+              "options": {
+                "color_palette": [
+                  "Clear and natural",
+                  "Soft pastel",
+                  "Warm earthy",
+                  "Jewel tones",
+                  "Dark and moody",
+                  "Match my décor or reference"
+                ],
+                "finish": [
+                  "Glossy",
+                  "Satin",
+                  "Matte details",
+                  "Metallic accents",
+                  "Artist's recommendation"
+                ],
+                "inclusions": [
+                  "No inclusions",
+                  "Dried botanicals",
+                  "Gold or silver leaf",
+                  "Subtle shimmer",
+                  "Small keepsake supplied by customer",
+                  "Artist's recommendation"
+                ],
+                "gift_wrap": [
+                  "Signature Velvet wrapping",
+                  "Minimal recyclable wrapping",
+                  "No gift wrapping"
+                ],
+                "gift_card": [
+                  "Include a blank card",
+                  "I will write the message in special instructions",
+                  "No card"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart",
+                  "No charm"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport",
+                  "No Passport"
+                ]
+              }
             },
             {
               "id": "epoxy_ring",
@@ -437,7 +1579,57 @@
                 "epoxy_ring_5.png"
               ],
               "price_ro": 79,
-              "price_ro_eur": 15.8
+              "price_ro_eur": 15.8,
+              "options": {
+                "color_palette": [
+                  "Clear and natural",
+                  "Soft pastel",
+                  "Warm earthy",
+                  "Jewel tones",
+                  "Dark and moody",
+                  "Match my décor or reference"
+                ],
+                "finish": [
+                  "Glossy",
+                  "Satin",
+                  "Matte details",
+                  "Metallic accents",
+                  "Artist's recommendation"
+                ],
+                "inclusions": [
+                  "No inclusions",
+                  "Dried botanicals",
+                  "Gold or silver leaf",
+                  "Subtle shimmer",
+                  "Small keepsake supplied by customer",
+                  "Artist's recommendation"
+                ],
+                "gift_wrap": [
+                  "Signature Velvet wrapping",
+                  "Minimal recyclable wrapping",
+                  "No gift wrapping"
+                ],
+                "gift_card": [
+                  "Include a blank card",
+                  "I will write the message in special instructions",
+                  "No card"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart",
+                  "No charm"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport",
+                  "No Passport"
+                ]
+              }
             }
           ]
         },
@@ -457,7 +1649,57 @@
                 "epoxy jewelry box 3.png"
               ],
               "price_ro": 219,
-              "price_ro_eur": 43.8
+              "price_ro_eur": 43.8,
+              "options": {
+                "color_palette": [
+                  "Clear and natural",
+                  "Soft pastel",
+                  "Warm earthy",
+                  "Jewel tones",
+                  "Dark and moody",
+                  "Match my décor or reference"
+                ],
+                "finish": [
+                  "Glossy",
+                  "Satin",
+                  "Matte details",
+                  "Metallic accents",
+                  "Artist's recommendation"
+                ],
+                "inclusions": [
+                  "No inclusions",
+                  "Dried botanicals",
+                  "Gold or silver leaf",
+                  "Subtle shimmer",
+                  "Small keepsake supplied by customer",
+                  "Artist's recommendation"
+                ],
+                "gift_wrap": [
+                  "Signature Velvet wrapping",
+                  "Minimal recyclable wrapping",
+                  "No gift wrapping"
+                ],
+                "gift_card": [
+                  "Include a blank card",
+                  "I will write the message in special instructions",
+                  "No card"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart",
+                  "No charm"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport",
+                  "No Passport"
+                ]
+              }
             }
           ]
         },
@@ -492,7 +1734,57 @@
                 "PersonalizedCase (18).png"
               ],
               "price_ro": 199,
-              "price_ro_eur": 39.8
+              "price_ro_eur": 39.8,
+              "options": {
+                "color_palette": [
+                  "Clear and natural",
+                  "Soft pastel",
+                  "Warm earthy",
+                  "Jewel tones",
+                  "Dark and moody",
+                  "Match my décor or reference"
+                ],
+                "finish": [
+                  "Glossy",
+                  "Satin",
+                  "Matte details",
+                  "Metallic accents",
+                  "Artist's recommendation"
+                ],
+                "inclusions": [
+                  "No inclusions",
+                  "Dried botanicals",
+                  "Gold or silver leaf",
+                  "Subtle shimmer",
+                  "Small keepsake supplied by customer",
+                  "Artist's recommendation"
+                ],
+                "gift_wrap": [
+                  "Signature Velvet wrapping",
+                  "Minimal recyclable wrapping",
+                  "No gift wrapping"
+                ],
+                "gift_card": [
+                  "Include a blank card",
+                  "I will write the message in special instructions",
+                  "No card"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart",
+                  "No charm"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport",
+                  "No Passport"
+                ]
+              }
             }
           ]
         }
@@ -512,7 +1804,56 @@
             "Leather Bag Small.png"
           ],
           "price_ro": 399,
-          "price_ro_eur": 79.8
+          "price_ro_eur": 79.8,
+          "options": {
+            "leather_color": [
+              "Black",
+              "Chocolate brown",
+              "Cognac",
+              "Natural tan",
+              "Burgundy",
+              "Forest green",
+              "Artist's recommendation"
+            ],
+            "hardware": [
+              "Gold tone",
+              "Silver tone",
+              "Antique brass",
+              "Black",
+              "Artist's recommendation"
+            ],
+            "personalization": [
+              "No initials",
+              "Embossed initials",
+              "Small hand-painted detail",
+              "I will describe it in special instructions"
+            ],
+            "gift_wrap": [
+              "Signature Velvet wrapping",
+              "Minimal recyclable wrapping",
+              "No gift wrapping"
+            ],
+            "gift_card": [
+              "Include a blank card",
+              "I will write the message in special instructions",
+              "No card"
+            ],
+            "collectible_charm": [
+              "Surprise me",
+              "Moon",
+              "Star",
+              "Butterfly",
+              "Key",
+              "Flower",
+              "Heart",
+              "No charm"
+            ],
+            "velvet_passport": [
+              "Include my first Velvet Passport",
+              "Add stamps to my existing Passport",
+              "No Passport"
+            ]
+          }
         },
         {
           "id": "leather_bag_medium",
@@ -524,7 +1865,56 @@
             "Leather Bag Medium.png"
           ],
           "price_ro": 599,
-          "price_ro_eur": 119.8
+          "price_ro_eur": 119.8,
+          "options": {
+            "leather_color": [
+              "Black",
+              "Chocolate brown",
+              "Cognac",
+              "Natural tan",
+              "Burgundy",
+              "Forest green",
+              "Artist's recommendation"
+            ],
+            "hardware": [
+              "Gold tone",
+              "Silver tone",
+              "Antique brass",
+              "Black",
+              "Artist's recommendation"
+            ],
+            "personalization": [
+              "No initials",
+              "Embossed initials",
+              "Small hand-painted detail",
+              "I will describe it in special instructions"
+            ],
+            "gift_wrap": [
+              "Signature Velvet wrapping",
+              "Minimal recyclable wrapping",
+              "No gift wrapping"
+            ],
+            "gift_card": [
+              "Include a blank card",
+              "I will write the message in special instructions",
+              "No card"
+            ],
+            "collectible_charm": [
+              "Surprise me",
+              "Moon",
+              "Star",
+              "Butterfly",
+              "Key",
+              "Flower",
+              "Heart",
+              "No charm"
+            ],
+            "velvet_passport": [
+              "Include my first Velvet Passport",
+              "Add stamps to my existing Passport",
+              "No Passport"
+            ]
+          }
         },
         {
           "id": "leather_bag_large",
@@ -536,7 +1926,56 @@
             "Leather Bag Large.png"
           ],
           "price_ro": 799,
-          "price_ro_eur": 159.8
+          "price_ro_eur": 159.8,
+          "options": {
+            "leather_color": [
+              "Black",
+              "Chocolate brown",
+              "Cognac",
+              "Natural tan",
+              "Burgundy",
+              "Forest green",
+              "Artist's recommendation"
+            ],
+            "hardware": [
+              "Gold tone",
+              "Silver tone",
+              "Antique brass",
+              "Black",
+              "Artist's recommendation"
+            ],
+            "personalization": [
+              "No initials",
+              "Embossed initials",
+              "Small hand-painted detail",
+              "I will describe it in special instructions"
+            ],
+            "gift_wrap": [
+              "Signature Velvet wrapping",
+              "Minimal recyclable wrapping",
+              "No gift wrapping"
+            ],
+            "gift_card": [
+              "Include a blank card",
+              "I will write the message in special instructions",
+              "No card"
+            ],
+            "collectible_charm": [
+              "Surprise me",
+              "Moon",
+              "Star",
+              "Butterfly",
+              "Key",
+              "Flower",
+              "Heart",
+              "No charm"
+            ],
+            "velvet_passport": [
+              "Include my first Velvet Passport",
+              "Add stamps to my existing Passport",
+              "No Passport"
+            ]
+          }
         }
       ]
     },
@@ -556,7 +1995,56 @@
             "Wall Clocks (3).png"
           ],
           "price_ro": 399,
-          "price_ro_eur": 79.8
+          "price_ro_eur": 79.8,
+          "options": {
+            "color_palette": [
+              "Natural wood and neutral",
+              "Soft pastel",
+              "Warm earthy",
+              "Jewel tones",
+              "Dark and moody",
+              "Match my room or reference"
+            ],
+            "number_style": [
+              "Classic numerals",
+              "Roman numerals",
+              "Minimal markers",
+              "No numerals",
+              "Artist's recommendation"
+            ],
+            "finish": [
+              "Glossy resin",
+              "Satin",
+              "Natural texture",
+              "Metallic accents",
+              "Artist's recommendation"
+            ],
+            "gift_wrap": [
+              "Signature Velvet wrapping",
+              "Minimal recyclable wrapping",
+              "No gift wrapping"
+            ],
+            "gift_card": [
+              "Include a blank card",
+              "I will write the message in special instructions",
+              "No card"
+            ],
+            "collectible_charm": [
+              "Surprise me",
+              "Moon",
+              "Star",
+              "Butterfly",
+              "Key",
+              "Flower",
+              "Heart",
+              "No charm"
+            ],
+            "velvet_passport": [
+              "Include my first Velvet Passport",
+              "Add stamps to my existing Passport",
+              "No Passport"
+            ]
+          }
         }
       ]
     },
@@ -574,7 +2062,50 @@
             "relaxandrestoreset.png"
           ],
           "price_ro": 229,
-          "price_ro_eur": 45.8
+          "price_ro_eur": 45.8,
+          "options": {
+            "gift_theme": [
+              "Relaxation",
+              "Celebration",
+              "Romantic",
+              "Housewarming",
+              "Seasonal",
+              "Artist's recommendation"
+            ],
+            "color_palette": [
+              "Soft pastel",
+              "Warm earthy",
+              "Jewel tones",
+              "Neutral",
+              "Seasonal",
+              "Artist's recommendation"
+            ],
+            "gift_wrap": [
+              "Signature Velvet wrapping",
+              "Minimal recyclable wrapping",
+              "No gift wrapping"
+            ],
+            "gift_card": [
+              "Include a blank card",
+              "I will write the message in special instructions",
+              "No card"
+            ],
+            "collectible_charm": [
+              "Surprise me",
+              "Moon",
+              "Star",
+              "Butterfly",
+              "Key",
+              "Flower",
+              "Heart",
+              "No charm"
+            ],
+            "velvet_passport": [
+              "Include my first Velvet Passport",
+              "Add stamps to my existing Passport",
+              "No Passport"
+            ]
+          }
         },
         {
           "id": "cozy_winter",
@@ -586,7 +2117,50 @@
             "Cozy Winter Set.png"
           ],
           "price_ro": 499,
-          "price_ro_eur": 99.8
+          "price_ro_eur": 99.8,
+          "options": {
+            "gift_theme": [
+              "Relaxation",
+              "Celebration",
+              "Romantic",
+              "Housewarming",
+              "Seasonal",
+              "Artist's recommendation"
+            ],
+            "color_palette": [
+              "Soft pastel",
+              "Warm earthy",
+              "Jewel tones",
+              "Neutral",
+              "Seasonal",
+              "Artist's recommendation"
+            ],
+            "gift_wrap": [
+              "Signature Velvet wrapping",
+              "Minimal recyclable wrapping",
+              "No gift wrapping"
+            ],
+            "gift_card": [
+              "Include a blank card",
+              "I will write the message in special instructions",
+              "No card"
+            ],
+            "collectible_charm": [
+              "Surprise me",
+              "Moon",
+              "Star",
+              "Butterfly",
+              "Key",
+              "Flower",
+              "Heart",
+              "No charm"
+            ],
+            "velvet_passport": [
+              "Include my first Velvet Passport",
+              "Add stamps to my existing Passport",
+              "No Passport"
+            ]
+          }
         },
         {
           "id": "home_harmony",
@@ -598,7 +2172,50 @@
             "homeharmonybox.png"
           ],
           "price_ro": 349,
-          "price_ro_eur": 69.8
+          "price_ro_eur": 69.8,
+          "options": {
+            "gift_theme": [
+              "Relaxation",
+              "Celebration",
+              "Romantic",
+              "Housewarming",
+              "Seasonal",
+              "Artist's recommendation"
+            ],
+            "color_palette": [
+              "Soft pastel",
+              "Warm earthy",
+              "Jewel tones",
+              "Neutral",
+              "Seasonal",
+              "Artist's recommendation"
+            ],
+            "gift_wrap": [
+              "Signature Velvet wrapping",
+              "Minimal recyclable wrapping",
+              "No gift wrapping"
+            ],
+            "gift_card": [
+              "Include a blank card",
+              "I will write the message in special instructions",
+              "No card"
+            ],
+            "collectible_charm": [
+              "Surprise me",
+              "Moon",
+              "Star",
+              "Butterfly",
+              "Key",
+              "Flower",
+              "Heart",
+              "No charm"
+            ],
+            "velvet_passport": [
+              "Include my first Velvet Passport",
+              "Add stamps to my existing Passport",
+              "No Passport"
+            ]
+          }
         }
       ]
     }
