@@ -52,3 +52,14 @@ html[lang="en"] .made-for-you .lang-en{display:block;}
   .made-for-you{margin-bottom:34px;padding:24px 20px;border-radius:18px;}
   .payment-status-banner{margin:0 14px 16px;}
 }
+
+.product-making-time{
+  margin:.65rem 0 .9rem;
+  padding:.65rem .8rem;
+  border-left:2px solid rgba(231,184,213,.7);
+  background:rgba(255,255,255,.045);
+  color:rgba(247,234,243,.9);
+  font-size:.9rem;
+  line-height:1.45;
+}
+.product-making-time strong{color:#f5d8e9;font-weight:600;}
