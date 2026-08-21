@@ -19,7 +19,7 @@ function catalogueProducts() {
   return new Map(products.map(product => [product.id, product]));
 }
 
-function validatedItems(requestBody) {
+function validatedItems(requestBody, market) {
   const rawItems = requestBody?.cart?.items;
   if (!Array.isArray(rawItems) || rawItems.length === 0 || rawItems.length > 100) throw new Error("INVALID_CART");
   const catalogue = catalogueProducts();
@@ -27,7 +27,7 @@ function validatedItems(requestBody) {
     const product = catalogue.get(rawItem?.id);
     const quantity = Number.parseInt(rawItem?.qty, 10);
     if (!product || !Number.isInteger(quantity) || quantity < 1 || quantity > 99) throw new Error("INVALID_CART");
-    const price = Number(product.price);
+    const price = market === "RO" ? Number(product.price_ro_eur) : Number(product.price);
     if (!Number.isFinite(price) || price < 0) throw new Error("INVALID_CART");
 
     const options = {};
@@ -109,7 +109,8 @@ export default async function handler(req, res) {
   if (!/^[A-Z0-9]{1,36}$/i.test(orderID)) return res.status(400).json({ error: "Missing or invalid PayPal order ID." });
 
   try {
-    const items = validatedItems(req.body);
+    const market = String(req.headers["x-vercel-ip-country"] || "").toUpperCase() === "RO" ? "RO" : "INTL";
+    const items = validatedItems(req.body, market);
     const expectedTotal = items.reduce((total, item) => total + item.price * item.quantity, 0);
     const baseUrl = paypalBaseUrl();
     const token = await accessToken(baseUrl);
@@ -117,6 +118,7 @@ export default async function handler(req, res) {
     const details = await detailsResponse.json();
     if (!detailsResponse.ok) return res.status(502).json({ error: "PayPal order details could not be verified." });
 
+    if (details.purchase_units?.[0]?.custom_id !== market) return res.status(409).json({ error: "The approved PayPal market no longer matches this order." });
     const paypalItems = details.purchase_units?.[0]?.items || [];
     const itemsMatch = paypalItems.length === items.length && items.every((item, index) => paypalItems[index]?.sku === item.id && Number(paypalItems[index]?.quantity) === item.quantity && paypalItems[index]?.unit_amount?.currency_code === CURRENCY && Number(paypalItems[index]?.unit_amount?.value) === Number(item.price.toFixed(2)));
     const approvedAmount = details.purchase_units?.[0]?.amount;
