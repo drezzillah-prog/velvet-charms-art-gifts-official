@@ -130,7 +130,7 @@
       if (Array.isArray(category.products)) {
         html += '<div class="catalogue-grid">';
         category.products.forEach(product => {
-          html += productCard(product, category.name, sub.name);
+          html += productCard(product, category.name);
         });
         html += "</div>";
       }
