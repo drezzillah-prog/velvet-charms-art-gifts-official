@@ -11,6 +11,10 @@
       if(labels[lang][href]) link.textContent=labels[lang][href];
       if(link.classList.contains('sister-link')||href.includes('velvet-charms-body-glow')) link.textContent=lang==='ro'?'Vizitează Body Glow':'Visit Body Glow';
     });
+
+    document.querySelectorAll('.custom-process a[href="custom-orders.html"]').forEach(link=>{
+      link.textContent=lang==='ro'?'Descoperă creațiile personalizate':'Explore custom creations';
+    });
   }
   document.addEventListener('DOMContentLoaded',apply);
   new MutationObserver(apply).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
