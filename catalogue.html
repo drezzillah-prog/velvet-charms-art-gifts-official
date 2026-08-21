@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="production.css">
 <link rel="stylesheet" href="performance.css">
+<link rel="stylesheet" href="mobile-polish.css">
 </head>
 <body>
 <header class="site-header">
@@ -21,7 +22,7 @@
       <a href="faq.html">FAQ</a>
       <a href="contact.html">Contact</a>
       <a href="universe.html">Velvet Universe</a>
-      <a href="https://velvet-charms-body-glow-official.vercel.app">Visit Body Glow</a>
+      <a class="sister-link" href="https://velvet-charms-body-glow-official.vercel.app">Visit Body Glow</a>
     </nav>
   </div>
 </header>
@@ -49,16 +50,16 @@
   </section>
   <div id="catalogue-root" class="catalogue-root loading"></div>
   <section class="custom-process">
-    <h3>How Custom Orders Work</h3>
-    <ol>
-      <li>Choose an item or share your idea</li>
-      <li>Describe colors, size, materials, mood, and details</li>
-      <li>Receive concept visuals or previews</li>
-      <li>Request refinements until perfect</li>
-      <li>We craft your one-of-a-kind piece</li>
-    </ol>
-    <p><strong>Every item is handmade — never mass produced.</strong></p>
-    <p><a class="btn" href="custom-orders.html">Explore custom creations</a></p>
+    <div class="lang-en">
+      <h3>Looking for something truly personal?</h3>
+      <p>If the piece you imagine is not in the catalogue, we can develop a custom creation from your photograph, memory or idea.</p>
+      <p><a class="btn" href="custom-orders.html">Explore custom creations</a></p>
+    </div>
+    <div class="lang-ro" lang="ro">
+      <h3>Îți dorești ceva cu adevărat personal?</h3>
+      <p>Dacă piesa pe care ți-o imaginezi nu există în catalog, putem crea ceva special pornind de la o fotografie, o amintire sau o idee.</p>
+      <p><a class="btn" href="custom-orders.html">Descoperă creațiile personalizate</a></p>
+    </div>
   </section>
 </main>
 <footer class="site-footer"><p>© Velvet Charms — Art & Gifts</p></footer>
@@ -66,6 +67,7 @@
 <script src="script.js"></script>
 <script src="features.js"></script>
 <script src="localization.js"></script>
+<script src="nav-parity.js"></script>
 <script src="checkout-status.js"></script>
 </body>
 </html>
