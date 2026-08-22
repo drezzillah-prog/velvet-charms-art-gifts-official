@@ -7,8 +7,16 @@
   const maxSize = 4 * 1024 * 1024;
   const allowed = new Set(['image/jpeg', 'image/png', 'image/webp']);
 
-  const isRo = () => document.documentElement.lang === 'ro' || localStorage.getItem('velvetLanguage') === 'ro';
+  const isRo = () => document.documentElement.lang === 'ro' || localStorage.getItem('velvet_language_art_gifts') === 'ro';
   const say = (en, ro) => { status.textContent = isRo() ? ro : en; };
+
+  async function cleanupUploaded(uploaded) {
+    await Promise.allSettled(uploaded.map(file => fetch('/api/delete-reference', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ pathname: file.pathname, key: file.accessKey })
+    })));
+  }
 
   filesInput.addEventListener('change', () => {
     const files = [...filesInput.files];
@@ -33,15 +41,15 @@
     const submit = form.querySelector('button[type="submit"]');
     submit.disabled = true;
     say('Preparing your custom request…', 'Pregătim cererea ta personalizată…');
+    const uploaded = [];
 
     try {
-      const uploaded = [];
       for (const file of files) {
         const body = new FormData();
         body.append('file', file);
         const response = await fetch('/api/upload', { method: 'POST', body });
         const result = await response.json().catch(() => ({}));
-        if (!response.ok || !result.ok || !result.file?.viewUrl) {
+        if (!response.ok || !result.ok || !result.file?.viewUrl || !result.file?.pathname || !result.file?.accessKey) {
           throw new Error(result.error || 'reference upload failed');
         }
         uploaded.push(result.file);
@@ -76,7 +84,8 @@
       say('Thank you. Your request and reference images have been received securely. We will review the idea before confirming price and production timing.', 'Mulțumim. Cererea și imaginile de referință au fost primite în siguranță. Vom analiza ideea înainte de a confirma prețul și termenul de realizare.');
     } catch (error) {
       console.error(error);
-      say('We could not send the request safely. Please try again or contact us without closing this page.', 'Cererea nu a putut fi trimisă în siguranță. Te rugăm să încerci din nou sau să ne contactezi fără să închizi această pagină.');
+      if (uploaded.length) await cleanupUploaded(uploaded);
+      say('We could not send the request safely. Any newly uploaded reference images were removed. Please try again.', 'Cererea nu a putut fi trimisă în siguranță. Imaginile de referință încărcate pentru această încercare au fost eliminate. Te rugăm să încerci din nou.');
     } finally {
       submit.disabled = false;
     }
