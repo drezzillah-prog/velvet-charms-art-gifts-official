@@ -9,11 +9,6 @@ function paypalBaseUrl() {
   return mode === "sandbox" ? "https://api-m.sandbox.paypal.com" : "https://api-m.paypal.com";
 }
 function paypalSecret() { return process.env.PAYPAL_CLIENT_SECRET || process.env.PAYPAL_SECRET; }
-function marketFromRequest(req) {
-  const country = String(req.headers["x-vercel-ip-country"] || "").toUpperCase();
-  const timezone = String(req.headers["x-vercel-ip-timezone"] || "");
-  return country === "RO" || (!country && timezone === "Europe/Bucharest") ? "RO" : "INTL";
-}
 function romanianPricing() {
   return JSON.parse(readFileSync(join(process.cwd(), "pricing-ro.json"), "utf8"));
 }
@@ -125,16 +120,20 @@ export default async function handler(req, res) {
   if (!/^[A-Z0-9]{1,36}$/i.test(orderID)) return res.status(400).json({ error: "Missing or invalid PayPal order ID." });
 
   try {
-    const market = marketFromRequest(req);
-    const items = validatedItems(req.body, market);
-    const expectedTotal = items.reduce((total, item) => total + item.price * item.quantity, 0);
     const baseUrl = paypalBaseUrl();
     const token = await accessToken(baseUrl);
     const detailsResponse = await fetch(`${baseUrl}/v2/checkout/orders/${encodeURIComponent(orderID)}`, { headers: { Authorization: `Bearer ${token}` } });
     const details = await detailsResponse.json();
     if (!detailsResponse.ok) return res.status(502).json({ error: "PayPal order details could not be verified." });
 
-    if (details.purchase_units?.[0]?.custom_id !== market) return res.status(409).json({ error: "The approved PayPal market no longer matches this order." });
+    const market = details.purchase_units?.[0]?.custom_id === "RO" ? "RO" : "INTL";
+    const deliveryCountry = String(details.purchase_units?.[0]?.shipping?.address?.country_code || details.payer?.address?.country_code || "").toUpperCase();
+    if (market === "RO" && deliveryCountry !== "RO") {
+      return res.status(409).json({ error: "Romanian prices require a delivery address in Romania. No payment was captured." });
+    }
+
+    const items = validatedItems(req.body, market);
+    const expectedTotal = items.reduce((total, item) => total + item.price * item.quantity, 0);
     const paypalItems = details.purchase_units?.[0]?.items || [];
     const itemsMatch = paypalItems.length === items.length && items.every((item, index) => paypalItems[index]?.sku === item.id && Number(paypalItems[index]?.quantity) === item.quantity && paypalItems[index]?.unit_amount?.currency_code === CURRENCY && Number(paypalItems[index]?.unit_amount?.value) === Number(item.price.toFixed(2)));
     const approvedAmount = details.purchase_units?.[0]?.amount;
