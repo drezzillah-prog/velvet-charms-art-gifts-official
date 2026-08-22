@@ -30,38 +30,95 @@
       <label>Name<input type="text" name="name" required></label>
       <label>Email (optional)<input type="email" name="email"></label>
       <label>Message<textarea name="message" rows="5" required></textarea></label>
-      <p class="contact-note" id="contact-photo-note">Reference photographs for catalogue items can be added securely through the product customization flow. For a completely new commission, describe the idea here first and we will guide you through the next step.</p>
+      <div class="contact-reference-upload">
+        <label for="contact-photos" id="contact-photo-label">Reference photographs (optional, up to 5)</label>
+        <input id="contact-photos" type="file" accept="image/jpeg,image/png,image/webp" multiple>
+        <p class="contact-note" id="contact-photo-note">For a custom creation, you can include up to five JPG, PNG or WEBP reference photographs with your first request. Each image must be under 4 MB and is stored privately.</p>
+        <div id="contact-photo-list" class="contact-photo-list" aria-live="polite"></div>
+      </div>
       <div><button type="submit" class="btn">Send</button></div>
       <p id="contact-status" style="margin-top:10px;color:var(--muted)" aria-live="polite"></p>
     </form>
   </main>
   <footer class="site-footer"><p>© Velvet Charms — handmade with care</p></footer>
   <script>
-    function syncContactPhotoNote(){
+    const contactPhotos = document.getElementById('contact-photos');
+    const photoList = document.getElementById('contact-photo-list');
+
+    function isRomanian(){ return document.documentElement.lang === 'ro'; }
+    function syncContactCopy(){
+      const label = document.getElementById('contact-photo-label');
       const note = document.getElementById('contact-photo-note');
-      if (!note) return;
-      note.textContent = document.documentElement.lang === 'ro'
-        ? 'Fotografiile de referință pentru produsele din catalog pot fi adăugate în siguranță în fluxul de personalizare. Pentru o creație complet nouă, descrie-ne mai întâi ideea aici, iar noi îți explicăm pasul următor.'
-        : 'Reference photographs for catalogue items can be added securely through the product customization flow. For a completely new commission, describe the idea here first and we will guide you through the next step.';
+      if (label) label.textContent = isRomanian() ? 'Fotografii de referință (opțional, maximum 5)' : 'Reference photographs (optional, up to 5)';
+      if (note) note.textContent = isRomanian()
+        ? 'Pentru o creație personalizată poți include chiar din prima cerere maximum cinci fotografii JPG, PNG sau WEBP. Fiecare imagine trebuie să aibă sub 4 MB și este stocată privat.'
+        : 'For a custom creation, you can include up to five JPG, PNG or WEBP reference photographs with your first request. Each image must be under 4 MB and is stored privately.';
     }
-    document.addEventListener('DOMContentLoaded', syncContactPhotoNote);
-    document.addEventListener('velvet:language-change', syncContactPhotoNote);
+    function renderPhotoSelection(){
+      const files = Array.from(contactPhotos.files || []);
+      photoList.textContent = files.length
+        ? (isRomanian() ? `${files.length} fotografie/fotografii selectate.` : `${files.length} reference photo(s) selected.`)
+        : '';
+    }
+    contactPhotos.addEventListener('change', () => {
+      const files = Array.from(contactPhotos.files || []);
+      if (files.length > 5) {
+        contactPhotos.value = '';
+        photoList.textContent = isRomanian() ? 'Poți încărca maximum 5 fotografii.' : 'You can upload up to 5 photographs.';
+        return;
+      }
+      const invalid = files.find(file => !['image/jpeg','image/png','image/webp'].includes(file.type) || file.size > 4 * 1024 * 1024);
+      if (invalid) {
+        contactPhotos.value = '';
+        photoList.textContent = isRomanian() ? 'Fiecare fotografie trebuie să fie JPG, PNG sau WEBP și să aibă sub 4 MB.' : 'Each photograph must be JPG, PNG or WEBP and under 4 MB.';
+        return;
+      }
+      renderPhotoSelection();
+    });
+    document.addEventListener('DOMContentLoaded', syncContactCopy);
+    document.addEventListener('velvet:language-change', () => { syncContactCopy(); renderPhotoSelection(); });
+
+    async function uploadReferencePhoto(file){
+      const data = new FormData();
+      data.append('photo', file);
+      const response = await fetch('/api/upload-photo.js', { method: 'POST', body: data });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || !result.pathname) throw new Error(result.error || 'Photo upload failed');
+      return result.pathname;
+    }
 
     document.getElementById('contact-form').addEventListener('submit', async function(e){
       e.preventDefault();
       const status = document.getElementById('contact-status');
-      status.textContent = 'Sending…';
       const form = e.target;
+      const files = Array.from(contactPhotos.files || []);
+      status.textContent = files.length
+        ? (isRomanian() ? 'Încărcăm fotografiile și trimitem cererea…' : 'Uploading photographs and sending your request…')
+        : (isRomanian() ? 'Se trimite…' : 'Sending…');
       try {
+        const referencePhotos = [];
+        for (const file of files) referencePhotos.push(await uploadReferencePhoto(file));
         const r = await fetch('/api/contact.js', {
           method: 'POST',
           headers: {'Content-Type':'application/json'},
-          body: JSON.stringify({name: form.name.value,email: form.email.value || '',message: form.message.value})
+          body: JSON.stringify({
+            name: form.name.value,
+            email: form.email.value || '',
+            message: form.message.value,
+            referencePhotos
+          })
         });
-        const j = await r.json();
-        if (r.ok) { status.textContent = 'Message sent. Thank you!'; form.reset(); }
-        else { status.textContent = 'Failed to send: ' + (j.error || 'unknown'); }
-      } catch (err) { status.textContent = 'Error: ' + err.toString(); }
+        const j = await r.json().catch(() => ({}));
+        if (r.ok) {
+          status.textContent = isRomanian() ? 'Cererea a fost trimisă. Mulțumim!' : 'Request sent. Thank you!';
+          form.reset();
+          photoList.textContent = '';
+        } else {
+          status.textContent = (isRomanian() ? 'Cererea nu a putut fi trimisă: ' : 'Failed to send: ') + (j.error || 'unknown');
+        }
+      } catch (err) {
+        status.textContent = isRomanian() ? 'Fotografiile sau cererea nu au putut fi trimise. Te rugăm să încerci din nou.' : 'The photographs or request could not be sent. Please try again.';
+      }
     });
   </script>
   <script src="script.js"></script>
