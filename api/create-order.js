@@ -8,6 +8,11 @@ function paypalBaseUrl() {
   return mode === "sandbox" ? "https://api-m.sandbox.paypal.com" : "https://api-m.paypal.com";
 }
 function paypalSecret() { return process.env.PAYPAL_CLIENT_SECRET || process.env.PAYPAL_SECRET; }
+function marketFromRequest(req) {
+  const country = String(req.headers["x-vercel-ip-country"] || "").toUpperCase();
+  const timezone = String(req.headers["x-vercel-ip-timezone"] || "");
+  return country === "RO" || (!country && timezone === "Europe/Bucharest") ? "RO" : "INTL";
+}
 function romanianPricing() {
   return JSON.parse(readFileSync(join(process.cwd(), "pricing-ro.json"), "utf8"));
 }
@@ -82,7 +87,7 @@ async function accessToken(baseUrl) {
 export default async function handler(req, res) {
   if (req.method !== "POST") { res.setHeader("Allow", "POST"); return res.status(405).json({ error: "Method not allowed" }); }
   try {
-    const market = String(req.headers["x-vercel-ip-country"] || "").toUpperCase() === "RO" ? "RO" : "INTL";
+    const market = marketFromRequest(req);
     const items = validatedItems(req.body, market);
     const itemTotal = items.reduce((total, item) => total + item.price * item.quantity, 0);
     const requestedDate = /^\d{4}-\d{2}-\d{2}$/.test(String(req.body?.cart?.requiredByDate || "")) ? String(req.body.cart.requiredByDate) : "";
