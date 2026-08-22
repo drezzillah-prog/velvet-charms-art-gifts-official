@@ -2,11 +2,35 @@
   "use strict";
 
   const CATALOGUE_FILE = "catalogue-art-gifts.json";
+  const ROMANIAN_PRICING_FILE = "pricing-ro.json";
+
+  function applyRomanianPricing(data, pricing) {
+    const apply = product => {
+      const ron = Number(pricing?.[product.id]);
+      if (!Number.isFinite(ron)) return;
+      product.price_ro = ron;
+      product.price_ro_eur = Number((ron / 5).toFixed(2));
+    };
+
+    (data.categories || []).forEach(category => {
+      (category.products || []).forEach(apply);
+      (category.subcategories || []).forEach(subcategory => (subcategory.products || []).forEach(apply));
+    });
+    return data;
+  }
 
   async function loadCatalogue() {
-    const res = await fetch(CATALOGUE_FILE, { cache: "no-store" });
-    if (!res.ok) throw new Error("Failed to load catalogue");
-    return res.json();
+    const [catalogueResponse, pricingResponse] = await Promise.all([
+      fetch(CATALOGUE_FILE, { cache: "no-store" }),
+      fetch(ROMANIAN_PRICING_FILE, { cache: "no-store" })
+    ]);
+    if (!catalogueResponse.ok) throw new Error("Failed to load catalogue");
+    const data = await catalogueResponse.json();
+    if (pricingResponse.ok) {
+      try { applyRomanianPricing(data, await pricingResponse.json()); }
+      catch (error) { console.warn("Romanian pricing map could not be applied:", error); }
+    }
+    return data;
   }
 
   function escapeHtml(value) {
