@@ -65,6 +65,7 @@ module.exports = async (req, res) => {
         originalName: file.originalFilename || 'reference image',
         size: file.size,
         pathname: blob.pathname,
+        accessKey,
         viewUrl
       }
     });
