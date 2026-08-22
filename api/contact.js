@@ -14,8 +14,14 @@ module.exports = async (req, res) => {
   const name = String(req.body?.name || "").trim().slice(0, 120);
   const email = String(req.body?.email || "").trim().slice(0, 254);
   const message = String(req.body?.message || "").trim().slice(0, 5000);
+  const referencePhotos = Array.isArray(req.body?.referencePhotos)
+    ? req.body.referencePhotos.map(value => String(value || "").trim()).filter(Boolean).slice(0, 5)
+    : [];
   if (!name || !message || (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))) {
     return res.status(400).json({ error: "Please check your name, email and message." });
+  }
+  if (referencePhotos.some(pathname => !/^custom-orders\/[A-Za-z0-9._/-]+$/.test(pathname))) {
+    return res.status(400).json({ error: "One or more photo references are invalid." });
   }
 
   const endpoint = formspreeUrl();
@@ -27,7 +33,16 @@ module.exports = async (req, res) => {
     const response = await fetch(endpoint, {
       method: "POST",
       headers: { Accept: "application/json", "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, message, _subject: "New Velvet Charms website message" })
+      body: JSON.stringify({
+        name,
+        email,
+        message,
+        reference_photos: referencePhotos.length ? referencePhotos.join("\n") : "None",
+        reference_photo_count: referencePhotos.length,
+        _subject: referencePhotos.length
+          ? "New Velvet Charms custom creation request"
+          : "New Velvet Charms website message"
+      })
     });
     const data = await response.json().catch(() => ({}));
     if (!response.ok) {
