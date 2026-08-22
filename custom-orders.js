@@ -40,13 +40,19 @@
         const body = new FormData();
         body.append('file', file);
         const response = await fetch('/api/upload', { method: 'POST', body });
-        if (!response.ok) throw new Error('reference upload failed');
-        const result = await response.json();
-        uploaded.push(result.file || { originalName: file.name, size: file.size });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok || !result.ok || !result.file?.viewUrl) {
+          throw new Error(result.error || 'reference upload failed');
+        }
+        uploaded.push(result.file);
       }
 
       const data = Object.fromEntries(new FormData(form).entries());
-      data.referenceFiles = uploaded;
+      const referenceLines = uploaded.map((file, index) => {
+        const absoluteUrl = new URL(file.viewUrl, window.location.origin).href;
+        return `Reference ${index + 1}: ${file.originalName || 'image'} — ${absoluteUrl}`;
+      });
+
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -59,14 +65,15 @@
             `Idea: ${data.idea}`,
             data.details ? `Preferred size / materials / details: ${data.details}` : '',
             data.preferredDate ? `Requested date (not confirmed): ${data.preferredDate}` : '',
-            uploaded.length ? `Reference images included: ${uploaded.map(f => f.originalName || f.name).join(', ')}` : 'Reference images included: none'
+            uploaded.length ? `Reference images included: ${uploaded.length}` : 'Reference images included: none',
+            ...referenceLines
           ].filter(Boolean).join('\n')
         })
       });
       const result = await response.json().catch(() => ({}));
       if (!response.ok || !result.ok) throw new Error(result.error || 'request failed');
       form.reset();
-      say('Thank you. Your request and reference details have been received. We will review the idea before confirming price and production timing.', 'Mulțumim. Cererea și detaliile referințelor au fost primite. Vom analiza ideea înainte de a confirma prețul și termenul de realizare.');
+      say('Thank you. Your request and reference images have been received securely. We will review the idea before confirming price and production timing.', 'Mulțumim. Cererea și imaginile de referință au fost primite în siguranță. Vom analiza ideea înainte de a confirma prețul și termenul de realizare.');
     } catch (error) {
       console.error(error);
       say('We could not send the request safely. Please try again or contact us without closing this page.', 'Cererea nu a putut fi trimisă în siguranță. Te rugăm să încerci din nou sau să ne contactezi fără să închizi această pagină.');
