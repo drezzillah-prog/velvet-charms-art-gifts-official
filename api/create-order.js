@@ -8,14 +8,25 @@ function paypalBaseUrl() {
   return mode === "sandbox" ? "https://api-m.sandbox.paypal.com" : "https://api-m.paypal.com";
 }
 function paypalSecret() { return process.env.PAYPAL_CLIENT_SECRET || process.env.PAYPAL_SECRET; }
+function romanianPricing() {
+  return JSON.parse(readFileSync(join(process.cwd(), "pricing-ro.json"), "utf8"));
+}
 function catalogueProducts() {
   const catalogue = JSON.parse(readFileSync(join(process.cwd(), "catalogue-art-gifts.json"), "utf8"));
+  const roPricing = romanianPricing();
   const products = [];
   for (const category of catalogue.categories || []) {
     products.push(...(category.products || []));
     for (const subcategory of category.subcategories || []) products.push(...(subcategory.products || []));
   }
-  return new Map(products.map(product => [product.id, product]));
+  return new Map(products.map(product => {
+    const ron = Number(roPricing[product.id]);
+    return [product.id, {
+      ...product,
+      price_ro: Number.isFinite(ron) ? ron : Number(product.price_ro),
+      price_ro_eur: Number.isFinite(ron) ? Number((ron / 5).toFixed(2)) : Number(product.price_ro_eur)
+    }];
+  }));
 }
 
 function validatedItems(requestBody, market) {
