@@ -55,21 +55,37 @@ for (const requiredFile of [
   "pricing-ro.json",
   "api/create-order.js",
   "api/capture-order.js",
-  "api/upload-photo.js"
+  "api/upload-photo.js",
+  "api/upload.js",
+  "api/reference-file.js",
+  "api/delete-reference.js",
+  "custom-orders.js"
 ]) {
   assert.ok(existsSync(join(root, requiredFile)), `Missing required file: ${requiredFile}`);
 }
-
-console.log(`Catalogue integrity OK: ${products.length} products, ${imageCount} image references, ${ids.size} unique IDs.`);
 
 const script = readFileSync(join(root, "script.js"), "utf8");
 const features = readFileSync(join(root, "features.js"), "utf8");
 const createOrder = readFileSync(join(root, "api/create-order.js"), "utf8");
 const captureOrder = readFileSync(join(root, "api/capture-order.js"), "utf8");
+const customOrders = readFileSync(join(root, "custom-orders.js"), "utf8");
+const upload = readFileSync(join(root, "api/upload.js"), "utf8");
+const referenceFile = readFileSync(join(root, "api/reference-file.js"), "utf8");
+
 assert.match(script, /data-eur-price/, "Catalogue must expose EUR base prices for localization");
 assert.match(script, /approximateMakingTime/, "Catalogue must show realistic making times");
 assert.match(features, /VELVET_CURRENCY/, "Cart must use the visitor's local currency");
 assert.match(createOrder, /pricing-ro\.json/, "PayPal creation must use the curated Romanian pricing map");
 assert.match(captureOrder, /pricing-ro\.json/, "PayPal capture must revalidate the curated Romanian pricing map");
 assert.match(createOrder, /x-vercel-ip-timezone/, "PayPal creation must share the Romania geolocation fallback");
-assert.match(captureOrder, /Romanian prices require a delivery address in Romania/, "Romanian prices must be protected by delivery-country validation");
+assert.match(createOrder, /custom_id:\s*market/, "Checkout must stamp the access market into the PayPal order");
+assert.match(captureOrder, /storedMarket/, "Capture must trust the server-stamped access market, not a shipping address");
+assert.match(captureOrder, /amountMatches/, "Capture must verify approved amount before collecting payment");
+assert.doesNotMatch(captureOrder, /shipping.*Romania|delivery address in Romania/i, "Delivery address must not determine Romanian pricing");
+assert.doesNotMatch(captureOrder, /RESEND_API_KEY|resend\.com/i, "Current launch checkout must remain PayPal-only for customer payment confirmation");
+assert.match(customOrders, /velvet_language_art_gifts/, "Custom request status messages must follow the Art & Gifts language setting");
+assert.match(customOrders, /delete-reference/, "Failed custom requests must clean up newly uploaded private references");
+assert.match(upload, /access:\s*['"]private['"]/, "Custom references must use private Blob storage");
+assert.match(referenceFile, /MAX_REFERENCE_AGE_MS/, "Private custom reference links must expire");
+
+console.log(`Catalogue integrity OK: ${products.length} products, ${imageCount} image references, access-based pricing, private uploads and PayPal validation are intact.`);
