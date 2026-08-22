@@ -5,6 +5,7 @@ import assert from "node:assert/strict";
 const root = process.cwd();
 const cataloguePath = join(root, "catalogue-art-gifts.json");
 const catalogue = JSON.parse(readFileSync(cataloguePath, "utf8"));
+const pricingRo = JSON.parse(readFileSync(join(root, "pricing-ro.json"), "utf8"));
 
 const products = [];
 for (const category of catalogue.categories || []) {
@@ -15,6 +16,7 @@ for (const category of catalogue.categories || []) {
 }
 
 assert.equal(products.length, 33, "Art & Gifts should keep all 33 existing products");
+assert.equal(Object.keys(pricingRo).length, 33, "Romanian pricing map must cover all 33 products");
 
 const ids = new Set();
 let imageCount = 0;
@@ -26,8 +28,8 @@ for (const product of products) {
 
   assert.ok(product.name && typeof product.name === "string", `Missing product name for ${product.id}`);
   assert.ok(Number.isFinite(Number(product.price)) && Number(product.price) > 0, `Invalid international price for ${product.id}`);
-  assert.ok(Number.isFinite(Number(product.price_ro)) && Number(product.price_ro) > 0, `Invalid Romanian price for ${product.id}`);
-  assert.ok(Number.isFinite(Number(product.price_ro_eur)) && Number(product.price_ro_eur) > 0, `Invalid Romanian PayPal price for ${product.id}`);
+  assert.ok(Number.isFinite(Number(pricingRo[product.id])) && Number(pricingRo[product.id]) > 0, `Missing curated Romanian price for ${product.id}`);
+  assert.ok(Number.isFinite(Number(product.price_ro_eur)) && Number(product.price_ro_eur) > 0, `Invalid Romanian PayPal fallback price for ${product.id}`);
   for (const key of ["gift_wrap", "gift_card", "collectible_charm", "velvet_passport"]) {
     assert.ok(Array.isArray(product.options?.[key]) && product.options[key].length > 0, `Missing ${key} choices for ${product.id}`);
   }
@@ -50,6 +52,7 @@ for (const requiredFile of [
   "currency.js",
   "api/currency.js",
   "production.css",
+  "pricing-ro.json",
   "api/create-order.js",
   "api/capture-order.js",
   "api/upload-photo.js"
@@ -66,5 +69,7 @@ const captureOrder = readFileSync(join(root, "api/capture-order.js"), "utf8");
 assert.match(script, /data-eur-price/, "Catalogue must expose EUR base prices for localization");
 assert.match(script, /approximateMakingTime/, "Catalogue must show realistic making times");
 assert.match(features, /VELVET_CURRENCY/, "Cart must use the visitor's local currency");
-assert.match(createOrder, /price_ro_eur/, "PayPal creation must use the curated Romanian price");
-assert.match(captureOrder, /price_ro_eur/, "PayPal capture must revalidate the curated Romanian price");
+assert.match(createOrder, /pricing-ro\.json/, "PayPal creation must use the curated Romanian pricing map");
+assert.match(captureOrder, /pricing-ro\.json/, "PayPal capture must revalidate the curated Romanian pricing map");
+assert.match(createOrder, /x-vercel-ip-timezone/, "PayPal creation must share the Romania geolocation fallback");
+assert.match(captureOrder, /Romanian prices require a delivery address in Romania/, "Romanian prices must be protected by delivery-country validation");
