@@ -1,7 +1,31 @@
-// api/upload.js
-const fs = require('fs');
-const path = require('path');
+const { readFile } = require('node:fs/promises');
+const { randomUUID } = require('node:crypto');
 const formidable = require('formidable');
+const { put } = require('@vercel/blob');
+
+const MAX_FILE_SIZE = 4 * 1024 * 1024;
+const ALLOWED_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp']);
+
+module.exports.config = {
+  api: { bodyParser: false }
+};
+
+function parseForm(req) {
+  const form = formidable({
+    multiples: false,
+    maxFiles: 1,
+    maxFileSize: MAX_FILE_SIZE,
+    allowEmptyFiles: false,
+    filter: part => part.name === 'file' && ALLOWED_TYPES.has(part.mimetype)
+  });
+
+  return new Promise((resolve, reject) => {
+    form.parse(req, (error, fields, files) => {
+      if (error) reject(error);
+      else resolve({ fields, files });
+    });
+  });
+}
 
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
@@ -9,44 +33,44 @@ module.exports = async (req, res) => {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const form = new formidable.IncomingForm({
-    maxFileSize: 20 * 1024 * 1024,
-    uploadDir: '/tmp',
-    keepExtensions: true
-  });
+  if (!process.env.BLOB_READ_WRITE_TOKEN) {
+    return res.status(503).json({ error: 'Reference photo storage is not configured yet.' });
+  }
 
-  form.parse(req, (err, fields, files) => {
-    if (err) {
-      console.error('Upload parse error', err);
-      return res.status(500).json({ error: 'Upload parsing failed' });
+  try {
+    const { files } = await parseForm(req);
+    const file = Array.isArray(files.file) ? files.file[0] : files.file;
+
+    if (!file || !ALLOWED_TYPES.has(file.mimetype) || file.size > MAX_FILE_SIZE) {
+      return res.status(400).json({ error: 'Please upload a JPG, PNG or WEBP image under 4 MB.' });
     }
 
-    let uploaded = null;
-    if (files.file) {
-      const f = files.file;
-      const filepath = f.filepath || f.path;
-      const filename = path.basename(filepath);
-      uploaded = {
-        name: filename,
-        originalName: f.originalFilename || f.name,
-        size: f.size,
-        path: '/tmp/' + filename
-      };
-    }
+    const extension = file.mimetype === 'image/png' ? 'png' : file.mimetype === 'image/webp' ? 'webp' : 'jpg';
+    const accessKey = randomUUID().replace(/-/g, '');
+    const pathname = `custom-requests/${accessKey}/reference-${Date.now()}.${extension}`;
+    const data = await readFile(file.filepath);
 
-    try {
-      const record = { time: new Date().toISOString(), fields, file: uploaded };
-      const dbPath = '/tmp/uploads.json';
-      let arr = [];
-      if (fs.existsSync(dbPath)) {
-        try { arr = JSON.parse(fs.readFileSync(dbPath, 'utf8') || '[]'); } catch(e){ arr = []; }
+    const blob = await put(pathname, data, {
+      access: 'private',
+      addRandomSuffix: true,
+      contentType: file.mimetype,
+      token: process.env.BLOB_READ_WRITE_TOKEN
+    });
+
+    const viewUrl = `/api/reference-file?pathname=${encodeURIComponent(blob.pathname)}&key=${encodeURIComponent(accessKey)}`;
+
+    return res.status(200).json({
+      ok: true,
+      file: {
+        originalName: file.originalFilename || 'reference image',
+        size: file.size,
+        pathname: blob.pathname,
+        viewUrl
       }
-      arr.push(record);
-      fs.writeFileSync(dbPath, JSON.stringify(arr, null, 2));
-    } catch (e) {
-      console.error('Failed to write upload record', e);
-    }
-
-    return res.status(200).json({ ok: true, file: uploaded, fields });
-  });
+    });
+  } catch (error) {
+    console.error('Reference upload error:', error);
+    const status = error?.code === 1009 ? 413 : 400;
+    return res.status(status).json({ error: 'The reference image could not be uploaded. Please try again.' });
+  }
 };
