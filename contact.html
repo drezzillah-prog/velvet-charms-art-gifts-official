@@ -30,13 +30,23 @@
       <label>Name<input type="text" name="name" required></label>
       <label>Email (optional)<input type="email" name="email"></label>
       <label>Message<textarea name="message" rows="5" required></textarea></label>
-      <p class="contact-note">Reference photographs for catalogue items can be added securely through the product customization flow. For a completely new commission, describe the idea here first and we will guide you through the next step.</p>
+      <p class="contact-note" id="contact-photo-note">Reference photographs for catalogue items can be added securely through the product customization flow. For a completely new commission, describe the idea here first and we will guide you through the next step.</p>
       <div><button type="submit" class="btn">Send</button></div>
       <p id="contact-status" style="margin-top:10px;color:var(--muted)" aria-live="polite"></p>
     </form>
   </main>
   <footer class="site-footer"><p>© Velvet Charms — handmade with care</p></footer>
   <script>
+    function syncContactPhotoNote(){
+      const note = document.getElementById('contact-photo-note');
+      if (!note) return;
+      note.textContent = document.documentElement.lang === 'ro'
+        ? 'Fotografiile de referință pentru produsele din catalog pot fi adăugate în siguranță în fluxul de personalizare. Pentru o creație complet nouă, descrie-ne mai întâi ideea aici, iar noi îți explicăm pasul următor.'
+        : 'Reference photographs for catalogue items can be added securely through the product customization flow. For a completely new commission, describe the idea here first and we will guide you through the next step.';
+    }
+    document.addEventListener('DOMContentLoaded', syncContactPhotoNote);
+    document.addEventListener('velvet:language-change', syncContactPhotoNote);
+
     document.getElementById('contact-form').addEventListener('submit', async function(e){
       e.preventDefault();
       const status = document.getElementById('contact-status');
