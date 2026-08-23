@@ -20,9 +20,6 @@ for (const product of products) {
   assert.ok(product.name && typeof product.name === "string", `Missing product name for ${product.id}`);
   assert.ok(Number.isFinite(Number(product.price)) && Number(product.price) > 0, `Invalid international price for ${product.id}`);
   assert.ok(Number.isFinite(Number(pricingRo[product.id])) && Number(pricingRo[product.id]) > 0, `Missing curated Romanian price for ${product.id}`);
-  assert.ok(Number.isFinite(Number(product.price_ro_eur)) && Number(product.price_ro_eur) > 0, `Invalid Romanian PayPal fallback price for ${product.id}`);
-  const expectedRoEur = Number((Number(pricingRo[product.id]) / 5).toFixed(2));
-  assert.equal(Number(product.price_ro_eur), expectedRoEur, `${product.id} Romanian PayPal price must stay aligned with curated RON pricing`);
   for (const key of ["gift_wrap", "gift_card", "collectible_charm", "velvet_passport"]) assert.ok(Array.isArray(product.options?.[key]) && product.options[key].length > 0, `Missing ${key} choices for ${product.id}`);
   assert.ok(Array.isArray(product.images) && product.images.length > 0, `Missing images for ${product.id}`);
   for (const image of product.images) { imageCount += 1; assert.ok(typeof image === "string" && image.trim(), `Invalid image reference for ${product.id}`); assert.ok(existsSync(join(root, image)), `Missing image file: ${image}`); }
@@ -44,11 +41,15 @@ const currencyApi = readFileSync(join(root, "api/currency.js"), "utf8");
 const shipping = readFileSync(join(root, "shipping-clarity.js"), "utf8");
 const catalogueHtml = readFileSync(join(root, "catalogue.html"), "utf8");
 
+assert.match(script, /ROMANIAN_PRICING_FILE\s*=\s*["']pricing-ro\.json["']/, "pricing-ro.json must be the browser source of truth for Romanian prices");
+assert.match(script, /applyRomanianPricing/, "browser must overlay curated Romanian pricing before rendering");
 assert.match(script, /data-eur-price/, "Catalogue must expose EUR base prices for localization");
 assert.match(script, /approximateMakingTime/, "Catalogue must show realistic making times");
 assert.match(features, /VELVET_CURRENCY/, "Cart must use the visitor's local currency");
 assert.match(createOrder, /pricing-ro\.json/, "PayPal creation must use the curated Romanian pricing map");
+assert.match(createOrder, /ron \/ 5/, "PayPal Romanian EUR amount must be derived from curated RON pricing");
 assert.match(captureOrder, /pricing-ro\.json/, "PayPal capture must revalidate the curated Romanian pricing map");
+assert.match(captureOrder, /ron \/ 5/, "capture must independently derive Romanian EUR amount from curated RON pricing");
 assert.match(createOrder, /x-vercel-ip-timezone/, "PayPal creation must share the Romania geolocation fallback");
 assert.match(createOrder, /custom_id:\s*market/, "Checkout must stamp the access market into the PayPal order");
 assert.match(captureOrder, /storedMarket/, "Capture must trust the server-stamped access market, not a shipping address");
@@ -68,4 +69,4 @@ assert.match(customOrders, /delete-reference/, "Failed custom requests must clea
 assert.match(upload, /access:\s*['"]private['"]/, "Custom references must use private Blob storage");
 assert.match(referenceFile, /MAX_REFERENCE_AGE_MS/, "Private custom reference links must expire");
 
-console.log(`Catalogue integrity OK: ${products.length} products, ${imageCount} image references, regional pricing, currency fallback, shipping disclosure, private uploads and PayPal validation are intact.`);
+console.log(`Catalogue integrity OK: ${products.length} products, ${imageCount} image references, curated Romanian source-of-truth pricing, currency fallback, shipping disclosure, private uploads and PayPal validation are intact.`);
