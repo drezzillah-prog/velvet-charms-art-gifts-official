@@ -1,4 +1,4 @@
-import { createHmac } from "node:crypto";
+import { createHash, createHmac } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
@@ -18,7 +18,6 @@ function formspreeUrl() {
 }
 function referenceSigningSecret() { return String(process.env.ORDER_REFERENCE_SECRET || process.env.BLOB_READ_WRITE_TOKEN || ""); }
 function romanianPricing() { return JSON.parse(readFileSync(join(process.cwd(), "pricing-ro.json"), "utf8")); }
-
 function catalogueProducts() {
   const catalogue = JSON.parse(readFileSync(join(process.cwd(), "catalogue-art-gifts.json"), "utf8"));
   const roPricing = romanianPricing();
@@ -32,7 +31,6 @@ function catalogueProducts() {
     return [product.id, { ...product, price_ro: Number.isFinite(ron) ? ron : Number(product.price_ro), price_ro_eur: Number.isFinite(ron) ? Number((ron / 5).toFixed(2)) : Number(product.price_ro_eur) }];
   }));
 }
-
 function validatedItems(requestBody, market) {
   const rawItems = requestBody?.cart?.items;
   if (!Array.isArray(rawItems) || rawItems.length === 0 || rawItems.length > 100) throw new Error("INVALID_CART");
@@ -43,7 +41,6 @@ function validatedItems(requestBody, market) {
     if (!product || !Number.isInteger(quantity) || quantity < 1 || quantity > 99) throw new Error("INVALID_CART");
     const price = market === "RO" ? Number(product.price_ro_eur) : Number(product.price);
     if (!Number.isFinite(price) || price < 0) throw new Error("INVALID_CART");
-
     const options = {};
     const rawOptions = rawItem?.options && typeof rawItem.options === "object" ? rawItem.options : {};
     for (const [key, value] of Object.entries(rawOptions)) {
@@ -54,7 +51,6 @@ function validatedItems(requestBody, market) {
       if (!Array.isArray(allowed) || !allowed.includes(cleanValue)) throw new Error("INVALID_CUSTOMIZATION");
       options[key] = cleanValue;
     }
-
     const attachments = (Array.isArray(rawItem?.attachments) ? rawItem.attachments : []).slice(0, 5).map(attachment => {
       const pathname = String(attachment?.pathname || "");
       if (!/^custom-orders\/reference-[A-Za-z0-9._-]+$/.test(pathname)) throw new Error("INVALID_CUSTOMIZATION");
@@ -63,7 +59,23 @@ function validatedItems(requestBody, market) {
     return { id: String(product.id), name: String(product.name), quantity, price, options, attachments };
   });
 }
-
+function requestedDateValue(requestBody) {
+  const value = String(requestBody?.cart?.requiredByDate || "");
+  return /^\d{4}-\d{2}-\d{2}$/.test(value) ? value : "";
+}
+function cartFingerprint(items, date) {
+  const normalized = items.map(item => ({
+    id: item.id,
+    quantity: item.quantity,
+    options: Object.fromEntries(Object.entries(item.options || {}).sort(([a], [b]) => a.localeCompare(b))),
+    attachments: item.attachments.map(attachment => ({ pathname: attachment.pathname, name: attachment.name }))
+  }));
+  return createHash("sha256").update(JSON.stringify({ items: normalized, requestedDate: date })).digest("hex").slice(0, 40);
+}
+function parseStoredCart(value) {
+  const match = /^(RO|INTL):([a-f0-9]{40})$/.exec(String(value || ""));
+  return match ? { market: match[1], fingerprint: match[2] } : null;
+}
 function signedReferenceUrl(req, pathname) {
   const secret = referenceSigningSecret();
   const host = String(req.headers.host || "");
@@ -72,16 +84,11 @@ function signedReferenceUrl(req, pathname) {
   const sig = createHmac("sha256", secret).update(`${pathname}.${exp}`).digest("hex");
   return `https://${host}/api/order-reference?pathname=${encodeURIComponent(pathname)}&exp=${exp}&sig=${sig}`;
 }
-function requestedDate(requestBody) {
-  const value = String(requestBody?.cart?.requiredByDate || "");
-  return /^\d{4}-\d{2}-\d{2}$/.test(value) ? value : "Not requested";
-}
 function shippingSummary(details) {
   const shipping = details.purchase_units?.[0]?.shipping;
   const address = shipping?.address || {};
   return [shipping?.name?.full_name, address.address_line_1, address.address_line_2, address.admin_area_2, address.admin_area_1, address.postal_code, address.country_code].filter(Boolean).join(", ") || "See PayPal order";
 }
-
 async function notifySeller(req, { details, items, captureID, orderID, market, total }) {
   const endpoint = formspreeUrl();
   if (!endpoint) return false;
@@ -96,13 +103,14 @@ async function notifySeller(req, { details, items, captureID, orderID, market, t
   });
   const payerName = [details.payer?.name?.given_name, details.payer?.name?.surname].filter(Boolean).join(" ") || "Not provided";
   const payerEmail = details.payer?.email_address || "Not provided";
+  const preferredDate = requestedDateValue(req.body) || "Not requested";
   const message = [
     "PAID VELVET CHARMS — ART & GIFTS ORDER",
     `PayPal order: ${orderID}`,
     `PayPal capture: ${captureID}`,
     `Pricing market: ${market}`,
     `Paid product total: ${CURRENCY} ${total.toFixed(2)}`,
-    `Preferred date: ${requestedDate(req.body)} (not confirmed until production slot is reviewed)`,
+    `Preferred date: ${preferredDate} (not confirmed until production slot is reviewed)`,
     `Customer: ${payerName}`,
     `Customer email: ${payerEmail}`,
     `Shipping address: ${shippingSummary(details)}`,
@@ -124,7 +132,6 @@ async function notifySeller(req, { details, items, captureID, orderID, market, t
     return false;
   }
 }
-
 async function accessToken(baseUrl) {
   const clientId = process.env.PAYPAL_CLIENT_ID;
   const secret = paypalSecret();
@@ -135,7 +142,6 @@ async function accessToken(baseUrl) {
   if (!response.ok || !data.access_token) throw new Error("PAYPAL_AUTH_FAILED");
   return data.access_token;
 }
-
 function completedCapture(details, expectedTotal) {
   if (details?.status !== "COMPLETED") return null;
   const capture = details.purchase_units?.[0]?.payments?.captures?.[0];
@@ -148,7 +154,6 @@ export default async function handler(req, res) {
   if (req.method !== "POST") { res.setHeader("Allow", "POST"); return res.status(405).json({ error: "Method not allowed" }); }
   const orderID = String(req.body?.orderID || "");
   if (!/^[A-Z0-9]{1,36}$/i.test(orderID)) return res.status(400).json({ error: "Missing or invalid PayPal order ID." });
-
   try {
     const baseUrl = paypalBaseUrl();
     const token = await accessToken(baseUrl);
@@ -156,9 +161,12 @@ export default async function handler(req, res) {
     const details = await detailsResponse.json();
     if (!detailsResponse.ok) return res.status(502).json({ error: "PayPal order details could not be verified." });
 
-    const storedMarket = details.purchase_units?.[0]?.custom_id;
-    if (storedMarket !== "RO" && storedMarket !== "INTL") return res.status(409).json({ error: "The approved PayPal order has an invalid pricing market." });
-    const items = validatedItems(req.body, storedMarket);
+    const stored = parseStoredCart(details.purchase_units?.[0]?.custom_id);
+    if (!stored) return res.status(409).json({ error: "The approved PayPal order has invalid checkout metadata." });
+    const items = validatedItems(req.body, stored.market);
+    const date = requestedDateValue(req.body);
+    if (cartFingerprint(items, date) !== stored.fingerprint) return res.status(409).json({ error: "The approved PayPal order no longer matches these customization details." });
+
     const expectedTotal = items.reduce((total, item) => total + item.price * item.quantity, 0);
     const paypalItems = details.purchase_units?.[0]?.items || [];
     const itemsMatch = paypalItems.length === items.length && items.every((item, index) => paypalItems[index]?.sku === item.id && Number(paypalItems[index]?.quantity) === item.quantity && paypalItems[index]?.unit_amount?.currency_code === CURRENCY && Number(paypalItems[index]?.unit_amount?.value) === Number(item.price.toFixed(2)));
@@ -169,7 +177,7 @@ export default async function handler(req, res) {
     const previousCapture = completedCapture(details, expectedTotal);
     if (details.status === "COMPLETED") {
       if (!previousCapture) return res.status(409).json({ error: "The completed PayPal order does not match the expected captured amount." });
-      const sellerNotificationSent = await notifySeller(req, { details, items, captureID: previousCapture.id, orderID: details.id || orderID, market: storedMarket, total: expectedTotal });
+      const sellerNotificationSent = await notifySeller(req, { details, items, captureID: previousCapture.id, orderID: details.id || orderID, market: stored.market, total: expectedTotal });
       return res.status(200).json({ status: "COMPLETED", orderID: details.id || orderID, captureID: previousCapture.id, sellerNotificationSent, recovered: true });
     }
 
@@ -179,8 +187,7 @@ export default async function handler(req, res) {
     const captureID = capture.purchase_units?.[0]?.payments?.captures?.[0]?.id || "";
     const capturedAmount = capture.purchase_units?.[0]?.payments?.captures?.[0]?.amount;
     if (capture.status !== "COMPLETED" || capturedAmount?.currency_code !== CURRENCY || Number(capturedAmount?.value) !== Number(expectedTotal.toFixed(2))) return res.status(502).json({ error: "PayPal payment was not completed." });
-
-    const sellerNotificationSent = await notifySeller(req, { details, items, captureID, orderID: capture.id || orderID, market: storedMarket, total: expectedTotal });
+    const sellerNotificationSent = await notifySeller(req, { details, items, captureID, orderID: capture.id || orderID, market: stored.market, total: expectedTotal });
     return res.status(200).json({ status: capture.status, orderID: capture.id || orderID, captureID, sellerNotificationSent, recovered: false });
   } catch (error) {
     console.error("Capture order error:", error);
