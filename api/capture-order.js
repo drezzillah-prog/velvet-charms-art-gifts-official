@@ -136,6 +136,14 @@ async function accessToken(baseUrl) {
   return data.access_token;
 }
 
+function completedCapture(details, expectedTotal) {
+  if (details?.status !== "COMPLETED") return null;
+  const capture = details.purchase_units?.[0]?.payments?.captures?.[0];
+  const amount = capture?.amount;
+  if (!capture?.id || amount?.currency_code !== CURRENCY || Number(amount?.value) !== Number(expectedTotal.toFixed(2))) return null;
+  return capture;
+}
+
 export default async function handler(req, res) {
   if (req.method !== "POST") { res.setHeader("Allow", "POST"); return res.status(405).json({ error: "Method not allowed" }); }
   const orderID = String(req.body?.orderID || "");
@@ -158,6 +166,13 @@ export default async function handler(req, res) {
     const amountMatches = approvedAmount?.currency_code === CURRENCY && Number(approvedAmount?.value) === Number(expectedTotal.toFixed(2));
     if (!itemsMatch || !amountMatches) return res.status(409).json({ error: "The approved PayPal order no longer matches this cart." });
 
+    const previousCapture = completedCapture(details, expectedTotal);
+    if (details.status === "COMPLETED") {
+      if (!previousCapture) return res.status(409).json({ error: "The completed PayPal order does not match the expected captured amount." });
+      const sellerNotificationSent = await notifySeller(req, { details, items, captureID: previousCapture.id, orderID: details.id || orderID, market: storedMarket, total: expectedTotal });
+      return res.status(200).json({ status: "COMPLETED", orderID: details.id || orderID, captureID: previousCapture.id, sellerNotificationSent, recovered: true });
+    }
+
     const captureResponse = await fetch(`${baseUrl}/v2/checkout/orders/${encodeURIComponent(orderID)}/capture`, { method: "POST", headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json", Prefer: "return=representation" } });
     const capture = await captureResponse.json();
     if (!captureResponse.ok) return res.status(502).json({ error: "PayPal could not confirm the payment." });
@@ -166,7 +181,7 @@ export default async function handler(req, res) {
     if (capture.status !== "COMPLETED" || capturedAmount?.currency_code !== CURRENCY || Number(capturedAmount?.value) !== Number(expectedTotal.toFixed(2))) return res.status(502).json({ error: "PayPal payment was not completed." });
 
     const sellerNotificationSent = await notifySeller(req, { details, items, captureID, orderID: capture.id || orderID, market: storedMarket, total: expectedTotal });
-    return res.status(200).json({ status: capture.status, orderID: capture.id, captureID, sellerNotificationSent });
+    return res.status(200).json({ status: capture.status, orderID: capture.id || orderID, captureID, sellerNotificationSent, recovered: false });
   } catch (error) {
     console.error("Capture order error:", error);
     if (["INVALID_CART", "INVALID_CUSTOMIZATION"].includes(error.message)) return res.status(400).json({ error: "The cart or customization details are invalid." });
