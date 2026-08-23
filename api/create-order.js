@@ -83,9 +83,10 @@ function cartFingerprint(items, date) {
 }
 
 function paypalDescription(item, requestedDateValue, index) {
-  const details = Object.entries(item.options || {}).map(([key, value]) => `${key.replaceAll("_", " ")}: ${value}`);
+  const details = [];
   if (item.attachments.length) details.push(`${item.attachments.length} private reference photo(s)`);
   if (index === 0 && requestedDateValue) details.push(`Preferred date: ${requestedDateValue} (not confirmed)`);
+  details.push(...Object.entries(item.options || {}).map(([key, value]) => `${key.replaceAll("_", " ")}: ${value}`));
   return details.join("; ").slice(0, 127);
 }
 
