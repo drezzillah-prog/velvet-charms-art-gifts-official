@@ -26,7 +26,7 @@ for (const product of products) {
 }
 assert.equal(imageCount, 118, "Art & Gifts should keep all 118 existing product image references");
 
-for (const requiredFile of ["catalogue.html","script.js","features.js","localization.js","currency.js","api/currency.js","production.css","pricing-ro.json","api/create-order.js","api/capture-order.js","api/upload-photo.js","api/upload.js","api/reference-file.js","api/delete-reference.js","custom-orders.js","shipping-clarity.js","language-polish.js"]) {
+for (const requiredFile of ["catalogue.html","script.js","features.js","localization.js","currency.js","api/currency.js","production.css","pricing-ro.json","api/create-order.js","api/capture-order.js","api/upload-photo.js","api/upload.js","api/reference-file.js","api/delete-reference.js","custom-orders.js","shipping-clarity.js","language-polish.js","checkout-return-guard.js"]) {
   assert.ok(existsSync(join(root, requiredFile)), `Missing required file: ${requiredFile}`);
 }
 
@@ -51,8 +51,11 @@ assert.match(createOrder, /ron \/ 5/, "PayPal Romanian EUR amount must be derive
 assert.match(captureOrder, /pricing-ro\.json/, "PayPal capture must revalidate the curated Romanian pricing map");
 assert.match(captureOrder, /ron \/ 5/, "capture must independently derive Romanian EUR amount from curated RON pricing");
 assert.match(createOrder, /x-vercel-ip-timezone/, "PayPal creation must share the Romania geolocation fallback");
-assert.match(createOrder, /custom_id:\s*market/, "Checkout must stamp the access market into the PayPal order");
-assert.match(captureOrder, /storedMarket/, "Capture must trust the server-stamped access market, not a shipping address");
+assert.match(createOrder, /cartFingerprint/, "PayPal creation must bind the approved order to exact cart details");
+assert.match(createOrder, /custom_id:\s*`\$\{market\}:\$\{fingerprint\}`/, "Checkout must stamp market plus cart fingerprint into the PayPal order");
+assert.match(captureOrder, /parseStoredCart/, "Capture must recover the server-stamped access market and fingerprint");
+assert.match(captureOrder, /stored\.market/, "Capture must trust the market stored with the approved PayPal order, not a shipping address");
+assert.match(captureOrder, /cartFingerprint\(items, date\) !== stored\.fingerprint/, "Capture must reject changed customization, reference or preferred-date details");
 assert.match(captureOrder, /amountMatches/, "Capture must verify approved amount before collecting payment");
 assert.doesNotMatch(captureOrder, /shipping.*Romania|delivery address in Romania/i, "Delivery address must not determine Romanian pricing");
 assert.doesNotMatch(captureOrder, /RESEND_API_KEY|resend\.com/i, "Current launch checkout must remain PayPal-only for customer payment confirmation");
@@ -61,6 +64,7 @@ assert.match(currencyApi, /x-vercel-ip-timezone/, "currency display must share c
 assert.match(currencyApi, /Europe\/Bucharest/, "currency fallback must align with Romania pricing fallback");
 assert.match(catalogueHtml, /language-polish\.js/, "final natural-language polish must load in the catalogue");
 assert.match(catalogueHtml, /shipping-clarity\.js/, "explicit shipping-cost disclosure must load in the catalogue");
+assert.match(catalogueHtml, /checkout-return-guard\.js/, "PayPal return protection must load in the catalogue");
 assert.match(shipping, /Shipping is not included in the product total/);
 assert.match(shipping, /No shipping charge is taken without your approval/);
 for (const language of ['ro','fr','it','de']) assert.match(shipping, new RegExp(`${language}:`), `shipping disclosure needs ${language} localization`);
@@ -69,4 +73,4 @@ assert.match(customOrders, /delete-reference/, "Failed custom requests must clea
 assert.match(upload, /access:\s*['"]private['"]/, "Custom references must use private Blob storage");
 assert.match(referenceFile, /MAX_REFERENCE_AGE_MS/, "Private custom reference links must expire");
 
-console.log(`Catalogue integrity OK: ${products.length} products, ${imageCount} image references, curated Romanian source-of-truth pricing, currency fallback, shipping disclosure, private uploads and PayPal validation are intact.`);
+console.log(`Catalogue integrity OK: ${products.length} products, ${imageCount} image references, curated Romanian source-of-truth pricing, exact cart fingerprinting, currency fallback, shipping disclosure, private uploads and PayPal validation are intact.`);
