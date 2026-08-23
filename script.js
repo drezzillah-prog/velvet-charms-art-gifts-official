@@ -19,13 +19,24 @@
     return data;
   }
 
+  function normalizeCustomerFacingCopy(data) {
+    const normalizeProduct = product => {
+      if (product?.name === "Decorptive Hair Combs") product.name = "Decorative Hair Combs";
+    };
+    (data.categories || []).forEach(category => {
+      (category.products || []).forEach(normalizeProduct);
+      (category.subcategories || []).forEach(subcategory => (subcategory.products || []).forEach(normalizeProduct));
+    });
+    return data;
+  }
+
   async function loadCatalogue() {
     const [catalogueResponse, pricingResponse] = await Promise.all([
       fetch(CATALOGUE_FILE, { cache: "no-store" }),
       fetch(ROMANIAN_PRICING_FILE, { cache: "no-store" })
     ]);
     if (!catalogueResponse.ok) throw new Error("Failed to load catalogue");
-    const data = await catalogueResponse.json();
+    const data = normalizeCustomerFacingCopy(await catalogueResponse.json());
     if (pricingResponse.ok) {
       try { applyRomanianPricing(data, await pricingResponse.json()); }
       catch (error) { console.warn("Romanian pricing map could not be applied:", error); }
