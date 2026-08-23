@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
@@ -66,10 +67,25 @@ function validatedItems(requestBody, market) {
   });
 }
 
-function paypalDescription(item, requestedDate, index) {
+function requestedDate(requestBody) {
+  const value = String(requestBody?.cart?.requiredByDate || "");
+  return /^\d{4}-\d{2}-\d{2}$/.test(value) ? value : "";
+}
+
+function cartFingerprint(items, date) {
+  const normalized = items.map(item => ({
+    id: item.id,
+    quantity: item.quantity,
+    options: Object.fromEntries(Object.entries(item.options || {}).sort(([a], [b]) => a.localeCompare(b))),
+    attachments: item.attachments.map(attachment => ({ pathname: attachment.pathname, name: attachment.name }))
+  }));
+  return createHash("sha256").update(JSON.stringify({ items: normalized, requestedDate: date })).digest("hex").slice(0, 40);
+}
+
+function paypalDescription(item, requestedDateValue, index) {
   const details = Object.entries(item.options || {}).map(([key, value]) => `${key.replaceAll("_", " ")}: ${value}`);
   if (item.attachments.length) details.push(`${item.attachments.length} private reference photo(s)`);
-  if (index === 0 && requestedDate) details.push(`Preferred date: ${requestedDate} (not confirmed)`);
+  if (index === 0 && requestedDateValue) details.push(`Preferred date: ${requestedDateValue} (not confirmed)`);
   return details.join("; ").slice(0, 127);
 }
 
@@ -89,8 +105,9 @@ export default async function handler(req, res) {
   try {
     const market = marketFromRequest(req);
     const items = validatedItems(req.body, market);
+    const date = requestedDate(req.body);
+    const fingerprint = cartFingerprint(items, date);
     const itemTotal = items.reduce((total, item) => total + item.price * item.quantity, 0);
-    const requestedDate = /^\d{4}-\d{2}-\d{2}$/.test(String(req.body?.cart?.requiredByDate || "")) ? String(req.body.cart.requiredByDate) : "";
     const baseUrl = paypalBaseUrl();
     const token = await accessToken(baseUrl);
     const siteUrl = `https://${req.headers.host}`;
@@ -100,10 +117,10 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         intent: "CAPTURE",
         purchase_units: [{
-          custom_id: market,
+          custom_id: `${market}:${fingerprint}`,
           amount: { currency_code: CURRENCY, value: itemTotal.toFixed(2), breakdown: { item_total: { currency_code: CURRENCY, value: itemTotal.toFixed(2) } } },
           items: items.map((item, index) => {
-            const description = paypalDescription(item, requestedDate, index);
+            const description = paypalDescription(item, date, index);
             return { name: item.name, sku: item.id, quantity: String(item.quantity), unit_amount: { currency_code: CURRENCY, value: item.price.toFixed(2) }, ...(description ? { description } : {}) };
           })
         }],
