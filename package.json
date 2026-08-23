@@ -6,6 +6,7 @@
     "node": "24.x"
   },
   "scripts": {
+    "test": "node tests/catalogue-integrity.mjs",
     "test:catalogue": "node tests/catalogue-integrity.mjs"
   },
   "dependencies": {
