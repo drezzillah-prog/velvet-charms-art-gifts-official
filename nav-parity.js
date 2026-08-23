@@ -23,6 +23,7 @@
       if(!window.VELVET_GET_LANGUAGE) await load('multilingual.js');
       const page=location.pathname.split('/').pop()||'index.html';
       if(page==='universe.html'&&!document.querySelector('script[src="multilingual-universe.js"]')) await load('multilingual-universe.js');
+      if(!document.querySelector('script[src="language-polish.js"]')) await load('language-polish.js');
       apply();
     }catch(error){console.warn('Extended navigation localization could not be loaded:',error);}
   }
