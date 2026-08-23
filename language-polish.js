@@ -15,7 +15,8 @@
       'Creato dalla tua reference':'Creato a partire dalla tua immagine di riferimento',
       'Set capelli personalizzato':'Set di accessori per capelli personalizzato',
       'Set capelli personalizzato — 3 pezzi coordinati':'Set di accessori per capelli personalizzato — 3 pezzi coordinati',
-      'Confezione signature Velvet':'Confezione Velvet esclusiva'
+      'Confezione signature Velvet':'Confezione Velvet esclusiva',
+      'Sì. Velvet Charms Art & Gifts nasce dal lavoro artigianale e dalle piccole serie, non dalla produzione di massa. La lavorazione inizia in base allo slot di produzione confermato per il tuo ordine.':'Sì. Velvet Charms Art & Gifts nasce dal lavoro artigianale e dalle piccole serie, non dalla produzione di massa. La lavorazione inizia nel periodo di produzione confermato per il tuo ordine.'
     },
     de:{
       'Velvet Signature-Verpackung':'Velvet-Signaturverpackung',
