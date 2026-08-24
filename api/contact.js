@@ -1,8 +1,25 @@
+const { createHmac } = require('node:crypto');
+
+const REFERENCE_LINK_TTL_MS = 30 * 24 * 60 * 60 * 1000;
+
 function formspreeUrl() {
   const configured = String(process.env.FORMSPREE_ENDPOINT || "").trim();
   if (/^https:\/\/formspree\.io\/f\/[A-Za-z0-9_-]+$/.test(configured)) return configured;
   const formId = String(process.env.FORMSPREE_FORM_ID || "").trim();
   return /^[A-Za-z0-9_-]+$/.test(formId) ? `https://formspree.io/f/${formId}` : "";
+}
+
+function signingSecret() {
+  return String(process.env.ORDER_REFERENCE_SECRET || process.env.BLOB_READ_WRITE_TOKEN || '');
+}
+
+function signedReferenceUrl(req, pathname) {
+  const secret = signingSecret();
+  const host = String(req.headers?.host || '');
+  if (!secret || !host) return '';
+  const exp = String(Date.now() + REFERENCE_LINK_TTL_MS);
+  const sig = createHmac('sha256', secret).update(`${pathname}.${exp}`).digest('hex');
+  return `https://${host}/api/order-reference?pathname=${encodeURIComponent(pathname)}&exp=${exp}&sig=${sig}`;
 }
 
 module.exports = async (req, res) => {
@@ -29,6 +46,13 @@ module.exports = async (req, res) => {
     return res.status(503).json({ error: "The contact form is being connected. Please try again shortly." });
   }
 
+  const referenceSummary = referencePhotos.length
+    ? referencePhotos.map((pathname, index) => {
+        const secureUrl = signedReferenceUrl(req, pathname);
+        return `Reference ${index + 1}: ${secureUrl || `private blob ${pathname}`}`;
+      }).join('\n')
+    : 'None';
+
   try {
     const response = await fetch(endpoint, {
       method: "POST",
@@ -37,7 +61,7 @@ module.exports = async (req, res) => {
         name,
         email,
         message,
-        reference_photos: referencePhotos.length ? referencePhotos.join("\n") : "None",
+        reference_photos: referenceSummary,
         reference_photo_count: referencePhotos.length,
         _subject: referencePhotos.length
           ? "New Velvet Charms custom creation request"
