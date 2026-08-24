@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Contact Velvet Charms Art & Gifts about handmade art, personalized gifts and custom commissions." />
   <title>Contact — Velvet Charms</title>
   <link rel="icon" type="image/png" href="favicon-art.png">
   <link rel="stylesheet" href="style.css">
@@ -75,10 +76,10 @@
     document.addEventListener('DOMContentLoaded',syncContactCopy);
     window.addEventListener('velvet-language-changed',syncContactCopy);
     document.addEventListener('velvet:language-change',syncContactCopy);
-    async function uploadReferencePhoto(file){const data=new FormData();data.append('photo',file);const response=await fetch('/api/upload-photo.js',{method:'POST',body:data});const result=await response.json().catch(()=>({}));if(!response.ok||!result.pathname)throw new Error(result.error||'Photo upload failed');return result.pathname;}
+    async function uploadReferencePhoto(file){const data=new FormData();data.append('photo',file);const response=await fetch('/api/upload-photo',{method:'POST',body:data});const result=await response.json().catch(()=>({}));if(!response.ok||!result.pathname)throw new Error(result.error||'Photo upload failed');return result.pathname;}
     document.getElementById('contact-form').addEventListener('submit',async function(e){
       e.preventDefault();const status=document.getElementById('contact-status');const form=e.target;const files=Array.from(contactPhotos.files||[]);status.textContent=files.length?c().uploading:c().sending;
-      try{const referencePhotos=[];for(const file of files)referencePhotos.push(await uploadReferencePhoto(file));const r=await fetch('/api/contact.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:form.name.value,email:form.email.value||'',message:form.message.value,referencePhotos})});const j=await r.json().catch(()=>({}));if(r.ok){status.textContent=c().sent;form.reset();photoList.textContent='';}else status.textContent=c().failed+(j.error||'unknown');}catch(err){console.error(err);status.textContent=c().error;}
+      try{const referencePhotos=[];for(const file of files)referencePhotos.push(await uploadReferencePhoto(file));const r=await fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:form.name.value,email:form.email.value||'',message:form.message.value,referencePhotos})});const j=await r.json().catch(()=>({}));if(r.ok){status.textContent=c().sent;form.reset();photoList.textContent='';}else status.textContent=c().failed+(j.error||'unknown');}catch(err){console.error(err);status.textContent=c().error;}
     });
   </script>
   <script src="nav-parity.js"></script>
