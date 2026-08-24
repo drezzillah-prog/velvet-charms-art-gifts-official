@@ -1,8 +1,14 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import contact from '../api/contact.js';
 
 function res(){return{statusCode:200,payload:null,headers:{},setHeader(k,v){this.headers[k]=v;},status(c){this.statusCode=c;return this;},json(p){this.payload=p;return this;}};}
 const baseReq={method:'POST',body:{name:'Test Customer',email:'test@example.com',message:'Custom idea',referencePhotos:['custom-orders/reference-test.jpg']}};
+const contactHtml=readFileSync('contact.html','utf8');
+assert.match(contactHtml,/fetch\('\/api\/contact'/,'contact form must call the extensionless Vercel contact route');
+assert.match(contactHtml,/fetch\('\/api\/upload-photo'/,'contact photo upload must call the extensionless Vercel upload route');
+assert.doesNotMatch(contactHtml,/fetch\('\/api\/(?:contact|upload-photo)\.js'/,'browser must never call Vercel API routes with .js suffixes');
+
 const oldEndpoint=process.env.FORMSPREE_ENDPOINT,oldId=process.env.FORMSPREE_FORM_ID;
 delete process.env.FORMSPREE_ENDPOINT; delete process.env.FORMSPREE_FORM_ID;
 let response=res(); await contact(baseReq,response);
@@ -20,4 +26,4 @@ assert.equal(response.statusCode,400,'external/untrusted photo references must b
 
 if(oldEndpoint===undefined) delete process.env.FORMSPREE_ENDPOINT; else process.env.FORMSPREE_ENDPOINT=oldEndpoint;
 if(oldId===undefined) delete process.env.FORMSPREE_FORM_ID; else process.env.FORMSPREE_FORM_ID=oldId;
-console.log('PASS: Art & Gifts contact fails honestly without Formspree and forwards only validated private reference paths.');
+console.log('PASS: Art & Gifts Contact uses correct Vercel routes, fails honestly without Formspree, and forwards only validated private references.');
