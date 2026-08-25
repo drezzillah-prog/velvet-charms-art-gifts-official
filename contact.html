@@ -3,71 +3,85 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Contact Velvet Charms Art & Gifts about handmade art, personalized gifts and custom commissions." />
   <title>Contact — Velvet Charms</title>
+  <link rel="icon" type="image/png" href="favicon-art.png">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="mobile-polish.css">
 </head>
 <body>
   <header class="site-header">
     <div class="header-inner">
-      <h1 class="brand">Contact</h1>
+      <h1 class="brand">Velvet Charms</h1>
       <nav class="nav">
         <a href="index.html">Home</a>
         <a href="catalogue.html">Catalogue</a>
+        <a href="custom-orders.html">Custom Creations</a>
         <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
-  <a class="sister-link" href="https://velvet-charms-body-glow-git-b1e128-gabrielas-projects-d3e687c9.vercel.app/">Visit Body Glow</a>
+        <a href="faq.html">FAQ</a>
+        <a href="contact.html" class="active">Contact</a>
+        <a href="universe.html">Velvet Universe</a>
+        <a class="sister-link" href="https://velvet-charms-body-glow-official.vercel.app">Visit Body Glow</a>
       </nav>
     </div>
   </header>
-
   <main class="main">
     <h2>Contact</h2>
     <form id="contact-form">
-      <label>Name<input type="text" name="name" required></label>
-      <label>Email (optional)<input type="email" name="email"></label>
-      <label>Message<textarea name="message" rows="5" required></textarea></label>
-      <label>Attach one file (image/pdf) <input type="file" name="attachment" accept=".png,.jpg,.jpeg,.pdf"></label>
-      <div><button type="submit" class="btn">Send</button></div>
-      <p id="contact-status" style="margin-top:10px;color:var(--muted)"></p>
+      <label><span data-contact-copy="name">Name</span><input type="text" name="name" required></label>
+      <label><span data-contact-copy="email">Email (optional)</span><input type="email" name="email"></label>
+      <label><span data-contact-copy="message">Message</span><textarea name="message" rows="5" required></textarea></label>
+      <div class="contact-reference-upload">
+        <label for="contact-photos" id="contact-photo-label">Reference photographs (optional, up to 5)</label>
+        <input id="contact-photos" type="file" accept="image/jpeg,image/png,image/webp" multiple>
+        <p class="contact-note" id="contact-photo-note">For a custom creation, you can include up to five JPG, PNG or WEBP reference photographs with your first request. Each image must be under 4 MB and is stored privately.</p>
+        <div id="contact-photo-list" class="contact-photo-list" aria-live="polite"></div>
+      </div>
+      <div><button type="submit" class="btn" data-contact-copy="send">Send</button></div>
+      <p id="contact-status" style="margin-top:10px;color:var(--muted)" aria-live="polite"></p>
     </form>
   </main>
-
-  <footer class="site-footer">
-    <p>© Velvet Charms — handmade with care</p>
-  </footer>
-
+  <footer class="site-footer"><p>© Velvet Charms — handmade with care</p></footer>
+  <script src="script.js"></script>
+  <script src="features.js"></script>
+  <script src="localization.js"></script>
+  <script src="multilingual.js"></script>
+  <script src="multilingual-pages.js"></script>
   <script>
-    document.getElementById('contact-form').addEventListener('submit', async function(e){
-      e.preventDefault();
-      const status = document.getElementById('contact-status');
-      status.textContent = 'Sending…';
-      const form = e.target;
-      const fd = new FormData();
-      fd.append('name', form.name.value);
-      fd.append('email', form.email.value || '');
-      fd.append('message', form.message.value);
-      if (form.attachment.files[0]) fd.append('attachment', form.attachment.files[0]);
-
-      // If you have server api/upload.js you can POST the file; otherwise we POST JSON to /api/contact.js
-      try {
-        // Try multipart to /api/upload (if exists)
-        const r = await fetch('/api/contact.js', {
-          method: 'POST',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify({ name: form.name.value, email: form.email.value, message: form.message.value })
-        });
-        const j = await r.json();
-        if (r.ok) {
-          status.textContent = 'Message sent. Thank you!';
-          form.reset();
-        } else {
-          status.textContent = 'Failed to send: ' + (j.error || 'unknown');
-        }
-      } catch (err) {
-        status.textContent = 'Error: ' + err.toString();
-      }
+    const contactCopy = {
+      en:{name:'Name',email:'Email (optional)',message:'Message',send:'Send',label:'Reference photographs (optional, up to 5)',note:'For a custom creation, you can include up to five JPG, PNG or WEBP reference photographs with your first request. Each image must be under 4 MB and is stored privately.',selected:n=>`${n} reference photo${n===1?'':'s'} selected.`,max:'You can upload up to 5 photographs.',invalid:'Each photograph must be JPG, PNG or WEBP and under 4 MB.',uploading:'Uploading photographs and sending your request…',sending:'Sending…',sent:'Request sent. Thank you!',failed:'Failed to send: ',error:'The photographs or request could not be sent. Please try again.'},
+      ro:{name:'Nume',email:'E-mail (opțional)',message:'Mesaj',send:'Trimite',label:'Fotografii de referință (opțional, maximum 5)',note:'Pentru o creație personalizată poți include chiar din prima cerere maximum cinci fotografii JPG, PNG sau WEBP. Fiecare imagine trebuie să aibă sub 4 MB și este stocată privat.',selected:n=>`${n} ${n===1?'fotografie selectată':'fotografii selectate'}.`,max:'Poți încărca maximum 5 fotografii.',invalid:'Fiecare fotografie trebuie să fie JPG, PNG sau WEBP și să aibă sub 4 MB.',uploading:'Încărcăm fotografiile și trimitem cererea…',sending:'Se trimite…',sent:'Cererea a fost trimisă. Mulțumim!',failed:'Cererea nu a putut fi trimisă: ',error:'Fotografiile sau cererea nu au putut fi trimise. Te rugăm să încerci din nou.'},
+      fr:{name:'Nom',email:'E-mail (facultatif)',message:'Message',send:'Envoyer',label:'Photos de référence (facultatif, 5 maximum)',note:'Pour une création sur mesure, vous pouvez joindre dès votre première demande jusqu’à cinq photos de référence au format JPG, PNG ou WEBP. Chaque image doit peser moins de 4 Mo et est conservée de manière privée.',selected:n=>`${n} photo${n>1?'s':''} de référence sélectionnée${n>1?'s':''}.`,max:'Vous pouvez ajouter jusqu’à 5 photos.',invalid:'Chaque photo doit être au format JPG, PNG ou WEBP et peser moins de 4 Mo.',uploading:'Envoi des photos et de votre demande…',sending:'Envoi en cours…',sent:'Votre demande a bien été envoyée. Merci !',failed:'La demande n’a pas pu être envoyée : ',error:'Les photos ou la demande n’ont pas pu être envoyées. Veuillez réessayer.'},
+      it:{name:'Nome',email:'E-mail (facoltativa)',message:'Messaggio',send:'Invia',label:'Fotografie di riferimento (facoltative, massimo 5)',note:'Per una creazione su misura puoi allegare già alla prima richiesta fino a cinque fotografie di riferimento in formato JPG, PNG o WEBP. Ogni immagine deve essere inferiore a 4 MB e viene conservata in modo privato.',selected:n=>`${n} ${n===1?'fotografia di riferimento selezionata':'fotografie di riferimento selezionate'}.`,max:'Puoi caricare fino a 5 fotografie.',invalid:'Ogni fotografia deve essere in formato JPG, PNG o WEBP e inferiore a 4 MB.',uploading:'Caricamento delle fotografie e invio della richiesta…',sending:'Invio in corso…',sent:'Richiesta inviata. Grazie!',failed:'Non è stato possibile inviare la richiesta: ',error:'Non è stato possibile inviare le fotografie o la richiesta. Riprova.'},
+      de:{name:'Name',email:'E-Mail (optional)',message:'Nachricht',send:'Senden',label:'Referenzfotos (optional, bis zu 5)',note:'Für eine individuelle Kreation können Sie bereits mit Ihrer ersten Anfrage bis zu fünf Referenzfotos im JPG-, PNG- oder WEBP-Format mitsenden. Jedes Bild muss kleiner als 4 MB sein und wird privat gespeichert.',selected:n=>`${n} Referenzfoto${n===1?'':'s'} ausgewählt.`,max:'Sie können bis zu 5 Fotos hochladen.',invalid:'Jedes Foto muss im JPG-, PNG- oder WEBP-Format vorliegen und kleiner als 4 MB sein.',uploading:'Fotos werden hochgeladen und Ihre Anfrage wird gesendet…',sending:'Wird gesendet…',sent:'Ihre Anfrage wurde gesendet. Vielen Dank!',failed:'Die Anfrage konnte nicht gesendet werden: ',error:'Die Fotos oder die Anfrage konnten nicht gesendet werden. Bitte versuchen Sie es erneut.'}
+    };
+    const contactPhotos=document.getElementById('contact-photos');
+    const photoList=document.getElementById('contact-photo-list');
+    const language=()=>{const l=(window.VELVET_GET_LANGUAGE?.()||document.documentElement.lang||'en').slice(0,2).toLowerCase();return contactCopy[l]?l:'en';};
+    const c=()=>contactCopy[language()];
+    function syncContactCopy(){
+      document.querySelectorAll('[data-contact-copy]').forEach(el=>{const key=el.dataset.contactCopy;if(c()[key])el.textContent=c()[key];});
+      document.getElementById('contact-photo-label').textContent=c().label;
+      document.getElementById('contact-photo-note').textContent=c().note;
+      renderPhotoSelection();
+    }
+    function renderPhotoSelection(){const files=Array.from(contactPhotos.files||[]);photoList.textContent=files.length?c().selected(files.length):'';}
+    contactPhotos.addEventListener('change',()=>{
+      const files=Array.from(contactPhotos.files||[]);
+      if(files.length>5){contactPhotos.value='';photoList.textContent=c().max;return;}
+      const invalid=files.find(file=>!['image/jpeg','image/png','image/webp'].includes(file.type)||file.size>4*1024*1024);
+      if(invalid){contactPhotos.value='';photoList.textContent=c().invalid;return;}
+      renderPhotoSelection();
     });
- <script src="script.js"></script>
-<script src="features.js"></script>
+    document.addEventListener('DOMContentLoaded',syncContactCopy);
+    window.addEventListener('velvet-language-changed',syncContactCopy);
+    document.addEventListener('velvet:language-change',syncContactCopy);
+    async function uploadReferencePhoto(file){const data=new FormData();data.append('photo',file);const response=await fetch('/api/upload-photo',{method:'POST',body:data});const result=await response.json().catch(()=>({}));if(!response.ok||!result.pathname)throw new Error(result.error||'Photo upload failed');return result.pathname;}
+    document.getElementById('contact-form').addEventListener('submit',async function(e){
+      e.preventDefault();const status=document.getElementById('contact-status');const form=e.target;const files=Array.from(contactPhotos.files||[]);status.textContent=files.length?c().uploading:c().sending;
+      try{const referencePhotos=[];for(const file of files)referencePhotos.push(await uploadReferencePhoto(file));const r=await fetch('/api/contact',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:form.name.value,email:form.email.value||'',message:form.message.value,referencePhotos})});const j=await r.json().catch(()=>({}));if(r.ok){status.textContent=c().sent;form.reset();photoList.textContent='';}else status.textContent=c().failed+(j.error||'unknown');}catch(err){console.error(err);status.textContent=c().error;}
+    });
+  </script>
+  <script src="nav-parity.js"></script>
 </body>
 </html>
