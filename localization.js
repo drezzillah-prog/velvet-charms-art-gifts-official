@@ -10,10 +10,14 @@
   document.documentElement.lang = current;
 
   if (current === 'ro' && !document.querySelector('script[data-velvet-ro-localization]')) {
-    const script = document.createElement('script');
-    script.src = 'localization-ro.js';
-    script.dataset.velvetRoLocalization = 'true';
-    document.head.appendChild(script);
+    const legacy = document.createElement('script');
+    legacy.src = 'localization-ro.js';
+    legacy.dataset.velvetRoLocalization = 'true';
+    document.head.appendChild(legacy);
+    const modern = document.createElement('script');
+    modern.src = 'localization-ro-modern.js';
+    modern.dataset.velvetRoModern = 'true';
+    document.head.appendChild(modern);
   }
 
   const removeLegacySelector = () => {
