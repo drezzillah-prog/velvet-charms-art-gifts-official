@@ -20,8 +20,12 @@
   function load(src){if(document.querySelector(`script[src="${src}"]`))return Promise.resolve();return new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=src;s.onload=resolve;s.onerror=reject;document.body.appendChild(s);});}
   async function ensureLocalization(){
     try{
-      if(!window.VELVET_GET_LANGUAGE) await load('multilingual.js');
       const page=location.pathname.split('/').pop()||'index.html';
+      if(page==='catalogue.html'){
+        apply();
+        return;
+      }
+      if(!window.VELVET_GET_LANGUAGE) await load('multilingual.js');
       if(page==='universe.html'&&!document.querySelector('script[src="multilingual-universe.js"]')) await load('multilingual-universe.js');
       if(!document.querySelector('script[src="language-polish.js"]')) await load('language-polish.js');
       apply();
