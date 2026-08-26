@@ -29,9 +29,9 @@
 }
 .made-for-you p:last-child{margin-bottom:0;}
 .lang-ro{display:none;}
-html[lang="ro"] .made-for-you .lang-en{display:none;}
-html[lang="ro"] .made-for-you .lang-ro{display:block;}
-html[lang="en"] .made-for-you .lang-en{display:block;}
+html[lang="ro"] .lang-en{display:none !important;}
+html[lang="ro"] .lang-ro{display:block !important;}
+html:not([lang="ro"]) .lang-en{display:block;}
 
 .payment-status-banner{
   max-width:900px;
