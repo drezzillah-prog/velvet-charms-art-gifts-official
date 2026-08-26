@@ -1,7 +1,8 @@
 import fs from 'node:fs';
 const must=(file,terms)=>{const s=fs.readFileSync(file,'utf8'); for(const t of terms) if(!s.includes(t)) throw new Error(`${file} missing: ${t}`); return s;};
 must('index.html',['Handmade with Care','Our Approach','Custom Creations','Step inside the Velvet Universe','catalogue.html','custom-orders.html','about.html','faq.html','contact.html','universe.html']);
-must('catalogue.html',['catalogue-root','Art & Gifts Collection','catalogue-art-gifts.json']);
+must('catalogue.html',['catalogue-root','Art & Gifts Collection']);
+must('script.js',['catalogue-art-gifts.json','buildCatalogue','product-card']);
 must('custom-orders.html',['Your photograph. Your story. Made by hand.','What Can We Create for You?','How a custom creation works','Custom creation request','Photographs or visual references — up to 5']);
 const about=must('about.html',['Fourteen Makers, Many Creative Worlds']);
 for(let i=1;i<=14;i++){const n=String(i).padStart(2,'0'); if(!about.includes(`assets/artists/artist-${n}.svg`)) throw new Error(`about missing artist ${n}`);}
