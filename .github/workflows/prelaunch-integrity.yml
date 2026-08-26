@@ -3,6 +3,7 @@ name: Prelaunch Integrity
 on:
   push:
     branches:
+      - main
       - codex/body-glow-foundation-20260819
   pull_request:
 
