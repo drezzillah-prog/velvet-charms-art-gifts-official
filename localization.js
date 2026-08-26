@@ -4,6 +4,8 @@
   'use strict';
   const KEY = 'velvet_language_art_gifts';
   const SUPPORTED = new Set(['en','ro','fr','it','de']);
+  const page = location.pathname.split('/').pop() || 'index.html';
+  const isCatalogue = page === 'catalogue.html';
   let current = localStorage.getItem(KEY) || (navigator.language?.toLowerCase().startsWith('ro') ? 'ro' : 'en');
   if (!SUPPORTED.has(current)) current = 'en';
   localStorage.setItem(KEY, current);
@@ -14,10 +16,12 @@
     legacy.src = 'localization-ro.js';
     legacy.dataset.velvetRoLocalization = 'true';
     document.head.appendChild(legacy);
-    const modern = document.createElement('script');
-    modern.src = 'localization-ro-modern.js';
-    modern.dataset.velvetRoModern = 'true';
-    document.head.appendChild(modern);
+    if (!isCatalogue) {
+      const modern = document.createElement('script');
+      modern.src = 'localization-ro-modern.js';
+      modern.dataset.velvetRoModern = 'true';
+      document.head.appendChild(modern);
+    }
   }
 
   const removeLegacySelector = () => {
@@ -41,5 +45,7 @@
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', removeLegacySelector);
   else removeLegacySelector();
-  new MutationObserver(removeLegacySelector).observe(document.documentElement, { childList:true, subtree:true });
+  if (!isCatalogue) {
+    new MutationObserver(removeLegacySelector).observe(document.documentElement, { childList:true, subtree:true });
+  }
 })();
