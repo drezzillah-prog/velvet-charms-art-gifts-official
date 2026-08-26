@@ -1,0 +1,42 @@
+/* Final Art & Gifts catalogue language polish, event-driven and observer-free. */
+(() => {
+  'use strict';
+  const exact={
+    fr:{
+      'Ensemble cheveux personnalisé':'Ensemble d’accessoires pour cheveux personnalisé',
+      'Ensemble cheveux personnalisé — 3 pièces assorties':'Ensemble d’accessoires pour cheveux personnalisé — 3 pièces assorties',
+      'Set de 4 dessous de verre en résine époxy':'Lot de 4 dessous de verre en résine époxy',
+      'Set de photophores en résine époxy':'Ensemble de photophores en résine époxy'
+    },
+    it:{
+      'Abbina al mio outfit o alla mia reference':'Abbina al mio outfit o alla mia immagine di riferimento',
+      'Abbina al mio arredamento o alla reference':'Abbina al mio arredamento o all’immagine di riferimento',
+      'Abbina alla mia stanza o alla reference':'Abbina alla stanza o all’immagine di riferimento',
+      'Creato dalla tua reference':'Creato a partire dalla tua immagine di riferimento',
+      'Set capelli personalizzato':'Set di accessori per capelli personalizzato',
+      'Set capelli personalizzato — 3 pezzi coordinati':'Set di accessori per capelli personalizzato — 3 pezzi coordinati',
+      'Confezione signature Velvet':'Confezione Velvet esclusiva',
+      'Sì. Velvet Charms Art & Gifts nasce dal lavoro artigianale e dalle piccole serie, non dalla produzione di massa. La lavorazione inizia in base allo slot di produzione confermato per il tuo ordine.':'Sì. Velvet Charms Art & Gifts nasce dal lavoro artigianale e dalle piccole serie, non dalla produzione di massa. La lavorazione inizia nel periodo di produzione confermato per il tuo ordine.'
+    },
+    de:{'Velvet Signature-Verpackung':'Velvet-Signaturverpackung','Die Velvet Details':'Die besonderen Velvet-Details'}
+  };
+  const language=()=>{const l=(window.VELVET_GET_LANGUAGE?.()||document.documentElement.lang||'en').slice(0,2).toLowerCase();return ['fr','it','de'].includes(l)?l:'en';};
+  function polished(value,l){
+    const raw=String(value||''),clean=raw.trim();if(!clean||l==='en')return raw;
+    let out=exact[l]?.[clean]||clean,m;
+    if((m=clean.match(/^(\d+) photo\(s\) de référence privée\(s\)$/))&&l==='fr')out=Number(m[1])===1?'1 photo de référence privée':`${m[1]} photos de référence privées`;
+    if((m=clean.match(/^(\d+) private Referenzfoto\(s\)$/))&&l==='de')out=Number(m[1])===1?'1 privates Referenzfoto':`${m[1]} private Referenzfotos`;
+    return raw.replace(clean,out);
+  }
+  function apply(root=document.body){
+    const l=language();if(!root||l==='en')return;
+    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+    while(walker.nextNode()){
+      const n=walker.currentNode;if(!n.nodeValue.trim())continue;
+      const next=polished(n.nodeValue,l);if(next!==n.nodeValue)n.nodeValue=next;
+    }
+  }
+  window.addEventListener('velvet-language-changed',()=>setTimeout(()=>apply(document.body),0));
+  document.addEventListener('velvet:catalogue-rendered',()=>setTimeout(()=>apply(document.getElementById('catalogue-root')||document.body),0));
+  document.addEventListener('DOMContentLoaded',()=>setTimeout(()=>apply(document.body),50));
+})();
