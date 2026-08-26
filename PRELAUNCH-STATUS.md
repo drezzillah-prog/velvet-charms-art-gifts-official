@@ -2,7 +2,7 @@
 
 Internal handoff only. This file is not customer-facing.
 
-## Completed on the safe preview branch
+## Completed and now present on `main`
 
 - 33 products, 6 categories, 14 subcategories and all 118 product-image references preserved.
 - Curated Romanian pricing separate from international pricing; Romanian pricing is selected from visitor access geolocation, not shipping address.
@@ -19,23 +19,21 @@ Internal handoff only. This file is not customer-facing.
 - Mobile/responsive safeguards and long-text handling.
 - robots.txt, sitemap.xml and initial SEO metadata.
 - Automated prelaunch suite: catalogue integrity/image count/pricing, capture security, Contact, seller handoff, PayPal return, end-to-end order flow and static page/asset/API-route audit.
-- Current branch is ahead of `main` and not behind it. `main` has intentionally not been changed.
+- The validated prelaunch build and 14-artist About gallery were merged to `main` on 25 August 2026. Final launch-safety cleanup is being validated separately before any further production change.
 
 ## Verified negative checkout scenarios
 
 Automated tests reject changed price/PayPal amount, changed customization, changed preferred date and changed reference pathname after PayPal approval. They also cover failed/non-completed capture and already-completed-order recovery without double capture.
 
-## External / owner/Codex-gated items before production
+## External / owner-gated items before final launch
 
 1. Confirm the real Formspree environment value in Vercel and perform one real Contact/Custom Creation delivery test.
 2. Verify a real private Blob upload/view flow in the authenticated deployment environment.
 3. Perform one real low-value PayPal transaction only with explicit owner approval.
 4. Complete authenticated visual browser QA on representative mobile + desktop viewports, including all five languages and German long-text wrapping.
-5. Generate the Art & Gifts team photography using the same 14 generated identities used by Body Glow, with natural varied angles/distances and Art & Gifts activities/products.
-6. Supply verified trader/company details before publishing final Terms / Trader Information / Privacy wording.
-7. Complete applicable GPSR/category-specific physical-product safety, traceability and online-warning information before affected products are offered for sale.
-8. Set final canonical/production-domain metadata after the final domain is confirmed.
-9. Merge to `main` / production only after explicit owner approval.
+5. Supply verified trader/company details before publishing final Terms / Trader Information / Privacy wording.
+6. Complete applicable GPSR/category-specific physical-product safety, traceability and online-warning information before affected products are offered for sale.
+7. Set final canonical/production-domain metadata after the final domain is confirmed.
 
 ## Do not redo
 
