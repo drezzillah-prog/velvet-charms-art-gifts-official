@@ -7,8 +7,8 @@ for(const page of pages){
   if(!s.includes('localization.js')) throw new Error(`${page} missing language state wiring`);
   if(page==='catalogue.html'){
     if(!s.includes('catalogue-language.js')||!s.includes('catalogue-language-polish.js')) throw new Error('catalogue missing observer-free language wiring');
-    if(s.includes('multilingual.js')||s.includes('language-polish.js')||s.includes('performance.css')) throw new Error('catalogue reintroduced known observer/visibility regression');
-  } else if(!s.includes('multilingual.js')) throw new Error(`${page} missing mature multilingual runtime`);
+    if(s.includes('<script src="multilingual.js"')||s.includes('<script src="language-polish.js"')||s.includes('href="performance.css"')) throw new Error('catalogue reintroduced known observer/visibility regression');
+  } else if(!s.includes('<script src="multilingual.js"')) throw new Error(`${page} missing mature multilingual runtime`);
 }
 const catLang=fs.readFileSync('catalogue-language.js','utf8');
 const catPolish=fs.readFileSync('catalogue-language-polish.js','utf8');
