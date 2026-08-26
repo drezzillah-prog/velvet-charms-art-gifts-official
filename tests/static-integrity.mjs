@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { existsSync, readFileSync } from 'node:fs';
 import { extname } from 'node:path';
 
-const pages=['index.html','catalogue.html','custom-orders.html','about.html','faq.html','contact.html','universe.html'];
+const pages=['index.html','catalogue.html','custom-orders.html','about.html','faq.html','contact.html','universe.html','wishlist.html','product.html'];
 const textFiles=[...pages,'features.js','script.js','custom-orders.js','localization.js','multilingual.js','multilingual-pages.js'];
 
 for(const page of pages){
@@ -28,9 +28,15 @@ for(const file of textFiles){
   assert.doesNotMatch(source,/['"]\/api\/[A-Za-z0-9_-]+\.js(?:['"?])/i,`${file} must use extensionless Vercel API routes`);
 }
 
+const customerPages=['index.html','catalogue.html','custom-orders.html','about.html','faq.html','contact.html','universe.html'];
+for(const page of customerPages){
+  const html=readFileSync(page,'utf8');
+  assert.doesNotMatch(html,/href=["'][^"']*(?:wishlist|product)\.html/i,`${page} must not link to legacy fallback pages`);
+}
+
 const universe=readFileSync('universe.html','utf8');
 assert.doesNotMatch(universe,/ideas we can build after|what comes next|in development|viziune pe termen lung/i,'Velvet Universe must not expose internal roadmap language');
 assert.ok(existsSync('robots.txt'),'robots.txt must exist');
 assert.ok(existsSync('sitemap.xml'),'sitemap.xml must exist');
 
-console.log('PASS: Art & Gifts customer pages, local assets, API routes, accessibility basics and public Universe copy pass the static prelaunch audit.');
+console.log('PASS: Art & Gifts customer pages, legacy fallbacks, local assets, API routes, accessibility basics and public Universe copy pass the static prelaunch audit.');
