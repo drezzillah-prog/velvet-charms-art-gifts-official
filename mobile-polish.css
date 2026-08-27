@@ -66,6 +66,103 @@ body.catalogue-page .product-card{
   backdrop-filter:blur(3px);
 }
 
+/* Final desktop polish: keep long translated navigation readable and make the
+   generated language selector look identical on every page. */
+@media (min-width:761px){
+  .header-inner{
+    max-width:1600px;
+    padding-left:clamp(24px,4vw,64px);
+    padding-right:clamp(24px,4vw,64px);
+    gap:24px;
+  }
+  .brand{flex:0 0 auto;}
+  .nav{
+    flex:1 1 auto;
+    gap:clamp(10px,1.1vw,18px);
+    margin-left:auto;
+  }
+  .nav a{
+    margin-left:0;
+    line-height:1.2;
+  }
+}
+
+.velvet-language-switcher,
+.language-switch{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:7px;
+  margin-left:8px;
+  padding:5px 7px;
+  border:0;
+  border-radius:999px;
+  background:transparent;
+  white-space:nowrap;
+}
+.velvet-language-switcher button,
+.language-switch button{
+  appearance:none;
+  border:1px solid rgba(255,246,251,.34);
+  background:rgba(255,246,251,.055);
+  color:rgba(255,246,251,.86);
+  min-width:43px;
+  min-height:38px;
+  padding:7px 10px;
+  border-radius:999px;
+  cursor:pointer;
+  font-size:14px;
+  font-weight:500;
+  line-height:1;
+  letter-spacing:.02em;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+  transition:background .2s ease,border-color .2s ease,transform .2s ease,color .2s ease;
+}
+.velvet-language-switcher button:hover,
+.language-switch button:hover{
+  color:#fff8fc;
+  border-color:rgba(231,184,213,.72);
+  background:rgba(199,143,179,.16);
+  transform:translateY(-1px);
+}
+.velvet-language-switcher button.active,
+.velvet-language-switcher button[aria-pressed="true"],
+.language-switch button.active{
+  color:#fff;
+  border-color:rgba(231,184,213,.7);
+  background:linear-gradient(135deg,rgba(199,143,179,.34),rgba(142,92,122,.34));
+}
+
+/* Keep Romanian/German hero copy inside the artwork and increase contrast without
+   changing the approved hero image. */
+.hero{
+  padding:clamp(24px,4vw,58px);
+}
+.hero-content{
+  width:min(100%,1080px);
+  padding:clamp(22px,3vw,38px);
+  border:1px solid rgba(255,238,247,.18);
+  border-radius:24px;
+  background:linear-gradient(120deg,rgba(34,11,27,.64),rgba(72,38,52,.28));
+  box-shadow:0 18px 55px rgba(20,4,15,.22);
+  backdrop-filter:blur(2px);
+  color:#fff4fa;
+  overflow-wrap:anywhere;
+}
+.hero-content h2{
+  margin-top:0;
+  color:#ffe5f3;
+  text-shadow:0 2px 18px rgba(24,5,18,.65);
+}
+.hero-content p{
+  max-width:72ch;
+  color:#fff7fb;
+  line-height:1.55;
+  text-shadow:0 2px 16px rgba(24,5,18,.75);
+}
+.hero-content .btn{color:#fff;}
+
 @media (max-width:760px){
   .site-header{backdrop-filter:none;background:rgba(28,12,23,.94);}
   .header-inner{
@@ -84,11 +181,20 @@ body.catalogue-page .product-card{
     font-size:22px;
     line-height:1.1;
   }
-  .language-switch{
+  .language-switch,
+  .velvet-language-switcher{
     grid-area:language;
     justify-self:end;
     margin:0;
-    padding:4px 7px;
+    padding:4px 0;
+    gap:5px;
+  }
+  .language-switch button,
+  .velvet-language-switcher button{
+    min-width:36px;
+    min-height:34px;
+    padding:6px 8px;
+    font-size:12px;
   }
   .nav{
     grid-area:nav;
@@ -121,6 +227,14 @@ body.catalogue-page .product-card{
   .nav a.sister-link{
     border-color:rgba(211,155,191,.3);
   }
+
+  .hero{padding:18px;}
+  .hero-content{
+    padding:20px 18px;
+    border-radius:18px;
+  }
+  .hero-content h2{font-size:clamp(1.65rem,8vw,2.2rem);}
+  .hero-content p{font-size:.96rem;}
 
   .catalogue-nav{top:92px;backdrop-filter:none;background:rgba(35,10,28,.96);}
   .catalogue-category{scroll-margin-top:155px;}
