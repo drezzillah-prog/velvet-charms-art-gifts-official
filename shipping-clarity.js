@@ -78,6 +78,12 @@
   function setText(node, value) {
     if (node && node.textContent !== value) node.textContent = value;
   }
+  const nativeAlert = window.alert.bind(window);
+  window.alert = message => {
+    const text = String(message ?? '');
+    const key = translatedKey(text);
+    return nativeAlert(key ? copy[language()][key] : message);
+  };
   function apply() {
     const c = copy[language()];
     setText(document.querySelector('.cart-summary-row.cart-total span'), c.total);
