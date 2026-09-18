@@ -1,0 +1,11 @@
+import { readFileSync, existsSync } from "node:fs";
+import assert from "node:assert/strict";
+assert.ok(existsSync("velvet-box.html")&&existsSync("velvet-box.js"),"Velvet Box files missing");
+const html=readFileSync("velvet-box.html","utf8"),js=readFileSync("velvet-box.js","utf8"),catalogue=readFileSync("catalogue.html","utf8");
+assert.match(html,/Choose 3–4 currently eligible/);
+assert.match(js,/selected\.length<3\|\|selected\.length>4/);
+for(const id of ["relax_restore","cozy_winter","home_harmony","epoxy_lamp","wall_clock_large"]) assert.match(js,new RegExp(id),id+" must be excluded from Velvet Box");
+assert.match(js,/\/api\/contact/);
+assert.match(js,/final bundle price and production timing/);
+assert.match(catalogue,/velvet-box\.html/);
+console.log("Velvet Box quote-flow contract PASS");
