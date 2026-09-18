@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import assert from 'node:assert/strict';
 
 const script = readFileSync('script.js','utf8');
+const captureOrder = readFileSync('api/capture-order.js','utf8');
 const catalogue = JSON.parse(readFileSync('catalogue-art-gifts.json','utf8'));
 const products = (catalogue.categories||[]).flatMap(c=>[...(c.products||[]),...(c.subcategories||[]).flatMap(s=>s.products||[])]);
 const ids = new Set(products.map(p=>p.id));
