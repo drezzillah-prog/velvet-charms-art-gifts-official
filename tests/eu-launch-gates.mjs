@@ -18,3 +18,6 @@ assert.match(script,/__storefront_hidden/);
 assert.match(script,/__checkout_blocked/);
 assert.match(script,/disabled aria-disabled="true">Checkout unavailable/);
 console.log('EU launch gates OK: mixed bundles preserved-but-hidden; powered products preserved-but-blocked.');
+
+if(!captureOrder.includes('PRODUCT_NOT_READY')) throw new Error('capture must reject gated EU products');
+for(const id of ['relax_restore','cozy_winter','home_harmony','epoxy_lamp','wall_clock_large']) if(!captureOrder.includes(id)) throw new Error(`capture gate missing ${id}`);
