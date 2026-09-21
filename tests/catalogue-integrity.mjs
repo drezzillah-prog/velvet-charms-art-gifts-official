@@ -11,8 +11,8 @@ for (const category of catalogue.categories || []) {
   for (const subcategory of category.subcategories || []) for (const product of subcategory.products || []) products.push(product);
 }
 
-assert.equal(products.length, 33, "Art & Gifts should keep all 33 existing products");
-assert.equal(Object.keys(pricingRo).length, 33, "Romanian pricing map must cover all 33 products");
+assert.equal(products.length, 50, "Art & Gifts should keep 33 originals plus 17 additive knitted/felted products");
+assert.equal(Object.keys(pricingRo).length, 50, "Romanian pricing map must cover all 50 products");
 const ids = new Set(); let imageCount = 0;
 for (const product of products) {
   assert.ok(product.id && typeof product.id === "string", "Every product needs an id");
@@ -20,11 +20,13 @@ for (const product of products) {
   assert.ok(product.name && typeof product.name === "string", `Missing product name for ${product.id}`);
   assert.ok(Number.isFinite(Number(product.price)) && Number(product.price) > 0, `Invalid international price for ${product.id}`);
   assert.ok(Number.isFinite(Number(pricingRo[product.id])) && Number(pricingRo[product.id]) > 0, `Missing curated Romanian price for ${product.id}`);
-  for (const key of ["gift_wrap", "gift_card", "collectible_charm", "velvet_passport"]) assert.ok(Array.isArray(product.options?.[key]) && product.options[key].length > 0, `Missing ${key} choices for ${product.id}`);
+  const imported = ["beanie_small","beanie_medium","beanie_large","beanie_xl","scarf_standard","mittens_small","mittens_medium","mittens_large","mittens_xl","winter_set","blanket_small","blanket_medium","blanket_large","felt_small","felt_medium","felt_family","pet_beanie"].includes(product.id);
+  const optionKeys = imported ? ["hidden_message","ritual_card","collectible_charm","velvet_passport"] : ["gift_wrap","gift_card","collectible_charm","velvet_passport"];
+  for (const key of optionKeys) assert.ok(Array.isArray(product.options?.[key]) && product.options[key].length > 0, `Missing ${key} choices for ${product.id}`);
   assert.ok(Array.isArray(product.images) && product.images.length > 0, `Missing images for ${product.id}`);
   for (const image of product.images) { imageCount += 1; assert.ok(typeof image === "string" && image.trim(), `Invalid image reference for ${product.id}`); assert.ok(existsSync(join(root, image)), `Missing image file: ${image}`); }
 }
-assert.equal(imageCount, 118, "Art & Gifts should keep all 118 existing product image references");
+assert.equal(imageCount, 138, "Art & Gifts should keep 118 original plus 20 imported image references");
 
 for (const requiredFile of ["catalogue.html","script.js","features.js","localization.js","currency.js","api/currency.js","production.css","pricing-ro.json","api/create-order.js","api/capture-order.js","api/upload-photo.js","api/upload.js","api/reference-file.js","api/delete-reference.js","custom-orders.js","shipping-clarity.js","language-polish.js","checkout-return-guard.js"]) {
   assert.ok(existsSync(join(root, requiredFile)), `Missing required file: ${requiredFile}`);

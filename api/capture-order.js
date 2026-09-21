@@ -3,6 +3,8 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
 const CURRENCY = "EUR";
+const HIDDEN_BUNDLE_IDS = new Set(["relax_restore", "cozy_winter", "home_harmony"]);
+const CHECKOUT_BLOCKED_IDS = new Set(["epoxy_lamp", "wall_clock_large"]);
 const REFERENCE_LINK_TTL_MS = 180 * 24 * 60 * 60 * 1000;
 
 function paypalBaseUrl() {
@@ -39,6 +41,7 @@ function validatedItems(requestBody, market) {
     const product = catalogue.get(rawItem?.id);
     const quantity = Number.parseInt(rawItem?.qty, 10);
     if (!product || !Number.isInteger(quantity) || quantity < 1 || quantity > 99) throw new Error("INVALID_CART");
+    if (HIDDEN_BUNDLE_IDS.has(product.id) || CHECKOUT_BLOCKED_IDS.has(product.id)) throw new Error("PRODUCT_NOT_READY");
     const price = market === "RO" ? Number(product.price_ro_eur) : Number(product.price);
     if (!Number.isFinite(price) || price < 0) throw new Error("INVALID_CART");
     const options = {};
@@ -192,6 +195,7 @@ export default async function handler(req, res) {
   } catch (error) {
     console.error("Capture order error:", error);
     if (["INVALID_CART", "INVALID_CUSTOMIZATION"].includes(error.message)) return res.status(400).json({ error: "The cart or customization details are invalid." });
+    if (error.message === "PRODUCT_NOT_READY") return res.status(409).json({ error: "This product is not available for checkout yet." });
     if (error.message === "PAYPAL_NOT_CONFIGURED") return res.status(503).json({ error: "PayPal is not configured yet." });
     return res.status(500).json({ error: "Payment could not be confirmed." });
   }

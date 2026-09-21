@@ -2218,6 +2218,720 @@
           }
         }
       ]
+    },
+    {
+      "id": "knitted_braided",
+      "name": "Knitted & Braided Wool Creations",
+      "subcategories": [
+        {
+          "id": "beanies",
+          "name": "Hand-Knitted Beanies",
+          "products": [
+            {
+              "id": "beanie_small",
+              "name": "Hand-Knitted Beanie — Small",
+              "price": 45,
+              "description": "Hand-knitted warm beanie.",
+              "images": [
+                "Hand-Knitted Beanie - Small.png"
+              ],
+              "price_ro": 169,
+              "price_ro_usd": 37.56,
+              "options": {
+                "hidden_message": [
+                  "You deserve kindness.",
+                  "Look how far you've come.",
+                  "Your next ritual awaits.",
+                  "I will write my own in special instructions."
+                ],
+                "ritual_card": [
+                  "Morning Ritual",
+                  "Night Ritual",
+                  "Spa Ritual",
+                  "Self-Love Ritual",
+                  "Travel Ritual"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport"
+                ]
+              }
+            },
+            {
+              "id": "beanie_medium",
+              "name": "Hand-Knitted Beanie — Medium",
+              "price": 48,
+              "description": "Most popular size.",
+              "images": [
+                "Hand-Knitted Beanie - Medium.png"
+              ],
+              "price_ro": 179,
+              "price_ro_usd": 39.78,
+              "options": {
+                "hidden_message": [
+                  "You deserve kindness.",
+                  "Look how far you've come.",
+                  "Your next ritual awaits.",
+                  "I will write my own in special instructions."
+                ],
+                "ritual_card": [
+                  "Morning Ritual",
+                  "Night Ritual",
+                  "Spa Ritual",
+                  "Self-Love Ritual",
+                  "Travel Ritual"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport"
+                ]
+              }
+            },
+            {
+              "id": "beanie_large",
+              "name": "Hand-Knitted Beanie — Large",
+              "price": 52,
+              "description": "Large size for extra warmth.",
+              "images": [
+                "Hand-Knitted Beanie - Large.png"
+              ],
+              "price_ro": 189,
+              "price_ro_usd": 42,
+              "options": {
+                "hidden_message": [
+                  "You deserve kindness.",
+                  "Look how far you've come.",
+                  "Your next ritual awaits.",
+                  "I will write my own in special instructions."
+                ],
+                "ritual_card": [
+                  "Morning Ritual",
+                  "Night Ritual",
+                  "Spa Ritual",
+                  "Self-Love Ritual",
+                  "Travel Ritual"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport"
+                ]
+              }
+            },
+            {
+              "id": "beanie_xl",
+              "name": "Hand-Knitted Beanie — Extra Large",
+              "price": 56,
+              "description": "Oversized cozy design.",
+              "images": [
+                "Hand-Knitted Beanie - Extra-Large.png"
+              ],
+              "price_ro": 199,
+              "price_ro_usd": 44.22,
+              "options": {
+                "hidden_message": [
+                  "You deserve kindness.",
+                  "Look how far you've come.",
+                  "Your next ritual awaits.",
+                  "I will write my own in special instructions."
+                ],
+                "ritual_card": [
+                  "Morning Ritual",
+                  "Night Ritual",
+                  "Spa Ritual",
+                  "Self-Love Ritual",
+                  "Travel Ritual"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "scarves",
+          "name": "Hand-Knitted Scarves",
+          "products": [
+            {
+              "id": "scarf_standard",
+              "name": "Hand-Knitted Scarf — One Size",
+              "price": 75,
+              "description": "Cozy knitted scarf.",
+              "images": [
+                "Hand-Knitted Scarf - One size (150x25 cm avg.).png"
+              ],
+              "price_ro": 299,
+              "price_ro_usd": 66.44,
+              "options": {
+                "hidden_message": [
+                  "You deserve kindness.",
+                  "Look how far you've come.",
+                  "Your next ritual awaits.",
+                  "I will write my own in special instructions."
+                ],
+                "ritual_card": [
+                  "Morning Ritual",
+                  "Night Ritual",
+                  "Spa Ritual",
+                  "Self-Love Ritual",
+                  "Travel Ritual"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "mittens",
+          "name": "Hand-Knitted Mittens",
+          "products": [
+            {
+              "id": "mittens_small",
+              "name": "Hand-Knitted Mittens — Small",
+              "price": 50,
+              "description": "Classic warm mittens.",
+              "images": [
+                "Hand-Knitted Mittens - Small.png"
+              ],
+              "price_ro": 199,
+              "price_ro_usd": 44.22,
+              "options": {
+                "hidden_message": [
+                  "You deserve kindness.",
+                  "Look how far you've come.",
+                  "Your next ritual awaits.",
+                  "I will write my own in special instructions."
+                ],
+                "ritual_card": [
+                  "Morning Ritual",
+                  "Night Ritual",
+                  "Spa Ritual",
+                  "Self-Love Ritual",
+                  "Travel Ritual"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport"
+                ]
+              }
+            },
+            {
+              "id": "mittens_medium",
+              "name": "Hand-Knitted Mittens — Medium",
+              "price": 55,
+              "description": "Medium-sized handcrafted mittens.",
+              "images": [
+                "Hand-Knitted Mittens - Medium.png"
+              ],
+              "price_ro": 219,
+              "price_ro_usd": 48.67,
+              "options": {
+                "hidden_message": [
+                  "You deserve kindness.",
+                  "Look how far you've come.",
+                  "Your next ritual awaits.",
+                  "I will write my own in special instructions."
+                ],
+                "ritual_card": [
+                  "Morning Ritual",
+                  "Night Ritual",
+                  "Spa Ritual",
+                  "Self-Love Ritual",
+                  "Travel Ritual"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport"
+                ]
+              }
+            },
+            {
+              "id": "mittens_large",
+              "name": "Hand-Knitted Mittens — Large",
+              "price": 60,
+              "description": "Soft and warm.",
+              "images": [
+                "Hand-Knitted Mittens - Large.png"
+              ],
+              "price_ro": 239,
+              "price_ro_usd": 53.11,
+              "options": {
+                "hidden_message": [
+                  "You deserve kindness.",
+                  "Look how far you've come.",
+                  "Your next ritual awaits.",
+                  "I will write my own in special instructions."
+                ],
+                "ritual_card": [
+                  "Morning Ritual",
+                  "Night Ritual",
+                  "Spa Ritual",
+                  "Self-Love Ritual",
+                  "Travel Ritual"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport"
+                ]
+              }
+            },
+            {
+              "id": "mittens_xl",
+              "name": "Hand-Knitted Mittens — Extra Large",
+              "price": 65,
+              "description": "Extra-large cozy mittens.",
+              "images": [
+                "Hand-Knitted Mittens - Extra Large.png"
+              ],
+              "price_ro": 259,
+              "price_ro_usd": 57.56,
+              "options": {
+                "hidden_message": [
+                  "You deserve kindness.",
+                  "Look how far you've come.",
+                  "Your next ritual awaits.",
+                  "I will write my own in special instructions."
+                ],
+                "ritual_card": [
+                  "Morning Ritual",
+                  "Night Ritual",
+                  "Spa Ritual",
+                  "Self-Love Ritual",
+                  "Travel Ritual"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "knitted_set",
+          "name": "Matching Winter Set",
+          "products": [
+            {
+              "id": "winter_set",
+              "name": "Matching Winter Set — Beanie + Scarf + Mittens",
+              "price": 170,
+              "description": "Warm handcrafted winter set.",
+              "images": [
+                "matching_winter_set_1.png",
+                "matching_winter_set_2.png"
+              ],
+              "price_ro": 649,
+              "price_ro_usd": 144.22,
+              "options": {
+                "hidden_message": [
+                  "You deserve kindness.",
+                  "Look how far you've come.",
+                  "Your next ritual awaits.",
+                  "I will write my own in special instructions."
+                ],
+                "ritual_card": [
+                  "Morning Ritual",
+                  "Night Ritual",
+                  "Spa Ritual",
+                  "Self-Love Ritual",
+                  "Travel Ritual"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "braided_blankets",
+          "name": "Braided Blankets",
+          "products": [
+            {
+              "id": "blanket_small",
+              "name": "Braided Blanket — Small (80×100 cm)",
+              "price": 160,
+              "description": "Small braided throw.",
+              "images": [
+                "Braided Blanket (Small).png"
+              ],
+              "price_ro": 699,
+              "price_ro_usd": 155.33,
+              "options": {
+                "hidden_message": [
+                  "You deserve kindness.",
+                  "Look how far you've come.",
+                  "Your next ritual awaits.",
+                  "I will write my own in special instructions."
+                ],
+                "ritual_card": [
+                  "Morning Ritual",
+                  "Night Ritual",
+                  "Spa Ritual",
+                  "Self-Love Ritual",
+                  "Travel Ritual"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport"
+                ]
+              }
+            },
+            {
+              "id": "blanket_medium",
+              "name": "Braided Blanket — Medium (120×150 cm)",
+              "price": 290,
+              "description": "Medium-size braided blanket.",
+              "images": [
+                "Braided Blanket (Medium).png"
+              ],
+              "price_ro": 1290,
+              "price_ro_usd": 286.67,
+              "options": {
+                "hidden_message": [
+                  "You deserve kindness.",
+                  "Look how far you've come.",
+                  "Your next ritual awaits.",
+                  "I will write my own in special instructions."
+                ],
+                "ritual_card": [
+                  "Morning Ritual",
+                  "Night Ritual",
+                  "Spa Ritual",
+                  "Self-Love Ritual",
+                  "Travel Ritual"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport"
+                ]
+              }
+            },
+            {
+              "id": "blanket_large",
+              "name": "Braided Blanket — Large (150×200 cm)",
+              "price": 430,
+              "description": "Large cozy chunky-knit blanket.",
+              "images": [
+                "Braided Blanket (Large).png"
+              ],
+              "price_ro": 1890,
+              "price_ro_usd": 420,
+              "options": {
+                "hidden_message": [
+                  "You deserve kindness.",
+                  "Look how far you've come.",
+                  "Your next ritual awaits.",
+                  "I will write my own in special instructions."
+                ],
+                "ritual_card": [
+                  "Morning Ritual",
+                  "Night Ritual",
+                  "Spa Ritual",
+                  "Self-Love Ritual",
+                  "Travel Ritual"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "felted_animals",
+          "name": "Felted Animals",
+          "products": [
+            {
+              "id": "felt_small",
+              "name": "Mini Felted Animal — Small (~5 cm)",
+              "price": 35,
+              "description": "Small hand-felted wool figurine.",
+              "images": [
+                "Mini Felted Animal (Small).png"
+              ],
+              "price_ro": 139,
+              "price_ro_usd": 30.89,
+              "options": {
+                "hidden_message": [
+                  "You deserve kindness.",
+                  "Look how far you've come.",
+                  "Your next ritual awaits.",
+                  "I will write my own in special instructions."
+                ],
+                "ritual_card": [
+                  "Morning Ritual",
+                  "Night Ritual",
+                  "Spa Ritual",
+                  "Self-Love Ritual",
+                  "Travel Ritual"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport"
+                ]
+              }
+            },
+            {
+              "id": "felt_medium",
+              "name": "Felted Animal — Medium (~10–12 cm)",
+              "price": 60,
+              "description": "Medium-sized felted animal.",
+              "images": [
+                "Felted Animal (Medium).png"
+              ],
+              "price_ro": 249,
+              "price_ro_usd": 55.33,
+              "options": {
+                "hidden_message": [
+                  "You deserve kindness.",
+                  "Look how far you've come.",
+                  "Your next ritual awaits.",
+                  "I will write my own in special instructions."
+                ],
+                "ritual_card": [
+                  "Morning Ritual",
+                  "Night Ritual",
+                  "Spa Ritual",
+                  "Self-Love Ritual",
+                  "Travel Ritual"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport"
+                ]
+              }
+            },
+            {
+              "id": "felt_family",
+              "name": "Felted Animal Family Set (4 pcs)",
+              "price": 160,
+              "description": "Custom animal family felted set.",
+              "images": [
+                "Felted Animal Family Set 4.png"
+              ],
+              "price_ro": 699,
+              "price_ro_usd": 155.33,
+              "options": {
+                "hidden_message": [
+                  "You deserve kindness.",
+                  "Look how far you've come.",
+                  "Your next ritual awaits.",
+                  "I will write my own in special instructions."
+                ],
+                "ritual_card": [
+                  "Morning Ritual",
+                  "Night Ritual",
+                  "Spa Ritual",
+                  "Self-Love Ritual",
+                  "Travel Ritual"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "pet_wear",
+          "name": "Pet Wear",
+          "products": [
+            {
+              "id": "pet_beanie",
+              "name": "Pet Beanie / Shirt / Scarf",
+              "price": 28,
+              "description": "Handmade warm accessories for pets.",
+              "images": [
+                "Pet Beanie - shirt small.png",
+                "Pet Beanie - shirt small 2.png",
+                "Pet Beanie - shirt  small2.png"
+              ],
+              "price_ro": 99,
+              "price_ro_usd": 22,
+              "options": {
+                "hidden_message": [
+                  "You deserve kindness.",
+                  "Look how far you've come.",
+                  "Your next ritual awaits.",
+                  "I will write my own in special instructions."
+                ],
+                "ritual_card": [
+                  "Morning Ritual",
+                  "Night Ritual",
+                  "Spa Ritual",
+                  "Self-Love Ritual",
+                  "Travel Ritual"
+                ],
+                "collectible_charm": [
+                  "Surprise me",
+                  "Moon",
+                  "Star",
+                  "Butterfly",
+                  "Key",
+                  "Flower",
+                  "Heart"
+                ],
+                "velvet_passport": [
+                  "Include my first Velvet Passport",
+                  "Add stamps to my existing Passport"
+                ]
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }
